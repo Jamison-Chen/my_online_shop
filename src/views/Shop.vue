@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
+    <!-- <img alt="Vue logo" src="../assets/logo.png" /> -->
     <ProductInfoCard v-for="each in products" :key="each" :productInfo="each" />
   </div>
 </template>
@@ -20,17 +20,23 @@ export default defineComponent({
     };
   },
   methods: {
-    async fetchData(category: any): Promise<any> {
+    async fetchData(category: string): Promise<any> {
       let endPoint = `http://127.0.0.1:8000/api/product/all?category=${category}`;
       return await fetch(endPoint).then((res) => res.json());
     },
   },
   async created() {
-    this.products = (await this.fetchData(this.$route.params.category))["data"];
+    if (typeof this.$route.params.category === "string") {
+      this.products = (await this.fetchData(this.$route.params.category))[
+        "data"
+      ];
+    }
   },
   async beforeRouteUpdate(to, from) {
     // react to route changes
-    this.products = (await this.fetchData(to.params.category))["data"];
+    if (typeof to.params.category === "string") {
+      this.products = (await this.fetchData(to.params.category))["data"];
+    }
   },
 });
 </script>

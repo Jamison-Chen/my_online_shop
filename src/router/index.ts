@@ -4,7 +4,7 @@ import Shop from "../views/Shop.vue";
 const routes: Array<RouteRecordRaw> = [
     {
         path: "/shop/:category",
-        name: "Shop",
+        name: "Category Shop",
         component: Shop,
     },
     {
