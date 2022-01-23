@@ -1,0 +1,42 @@
+<template>
+  <div id="current-path-bar">
+    <div class="part-of-path" v-for="each in parentPageList" :key="each.name">
+      <a class="path-name" :href="each.path">{{ each.name }}</a>
+      <span
+        class="slash"
+        v-if="each.name !== parentPageList[parentPageList.length - 1].name"
+      >
+        /
+      </span>
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent, PropType } from "vue";
+
+interface PageInfo {
+  name: string;
+  path: string;
+}
+
+export default defineComponent({
+  props: {
+    parentPageList: {
+      type: Array as PropType<PageInfo[]>,
+      required: true,
+    },
+  },
+});
+</script>
+
+<style lang="scss" scoped>
+.part-of-path {
+  display: inline;
+  color: #aaa;
+  .path-name {
+    text-decoration: none;
+    color: #aaa;
+  }
+}
+</style>

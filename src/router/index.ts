@@ -1,11 +1,26 @@
-import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
-import Shop from "../views/Shop.vue";
+import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import Homepage from "../views/Homepage.vue";
 
 const routes: Array<RouteRecordRaw> = [
     {
-        path: "/shop/:category",
-        name: "Category Shop",
-        component: Shop,
+        path: "/",
+        name: "Home",
+        component: Homepage,
+    },
+    {
+        path: "/:category",
+        name: "Categorized",
+        component: () => import("../views/CategorizedPage.vue"),
+    },
+    {
+        path: "/search-result",
+        name: "SearchResult",
+        component: () => import("../views/SearchResultPage.vue"),
+    },
+    {
+        path: "/product/:productId",
+        name: "Product",
+        component: () => import("../views/Product.vue"),
     },
     {
         path: "/cart",
@@ -13,18 +28,22 @@ const routes: Array<RouteRecordRaw> = [
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
-        component: () =>
-            import(/* webpackChunkName: "about" */ "../views/Cart.vue"),
+        component: () => import("../views/Cart.vue"),
     },
     {
-        path: "/product/:productId",
-        name: "Product",
-        component: () => import("../views/Product.vue"),
+        path: "/checkout",
+        name: "Checkout",
+        component: () => import("../views/Checkout.vue"),
+    },
+    {
+        path: "/login",
+        name: "Login",
+        component: () => import("../views/Login.vue"),
     },
 ];
 
 const router = createRouter({
-    history: createWebHashHistory(),
+    history: createWebHistory(),
     routes,
 });
 

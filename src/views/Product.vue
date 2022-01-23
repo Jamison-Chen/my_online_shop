@@ -1,23 +1,107 @@
 <template>
-  <div class="product-page">
-    <h1>{{ productInfo }}</h1>
+  <div class="product-page" v-if="status === 'success'">
+    <CurrentPathBar :parentPageList="fullPathList" />
+    <div id="main">
+      <div id="picture-section">
+        <div
+          class="fake-picture"
+          style="width: 150px; height: 300px; background-color: #ccc"
+        >
+          Here should be some pictures.
+        </div>
+        <div
+          class="fake-picture"
+          style="width: 300px; height: 400px; background-color: #aaa"
+        >
+          Here should be some pictures.
+        </div>
+        <div
+          class="fake-picture"
+          style="width: 400px; height: 500px; background-color: #888"
+        >
+          Here should be some pictures.
+        </div>
+      </div>
+      <ProductNonPictureSection :productInfo="productInfo" />
+    </div>
+    <div id="recommendation">
+      <div
+        class="fake-recommendation"
+        style="height: 1000px; background-color: #555"
+      ></div>
+    </div>
   </div>
+  <div class="product-pag" v-else-if="status === 'failed'">
+    <h1>Product Not Found</h1>
+  </div>
+  <div class="product-page" v-else></div>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
+import CurrentPathBar from "@/components/CurrentPathBar.vue";
+import ProductNonPictureSection from "@/components/ProductNonPictureSection.vue";
+
+interface PageInfo {
+  name: string;
+  path: string;
+}
+
+interface ProductInfo {
+  id: string;
+  name: string;
+  unit_price: number;
+  category: string;
+  brand: string;
+  description: string;
+  inventory: number;
+  quantity_sold: number;
+}
 
 export default defineComponent({
   name: "Product",
+  components: { CurrentPathBar, ProductNonPictureSection },
   props: {},
   data() {
     return {
-      productInfo: {},
+      status: "waiting" as "waiting" | "success" | "failed",
+      productInfo: {} as ProductInfo,
+      parentPageList: [
+        {
+          name: "Home",
+          path: "/",
+        },
+      ] as PageInfo[],
     };
+  },
+  computed: {
+    fullPathList(): PageInfo[] {
+      return this.parentPageList
+        .concat([
+          {
+            name: this.productInfo.category,
+            path: `/${this.productInfo.category}`,
+          },
+        ])
+        .concat([
+          {
+            name: this.productInfo.name,
+            path: "#",
+          },
+        ]);
+    },
   },
   methods: {
     async fetchData(productId: any): Promise<any> {
       let endPoint = `http://127.0.0.1:8000/api/product/${productId}`;
-      return await fetch(endPoint).then((res) => res.json());
+      return await fetch(endPoint)
+        .then((res) => {
+          this.status = "success";
+          return res.json();
+        })
+        .catch((err) => {
+          this.status = "failed";
+          return err.message;
+        });
     },
   },
   async created() {
@@ -27,7 +111,23 @@ export default defineComponent({
   },
   async beforeRouteUpdate(to, from) {
     // react to route changes
+    this.status = "waiting";
     this.productInfo = (await this.fetchData(to.params.productId))["data"];
   },
 });
 </script>
+
+<style lang="scss" scoped>
+#main {
+  display: flex;
+  padding: 10px;
+  & > div {
+    width: 50%;
+  }
+  #picture-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+</style>
