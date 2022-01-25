@@ -7,7 +7,7 @@
       ></div>
     </a>
     <div class="non-picture-section">
-      <div class="category-tag">{{ productInfo.category }}</div>
+      <div class="category-tag">{{ productInfo.category.toUpperCase() }}</div>
       <a class="name-tag" :href="`/product/${productInfo.id}`">
         {{ productInfo.name }}
       </a>

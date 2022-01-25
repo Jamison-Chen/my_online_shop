@@ -34,6 +34,7 @@ export default defineComponent({
 .part-of-path {
   display: inline;
   color: #aaa;
+  letter-spacing: 1px;
   .path-name {
     text-decoration: none;
     color: #aaa;

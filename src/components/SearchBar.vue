@@ -5,8 +5,10 @@
       name="search-input"
       id="search-input"
       placeholder="Search"
+      v-model.trim="query"
+      @keypress.enter="search"
     />
-    <IconBase id="search-button" :sideLength="iconSize"
+    <IconBase id="search-button" :sideLength="iconSize" @click="search"
       ><IconMagnifier
     /></IconBase>
   </div>
@@ -19,10 +21,26 @@ import IconMagnifier from "./icons/IconMagnifier.vue";
 
 export default defineComponent({
   components: { IconBase, IconMagnifier },
+  props: {
+    iconSize: {
+      type: Number,
+      default: 24,
+    },
+  },
   data() {
     return {
-      iconSize: 24 as number,
+      query: "" as string,
     };
+  },
+  methods: {
+    search() {
+      if (this.query !== "") {
+        this.$router.push(
+          `/search-result?query=${this.query.split(" ").join(",")}`
+        );
+        this.query = "";
+      }
+    },
   },
 });
 </script>
@@ -38,6 +56,8 @@ export default defineComponent({
     padding: 0 10px 5px 10px;
     font-size: 1.2rem;
     letter-spacing: 2px;
+    font-family: inherit;
+    background-color: transparent;
     &::-webkit-search-cancel-button {
       background: #888;
     }

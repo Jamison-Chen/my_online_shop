@@ -1,23 +1,28 @@
 <template>
   <div id="homepage">
     <!-- <img alt="Vue logo" src="../assets/logo.png" /> -->
-    <PictureCarousel :pictureInfoList="homeCoverPictures" />
-    <div id="category-list">
-      <CategoryInfoCard
-        v-for="each in categories"
-        :key="each.id"
-        :categoryInfo="each"
-      />
-    </div>
+    <PictureCarousel :pictureInfoList="carouselContents" />
+    <PageBlock :blockTitle="'All Catrgories'">
+      <div id="category-list">
+        <CategoryInfoCard
+          v-for="each in categories"
+          :key="each.id"
+          :categoryInfo="each"
+        />
+      </div>
+    </PageBlock>
+    <PageBlock :blockTitle="'Popular This Week'"></PageBlock>
+    <PageBlock :blockTitle="'New Arrival'"></PageBlock>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import PictureCarousel from "@/components/PictureCarousel.vue";
+import PageBlock from "@/components/PageBlock.vue";
 import CategoryInfoCard from "@/components/CategoryInfoCard.vue"; // @ is an alias to /src
 
-interface PictureInfo {
+interface CarouselContentInfo {
   image: any;
   href: string;
   title: string;
@@ -30,10 +35,18 @@ interface CategoryInfo {
 
 export default defineComponent({
   name: "Homepage",
-  components: { PictureCarousel, CategoryInfoCard },
+  components: { PictureCarousel, PageBlock, CategoryInfoCard },
   data() {
     return {
-      homeCoverPictures: [] as PictureInfo[],
+      carouselContents: [
+        {
+          image: "#fff4f4",
+          href: "/search-result?query=top,seller,this,month",
+          title: "Top Seller This Month",
+        },
+        { image: "#f4fff4", href: "/product/24", title: "Ad2" },
+        { image: "#f4f4ff", href: "/product/32", title: "Ad3" },
+      ] as CarouselContentInfo[],
       categories: [] as CategoryInfo[],
     };
   },
@@ -41,6 +54,9 @@ export default defineComponent({
     async fetchData(): Promise<any> {
       let endPoint = `http://127.0.0.1:8000/api/category/all`;
       return await fetch(endPoint).then((res) => res.json());
+    },
+    siv(ipt: any): void {
+      console.log(ipt);
     },
   },
   async created() {
@@ -59,7 +75,7 @@ export default defineComponent({
     gap: 30px;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     justify-items: stretch;
-    padding: 0 30px;
+    padding: 30px;
   }
 }
 </style>

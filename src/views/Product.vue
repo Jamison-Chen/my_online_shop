@@ -24,12 +24,18 @@
       </div>
       <ProductNonPictureSection :productInfo="productInfo" />
     </div>
-    <div id="recommendation">
+    <PageBlock :blockTitle="'Popular This Week'">
       <div
         class="fake-recommendation"
-        style="height: 1000px; background-color: #555"
+        style="height: 500px; background-color: #555"
       ></div>
-    </div>
+    </PageBlock>
+    <PageBlock :blockTitle="'New Arrival'">
+      <div
+        class="fake-recommendation"
+        style="height: 500px; background-color: #555"
+      ></div>
+    </PageBlock>
   </div>
   <div class="product-pag" v-else-if="status === 'failed'">
     <h1>Product Not Found</h1>
@@ -40,6 +46,7 @@
 import { defineComponent } from "vue";
 import CurrentPathBar from "@/components/CurrentPathBar.vue";
 import ProductNonPictureSection from "@/components/ProductNonPictureSection.vue";
+import PageBlock from "@/components/PageBlock.vue";
 
 interface PageInfo {
   name: string;
@@ -59,7 +66,7 @@ interface ProductInfo {
 
 export default defineComponent({
   name: "Product",
-  components: { CurrentPathBar, ProductNonPictureSection },
+  components: { CurrentPathBar, ProductNonPictureSection, PageBlock },
   props: {},
   data() {
     return {
@@ -92,6 +99,7 @@ export default defineComponent({
   },
   methods: {
     async fetchData(productId: any): Promise<any> {
+      this.status = "waiting";
       let endPoint = `http://127.0.0.1:8000/api/product/${productId}`;
       return await fetch(endPoint)
         .then((res) => {
@@ -111,8 +119,9 @@ export default defineComponent({
   },
   async beforeRouteUpdate(to, from) {
     // react to route changes
-    this.status = "waiting";
-    this.productInfo = (await this.fetchData(to.params.productId))["data"];
+    if (to.params.productId !== from.params.productId) {
+      this.productInfo = (await this.fetchData(to.params.productId))["data"];
+    }
   },
 });
 </script>

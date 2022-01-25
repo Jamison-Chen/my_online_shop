@@ -68,7 +68,9 @@ export default defineComponent({
   },
   // react to route changes
   async beforeRouteUpdate(to, from) {
-    this.products = (await this.fetchData(this.categoryName))["data"];
+    if (to.params.category !== from.params.category) {
+      this.products = (await this.fetchData(this.categoryName))["data"];
+    }
   },
 });
 </script>

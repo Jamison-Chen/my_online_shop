@@ -1,7 +1,7 @@
 <template>
-  <div id="header">
-    <h1 id="logo">Hello World</h1>
-    <SearchBar />
+  <div id="header" :class="{ 'at-homepage': isHomepage }">
+    <a id="logo" href="/">Hello World</a>
+    <SearchBar :iconSize="iconSize" />
     <div id="side-button-bar">
       <a href="#" class="side-button">
         <IconBase :sideLength="iconSize"><IconHeart /></IconBase>
@@ -24,9 +24,15 @@ export default defineComponent({
   components: { SearchBar, IconBase, IconHeart, IconCart },
   data() {
     return {
-      iconSize: 24 as number,
+      iconSize: 22 as number,
     };
   },
+  computed: {
+    isHomepage(): boolean {
+      return this.$route.path === "/";
+    },
+  },
+  created() {},
 });
 </script>
 
@@ -35,10 +41,18 @@ export default defineComponent({
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 70px;
   color: #444;
+  z-index: 1000;
+  &.at-homepage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
   #logo {
-    margin: 15px;
-    color: #2c3e50;
+    margin: auto 20px;
+    font-size: 2rem;
   }
   #side-button-bar {
     display: flex;
@@ -47,7 +61,7 @@ export default defineComponent({
     .side-button {
       display: flex;
       align-items: center;
-      margin: 0 10px;
+      margin: 0 15px;
       color: inherit;
       transition-duration: 300ms;
       &:visited,

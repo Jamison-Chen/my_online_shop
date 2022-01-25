@@ -1,14 +1,91 @@
 <template>
   <div class="search-result-page">
-    <h1>This is an search result page</h1>
+    <CurrentPathBar :parentPageList="fullPathList" />
+    <div id="main">
+      <ProductInfoCard
+        v-for="each in productsResponded"
+        :key="each.id"
+        :productInfo="each"
+        :isFavorite="false"
+      />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import CurrentPathBar from "@/components/CurrentPathBar.vue";
+import ProductInfoCard from "@/components/ProductInfoCard.vue";
 
-export default defineComponent({});
+interface PageInfo {
+  name: string;
+  path: string;
+}
+
+interface ProductInfo {
+  id: string;
+  name: string;
+  unit_price: number;
+  category: string;
+  brand: string;
+  description: string;
+  inventory: number;
+  quantity_sold: number;
+}
+
+export default defineComponent({
+  name: "SearchResult",
+  components: { CurrentPathBar, ProductInfoCard },
+  async created() {
+    // TODOS: Arrange the search result.
+    this.productsResponded = (await this.search())["data"];
+  },
+  data() {
+    return {
+      status: "waiting" as "waiting" | "success" | "failed",
+      parentPageList: [{ name: "Home", path: "/" }] as PageInfo[],
+      productsResponded: [] as ProductInfo[],
+    };
+  },
+  computed: {
+    fullPathList(): PageInfo[] {
+      return this.parentPageList.concat([{ name: "Search Result", path: "#" }]);
+    },
+  },
+  methods: {
+    async search(): Promise<any> {
+      this.status = "waiting";
+      let endPoint = `http://127.0.0.1:8000/api/search?query=${this.$route.query.query}`;
+      return await fetch(endPoint)
+        .then((res) => {
+          this.status = "success";
+          return res.json();
+        })
+        .catch((err) => {
+          this.status = "failed";
+          return err.message;
+        });
+    },
+  },
+  async beforeRouteUpdate(to, from) {
+    // react to route changes
+    if (to.query.query !== from.query.query && to.query.query !== "") {
+      this.productsResponded = (await this.search())["data"];
+    }
+  },
+});
 </script>
 
 <style lang="scss" scoped>
+.search-result-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  #main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+  }
+}
 </style>
