@@ -15,7 +15,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 
-interface PageInfo {
+export interface PageInfo {
   name: string;
   path: string;
 }

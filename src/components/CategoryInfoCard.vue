@@ -20,7 +20,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 
-declare interface CategoryInfo {
+export interface CategoryInfo {
   id: string;
   name: string;
 }

@@ -14,24 +14,8 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import CurrentPathBar from "@/components/CurrentPathBar.vue";
-import ProductInfoCard from "@/components/ProductInfoCard.vue";
-
-interface PageInfo {
-  name: string;
-  path: string;
-}
-
-interface ProductInfo {
-  id: string;
-  name: string;
-  unit_price: number;
-  category: string;
-  brand: string;
-  description: string;
-  inventory: number;
-  quantity_sold: number;
-}
+import CurrentPathBar, { PageInfo } from "@/components/CurrentPathBar.vue";
+import ProductInfoCard, { ProductInfo } from "@/components/ProductInfoCard.vue";
 
 export default defineComponent({
   components: { ProductInfoCard, CurrentPathBar },

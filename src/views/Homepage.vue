@@ -18,20 +18,13 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import PictureCarousel from "@/components/PictureCarousel.vue";
+import PictureCarousel, {
+  CarouselContentInfo,
+} from "@/components/PictureCarousel.vue";
 import PageBlock from "@/components/PageBlock.vue";
-import CategoryInfoCard from "@/components/CategoryInfoCard.vue"; // @ is an alias to /src
-
-interface CarouselContentInfo {
-  image: any;
-  href: string;
-  title: string;
-}
-
-interface CategoryInfo {
-  id: string;
-  name: string;
-}
+import CategoryInfoCard, {
+  CategoryInfo,
+} from "@/components/CategoryInfoCard.vue"; // @ is an alias to /src
 
 export default defineComponent({
   name: "Homepage",

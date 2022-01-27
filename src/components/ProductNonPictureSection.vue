@@ -11,7 +11,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 
-interface ProductInfo {
+export interface ProductInfo {
   id: string;
   name: string;
   unit_price: number;

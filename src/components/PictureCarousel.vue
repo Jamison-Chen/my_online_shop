@@ -28,7 +28,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 
-interface CarouselContentInfo {
+export interface CarouselContentInfo {
   image: any;
   href: string;
   title: string;

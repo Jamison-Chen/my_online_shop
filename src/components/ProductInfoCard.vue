@@ -3,7 +3,7 @@
     <a class="picture-section" :href="`/product/${productInfo.id}`">
       <div
         class="fake-picture"
-        style="background-color: #ccc; height: 100%; width: 100%"
+        style="background-color: #ccc; height: 512px; width: 100%"
       ></div>
     </a>
     <div class="non-picture-section">
@@ -40,7 +40,7 @@ import IconBase from "./IconBase.vue";
 import IconHeart from "./icons/IconHeart.vue";
 import IconHeartFill from "./icons/IconHeartFill.vue";
 
-interface ProductInfo {
+export interface ProductInfo {
   id: string;
   name: string;
   unit_price: number;
@@ -96,12 +96,15 @@ export default defineComponent({
   width: 100%;
   margin: 20px 0;
   display: flex;
+  align-items: center;
   & > div,
   & > a {
     width: 50%;
   }
   .picture-section {
+    max-height: 35vh;
     padding-right: 20px;
+    overflow: hidden;
   }
   .non-picture-section {
     text-align: start;

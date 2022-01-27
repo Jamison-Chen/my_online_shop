@@ -44,25 +44,11 @@
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import CurrentPathBar from "@/components/CurrentPathBar.vue";
-import ProductNonPictureSection from "@/components/ProductNonPictureSection.vue";
+import CurrentPathBar, { PageInfo } from "@/components/CurrentPathBar.vue";
+import ProductNonPictureSection, {
+  ProductInfo,
+} from "@/components/ProductNonPictureSection.vue";
 import PageBlock from "@/components/PageBlock.vue";
-
-interface PageInfo {
-  name: string;
-  path: string;
-}
-
-interface ProductInfo {
-  id: string;
-  name: string;
-  unit_price: number;
-  category: string;
-  brand: string;
-  description: string;
-  inventory: number;
-  quantity_sold: number;
-}
 
 export default defineComponent({
   name: "Product",
