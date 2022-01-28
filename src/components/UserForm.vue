@@ -17,7 +17,11 @@
         <span></span>
       </div>
     </div>
-    <input type="button" :value="pageType" @click="submit" />
+    <input
+      type="button"
+      :value="pageType"
+      @click="$emit('clickSubmitButton', formData)"
+    />
     <div class="reminder" v-if="pageType === 'Login'">
       Doesn't have an account? Please
       <a href="../register">Sign up</a>
@@ -64,15 +68,11 @@ export default defineComponent({
       required: true,
     },
   },
+  emits: ["clickSubmitButton"],
   data() {
     return {
       formData: {} as any,
     };
-  },
-  methods: {
-    submit(): void {
-      console.log(this.formData);
-    },
   },
 });
 </script>
@@ -83,7 +83,7 @@ export default defineComponent({
   margin: auto;
   padding: 30px 20px;
   border: 1px solid #aaa;
-  border-radius: 10px;
+  border-radius: 8px;
   & > .input-table {
     display: table;
     width: 100%;

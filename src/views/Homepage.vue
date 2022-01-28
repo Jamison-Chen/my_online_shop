@@ -44,12 +44,9 @@ export default defineComponent({
     };
   },
   methods: {
-    async fetchData(): Promise<any> {
+    fetchData(): Promise<any> {
       let endPoint = `http://127.0.0.1:8000/api/category/all`;
-      return await fetch(endPoint).then((res) => res.json());
-    },
-    siv(ipt: any): void {
-      console.log(ipt);
+      return fetch(endPoint).then((res) => res.json());
     },
   },
   async created() {

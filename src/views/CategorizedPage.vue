@@ -42,9 +42,9 @@ export default defineComponent({
     },
   },
   methods: {
-    async fetchData(category: string): Promise<any> {
+    fetchData(category: string): Promise<any> {
       let endPoint = `http://127.0.0.1:8000/api/product/all?category=${category}`;
-      return await fetch(endPoint).then((res) => res.json());
+      return fetch(endPoint).then((res) => res.json());
     },
   },
   async created() {

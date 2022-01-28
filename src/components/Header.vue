@@ -9,6 +9,9 @@
       <IconBase class="side-button" :sideLength="iconSize"
         ><IconCart
       /></IconBase>
+      <a href="/login" class="side-button">
+        <IconBase :sideLength="iconSize"><IconPersonFill /></IconBase>
+      </a>
     </div>
   </div>
 </template>
@@ -19,9 +22,10 @@ import SearchBar from "./SearchBar.vue";
 import IconBase from "./IconBase.vue";
 import IconHeart from "./icons/IconHeart.vue";
 import IconCart from "./icons/IconCart.vue";
+import IconPersonFill from "./icons/IconPersonFill.vue";
 
 export default defineComponent({
-  components: { SearchBar, IconBase, IconHeart, IconCart },
+  components: { SearchBar, IconBase, IconHeart, IconCart, IconPersonFill },
   data() {
     return {
       iconSize: 22 as number,

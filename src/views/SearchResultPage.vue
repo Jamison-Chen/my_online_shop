@@ -37,10 +37,10 @@ export default defineComponent({
     },
   },
   methods: {
-    async search(): Promise<any> {
+    search(): Promise<any> {
       this.status = "waiting";
       let endPoint = `http://127.0.0.1:8000/api/search?query=${this.$route.query.query}`;
-      return await fetch(endPoint)
+      return fetch(endPoint)
         .then((res) => {
           this.status = "success";
           return res.json();
