@@ -3,13 +3,13 @@
     <a id="logo" href="/">Hello World</a>
     <SearchBar :iconSize="iconSize" />
     <div id="side-button-bar">
-      <a href="#" class="side-button">
+      <a href="#" class="side-button" data-title="Favorites">
         <IconBase :sideLength="iconSize"><IconHeart /></IconBase>
       </a>
       <IconBase class="side-button" :sideLength="iconSize"
         ><IconCart
       /></IconBase>
-      <a href="/login" class="side-button">
+      <a href="/login" class="side-button" data-title="Account">
         <IconBase :sideLength="iconSize"><IconPersonFill /></IconBase>
       </a>
     </div>
