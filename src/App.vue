@@ -44,24 +44,9 @@ body {
 
 a {
   text-decoration: none;
-  position: relative;
   &:visited,
   &:active {
     color: inherit;
-  }
-  &[data-title]:hover::after {
-    background-color: #000;
-    color: #fff;
-    padding: 2px 6px 4px 6px;
-    font-size: 0.8rem;
-    letter-spacing: 1px;
-    border-radius: 5px;
-    content: attr(data-title);
-    position: absolute;
-    top: 130%;
-    left: 50%;
-    transform: translateX(-50%);
-    box-shadow: 2px 2px 10px 2px #ccc;
   }
 }
 

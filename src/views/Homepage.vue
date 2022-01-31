@@ -18,13 +18,13 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import PictureCarousel, {
-  CarouselContentInfo,
-} from "@/components/PictureCarousel.vue";
+import PictureCarousel from "@/components/PictureCarousel.vue"; // @ is an alias to /src
 import PageBlock from "@/components/PageBlock.vue";
-import CategoryInfoCard, {
+import CategoryInfoCard from "@/components/CategoryInfoCard.vue";
+import {
+  CarouselContentInfo,
   CategoryInfo,
-} from "@/components/CategoryInfoCard.vue"; // @ is an alias to /src
+} from "@/components/MyInterface.vue";
 import store from "@/store";
 
 export default defineComponent({
@@ -48,8 +48,8 @@ export default defineComponent({
   methods: {
     fetchData(): Promise<any> {
       let endPoint = `http://127.0.0.1:8000/api/category/all`;
-      return fetch(endPoint, { credentials: "include" }).then((res) =>
-        res.json()
+      return fetch(endPoint, { method: "get", credentials: "include" }).then(
+        (res) => res.json()
       );
     },
   },

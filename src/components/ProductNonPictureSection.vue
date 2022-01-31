@@ -10,17 +10,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-
-export interface ProductInfo {
-  id: string;
-  name: string;
-  unit_price: number;
-  category: string;
-  brand: string;
-  description: string;
-  inventory: number;
-  quantity_sold: number;
-}
+import { ProductInfo } from "./MyInterface.vue";
 
 export default defineComponent({
   props: {

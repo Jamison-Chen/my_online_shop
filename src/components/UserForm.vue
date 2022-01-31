@@ -47,28 +47,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-
-export interface UserFormFieldInfo {
-  fieldName:
-    | "name"
-    | "email"
-    | "password"
-    | "date_of_birth"
-    | "phone_number"
-    | "password-check";
-  nameDisplayed:
-    | "Name"
-    | "Email"
-    | "Password"
-    | "Date of Birth"
-    | "Phone #"
-    | "Password Check";
-  type: "text" | "email" | "password" | "date" | "tel";
-  required: boolean;
-  pattern: string;
-  placeholder: string;
-  shouldAlert: boolean;
-}
+import { UserFormFieldInfo } from "./MyInterface.vue";
 
 export default defineComponent({
   props: {
@@ -98,11 +77,17 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+$noisyWhite: #ccc;
+$lightGray: #aaa;
+$black: #000;
+$red: #d02;
+$white: #fff;
+$blue: #08f;
 #user-form {
   width: 320px;
   margin: auto;
   padding: 30px 20px;
-  border: 1px solid #aaa;
+  border: 1px solid $lightGray;
   border-radius: 8px;
   & > .input-table {
     display: table;
@@ -117,18 +102,18 @@ export default defineComponent({
         vertical-align: middle;
       }
       .required-mark {
-        color: #d02;
+        color: $red;
       }
       & > input {
         display: table-cell;
         border: none;
-        border-bottom: 1px solid #aaa;
+        border-bottom: 1px solid $lightGray;
         margin: 10px;
         line-height: 1.4rem;
         font-family: inherit;
         letter-spacing: 1px;
         &::placeholder {
-          color: #ccc;
+          color: $noisyWhite;
         }
         & + span.alter-mark:after {
           content: "✖";
@@ -136,9 +121,9 @@ export default defineComponent({
         }
         &.should-alert {
           &:invalid {
-            outline-color: #d02;
+            outline-color: $red;
             & + span.alter-mark:after {
-              color: #d02;
+              color: $red;
             }
           }
         }
@@ -149,7 +134,7 @@ export default defineComponent({
     margin: 10px 0;
     padding: 5px;
     border-radius: 5px;
-    color: #d02;
+    color: $red;
     font-size: 0.8rem;
     border: 2px solid #dd002277;
     background-color: #dd002222;
@@ -158,23 +143,23 @@ export default defineComponent({
     margin: 10px 0 20px 0;
     font-family: inherit;
     font-size: 1.2rem;
-    background-color: #000;
+    background-color: $black;
     border: none;
-    color: #fff;
+    color: $white;
     padding: 4px 12px 8px 12px;
     border-radius: 2px;
     cursor: pointer;
     transition-duration: 500ms;
     &:hover {
-      background-color: #fff;
-      color: #000;
+      background-color: $white;
+      color: $black;
     }
   }
   .reminder {
     text-align: center;
     font-size: 0.9rem;
     & > a {
-      color: #08f;
+      color: $blue;
     }
   }
 }

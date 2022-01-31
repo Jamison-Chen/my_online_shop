@@ -27,12 +27,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-
-export interface CarouselContentInfo {
-  image: any;
-  href: string;
-  title: string;
-}
+import { CarouselContentInfo } from "./MyInterface.vue";
 
 export default defineComponent({
   props: {

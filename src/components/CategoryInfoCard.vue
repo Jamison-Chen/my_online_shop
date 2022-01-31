@@ -19,11 +19,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-
-export interface CategoryInfo {
-  id: string;
-  name: string;
-}
+import { CategoryInfo } from "./MyInterface.vue";
 
 export default defineComponent({
   name: "CategoryInfoCard",

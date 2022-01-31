@@ -6,9 +6,9 @@
       <a href="#" class="side-button" data-title="Favorites">
         <IconBase :sideLength="iconSize"><IconHeart /></IconBase>
       </a>
-      <IconBase class="side-button" :sideLength="iconSize"
-        ><IconCart
-      /></IconBase>
+      <div class="side-button" data-title="Cart">
+        <IconBase :sideLength="iconSize"><IconCart /></IconBase>
+      </div>
       <a
         :href="isLoggedIn ? '/account-center' : '/login'"
         class="side-button"
@@ -79,13 +79,28 @@ export default defineComponent({
       margin: 0 15px;
       color: inherit;
       transition-duration: 300ms;
+      position: relative;
+      cursor: pointer;
       &:visited,
       &:active {
         color: inherit;
       }
       &:hover {
         opacity: 0.8;
-        cursor: pointer;
+      }
+      &[data-title]:hover::after {
+        background-color: #000;
+        color: #fff;
+        padding: 2px 6px 4px 6px;
+        font-size: 0.8rem;
+        letter-spacing: 1px;
+        border-radius: 5px;
+        content: attr(data-title);
+        position: absolute;
+        top: 130%;
+        left: 50%;
+        transform: translateX(-50%);
+        box-shadow: 2px 2px 10px 2px #ccc;
       }
     }
   }

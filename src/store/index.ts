@@ -1,5 +1,9 @@
 import { createStore } from "vuex";
 
+interface UserInfo {
+    name: string;
+}
+
 export default createStore({
     state: {
         isLoggedIn: false as boolean,
@@ -8,11 +12,13 @@ export default createStore({
             | "passed"
             | "wrong password"
             | "user not found",
+        userInfo: {} as UserInfo,
     },
     mutations: {
-        checkLoginStatus(state, statusResponded): void {
-            state.isLoggedIn = statusResponded === "passed" ? true : false;
-            state.loginStatus = statusResponded;
+        checkLoginStatus(state, response): void {
+            state.isLoggedIn = response["status"] === "passed" ? true : false;
+            state.loginStatus = response["status"];
+            state.userInfo.name = response["data"]["name"];
         },
         login(state): void {
             state.isLoggedIn = true;
@@ -35,21 +41,21 @@ export default createStore({
             //   .then((resp) => resp);
 
             // The fetch approach
-            let st = await fetch("http://127.0.0.1:8000/api/login", {
+            let resp = await fetch("http://127.0.0.1:8000/api/login", {
                 method: "post",
                 body: requestBody,
                 credentials: "include",
                 // "credentials" to send cookie in the request and
                 // accept the "set-cookie" header of the response
             }).then((res) => res.json());
-            commit("checkLoginStatus", st["status"]);
+            commit("checkLoginStatus", resp);
         },
         async logout({ commit }): Promise<void> {
-            let st = await fetch("http://127.0.0.1:8000/api/logout", {
+            let resp = await fetch("http://127.0.0.1:8000/api/logout", {
                 method: "post",
                 credentials: "include",
             }).then((res) => res.json());
-            if (st["status"] === "succeeded") commit("logout");
+            if (resp["status"] === "succeeded") commit("logout");
         },
     },
     modules: {},

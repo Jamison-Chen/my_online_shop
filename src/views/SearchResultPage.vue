@@ -14,8 +14,9 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import CurrentPathBar, { PageInfo } from "@/components/CurrentPathBar.vue";
-import ProductInfoCard, { ProductInfo } from "@/components/ProductInfoCard.vue";
+import CurrentPathBar from "@/components/CurrentPathBar.vue";
+import ProductInfoCard from "@/components/ProductInfoCard.vue";
+import { ProductInfo, PageInfo } from "@/components/MyInterface.vue";
 
 export default defineComponent({
   name: "SearchResult",
@@ -40,7 +41,7 @@ export default defineComponent({
     search(): Promise<any> {
       this.status = "waiting";
       let endPoint = `http://127.0.0.1:8000/api/search?query=${this.$route.query.query}`;
-      return fetch(endPoint)
+      return fetch(endPoint, { method: "get", credentials: "include" })
         .then((res) => {
           this.status = "success";
           return res.json();

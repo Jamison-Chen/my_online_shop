@@ -14,11 +14,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-
-export interface PageInfo {
-  name: string;
-  path: string;
-}
+import { PageInfo } from "./MyInterface.vue";
 
 export default defineComponent({
   props: {
@@ -31,13 +27,17 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.part-of-path {
-  display: inline;
-  color: #aaa;
-  letter-spacing: 1px;
-  .path-name {
-    text-decoration: none;
+#current-path-bar {
+  margin-bottom: 10px;
+  .part-of-path {
+    display: inline;
     color: #aaa;
+    letter-spacing: 1px;
+
+    .path-name {
+      text-decoration: none;
+      color: #aaa;
+    }
   }
 }
 </style>

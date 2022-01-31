@@ -4,19 +4,19 @@
     <div id="main">
       <div id="picture-section">
         <div
-          class="fake-picture"
+          class="fake-picture product-picture"
           style="width: 150px; height: 300px; background-color: #ccc"
         >
           Here should be some pictures.
         </div>
         <div
-          class="fake-picture"
+          class="fake-picture product-picture"
           style="width: 300px; height: 400px; background-color: #aaa"
         >
           Here should be some pictures.
         </div>
         <div
-          class="fake-picture"
+          class="fake-picture product-picture"
           style="width: 400px; height: 500px; background-color: #888"
         >
           Here should be some pictures.
@@ -37,18 +37,17 @@
       ></div>
     </PageBlock>
   </div>
-  <div class="product-pag" v-else-if="status === 'failed'">
+  <div class="product-page" v-else-if="status === 'failed'">
     <h1>Product Not Found</h1>
   </div>
   <div class="product-page" v-else></div>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import CurrentPathBar, { PageInfo } from "@/components/CurrentPathBar.vue";
-import ProductNonPictureSection, {
-  ProductInfo,
-} from "@/components/ProductNonPictureSection.vue";
+import CurrentPathBar from "@/components/CurrentPathBar.vue";
+import ProductNonPictureSection from "@/components/ProductNonPictureSection.vue";
 import PageBlock from "@/components/PageBlock.vue";
+import { ProductInfo, PageInfo } from "@/components/MyInterface.vue";
 
 export default defineComponent({
   name: "Product",
@@ -87,7 +86,7 @@ export default defineComponent({
     fetchData(productId: any): Promise<any> {
       this.status = "waiting";
       let endPoint = `http://127.0.0.1:8000/api/product/${productId}`;
-      return fetch(endPoint)
+      return fetch(endPoint, { method: "get", credentials: "include" })
         .then((res) => {
           this.status = "success";
           return res.json();
@@ -123,6 +122,9 @@ export default defineComponent({
     display: flex;
     flex-direction: column;
     align-items: center;
+    & > .product-picture {
+      margin: 10px 0;
+    }
   }
 }
 </style>
