@@ -2,9 +2,12 @@
   <div class="login-page">
     <UserForm
       :fields="fields"
+      :formData="formData"
       :endPoint="endPoint"
       :pageType="pageType"
-      @clickSubmitButton="login($event)"
+      :alertMessage="alertMessage"
+      @input="this.formData[$event.fieldName] = $event.value"
+      @clickSubmitButton="login"
     />
   </div>
 </template>
@@ -12,9 +15,11 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import UserForm, { UserFormFieldInfo } from "@/components/UserForm.vue";
+import store from "@/store";
 
 export default defineComponent({
   name: "Login",
+  store: store,
   components: { UserForm },
   data() {
     return {
@@ -23,49 +28,56 @@ export default defineComponent({
           fieldName: "email",
           nameDisplayed: "Email",
           type: "email",
-          required: true,
+          required: false,
           pattern: "[A-Za-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$",
           placeholder: " ",
-          shouldShowValid: false,
+          shouldAlert: false,
         },
         {
           fieldName: "password",
           nameDisplayed: "Password",
           type: "password",
-          required: true,
+          required: false,
           pattern: "[a-z0-9A-Z]+",
           placeholder: " ",
-          shouldShowValid: false,
+          shouldAlert: false,
         },
       ] as UserFormFieldInfo[],
-      endPoint: "http://127.0.0.1:8000/api/login",
-      pageType: "Login",
-      response: {} as any,
+      formData: {
+        email: "",
+        password: "",
+      } as any,
+      endPoint: "http://127.0.0.1:8000/api/login" as string,
+      pageType: "Login" as string,
+      alertMessage: "",
     };
   },
   methods: {
-    async login(formData: any): Promise<any> {
+    async login(): Promise<any> {
       let requestBody = new URLSearchParams();
-      for (let each in formData) {
-        requestBody.append(each, formData[each]);
+      for (let each in this.formData) {
+        requestBody.append(each, this.formData[each]);
       }
-      // The axios approach
-      // this.$http.defaults.withCredentials = true;
-      // this.response = await this.$http
-      //   .post(this.endPoint, requestBody)
-      //   .then((resp) => resp);
+      await store.dispatch("checkLoginStatus", requestBody);
 
-      // The fetch approach
-      this.response = await fetch(this.endPoint, {
-        method: "post",
-        body: requestBody,
-        credentials: "include", // to accept the "set-cookie" header of the response
-      }).then((resp) => resp.json());
-
-      if (this.response.status === "passed") {
-        this.$router.push("/");
-      } else if (this.response.status === "user not found") {
-      } else if (this.response.status === "wrong password") {
+      let loginStatus = store.state.loginStatus;
+      if (store.state.isLoggedIn) this.$router.push("/");
+      else if (loginStatus === "user not found") {
+        this.alertMessage = store.state.loginStatus;
+        this.formData.email = "";
+        this.fields
+          .filter((e) => e.fieldName === "email")
+          .forEach((e) => (e.shouldAlert = true));
+        this.formData.password = "";
+        this.fields
+          .filter((e) => e.fieldName === "password")
+          .forEach((e) => (e.shouldAlert = true));
+      } else if (loginStatus === "wrong password") {
+        this.alertMessage = store.state.loginStatus;
+        this.formData.password = "";
+        this.fields
+          .filter((e) => e.fieldName === "password")
+          .forEach((e) => (e.shouldAlert = true));
       }
     },
   },

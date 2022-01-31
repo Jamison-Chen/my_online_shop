@@ -25,9 +25,11 @@ import PageBlock from "@/components/PageBlock.vue";
 import CategoryInfoCard, {
   CategoryInfo,
 } from "@/components/CategoryInfoCard.vue"; // @ is an alias to /src
+import store from "@/store";
 
 export default defineComponent({
   name: "Homepage",
+  store: store,
   components: { PictureCarousel, PageBlock, CategoryInfoCard },
   data() {
     return {
@@ -46,7 +48,9 @@ export default defineComponent({
   methods: {
     fetchData(): Promise<any> {
       let endPoint = `http://127.0.0.1:8000/api/category/all`;
-      return fetch(endPoint).then((res) => res.json());
+      return fetch(endPoint, { credentials: "include" }).then((res) =>
+        res.json()
+      );
     },
   },
   async created() {

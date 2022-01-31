@@ -9,7 +9,11 @@
       <IconBase class="side-button" :sideLength="iconSize"
         ><IconCart
       /></IconBase>
-      <a href="/login" class="side-button" data-title="Account">
+      <a
+        :href="isLoggedIn ? '/account-center' : '/login'"
+        class="side-button"
+        data-title="Account"
+      >
         <IconBase :sideLength="iconSize"><IconPersonFill /></IconBase>
       </a>
     </div>
@@ -23,8 +27,10 @@ import IconBase from "./IconBase.vue";
 import IconHeart from "./icons/IconHeart.vue";
 import IconCart from "./icons/IconCart.vue";
 import IconPersonFill from "./icons/IconPersonFill.vue";
+import store from "@/store";
 
 export default defineComponent({
+  store: store,
   components: { SearchBar, IconBase, IconHeart, IconCart, IconPersonFill },
   data() {
     return {
@@ -35,8 +41,13 @@ export default defineComponent({
     isHomepage(): boolean {
       return this.$route.path === "/";
     },
+    isLoggedIn(): boolean {
+      return store.state.isLoggedIn;
+    },
   },
-  created() {},
+  async created() {
+    await store.dispatch("checkLoginStatus");
+  },
 });
 </script>
 

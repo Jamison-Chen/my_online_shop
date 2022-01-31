@@ -2,19 +2,24 @@
   <div class="register-page">
     <UserForm
       :fields="fields"
+      :formData="formData"
       :endPoint="endPoint"
       :pageType="pageType"
-      @clickSubmitButton="register($event)"
+      :alertMessage="alertMessage"
+      @input="this.formData[$event.fieldName] = $event.value"
+      @clickSubmitButton="register"
     />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import store from "@/store";
 import UserForm, { UserFormFieldInfo } from "@/components/UserForm.vue";
 
 export default defineComponent({
   name: "Register",
+  store: store,
   components: { UserForm },
   data() {
     return {
@@ -26,7 +31,7 @@ export default defineComponent({
           required: true,
           pattern: ".{3,32}",
           placeholder: " ",
-          shouldShowValid: true,
+          shouldAlert: false,
         },
         {
           fieldName: "email",
@@ -35,16 +40,25 @@ export default defineComponent({
           required: true,
           pattern: "[A-Za-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$",
           placeholder: " ",
-          shouldShowValid: true,
+          shouldAlert: false,
         },
         {
           fieldName: "phone-number",
-          nameDisplayed: "Phone Number",
+          nameDisplayed: "Phone #",
           type: "tel",
           required: false,
           pattern: "09[0-9]{8}",
           placeholder: "09XXXXXXXX",
-          shouldShowValid: true,
+          shouldAlert: false,
+        },
+        {
+          fieldName: "date-of-birth",
+          nameDisplayed: "Date Of Birth",
+          type: "date",
+          required: false,
+          pattern: ".+",
+          placeholder: " ",
+          shouldAlert: false,
         },
         {
           fieldName: "password",
@@ -53,35 +67,37 @@ export default defineComponent({
           required: true,
           pattern: "[A-Za-z0-9]{8,}",
           placeholder: " ",
-          shouldShowValid: true,
+          shouldAlert: false,
         },
         {
           fieldName: "password-check",
-          nameDisplayed: "Password Again",
+          nameDisplayed: "Password Check",
           type: "password",
           required: true,
           pattern: "[a-z0-9]+",
           placeholder: " ",
-          shouldShowValid: false,
+          shouldAlert: false,
         },
       ] as UserFormFieldInfo[],
-      endPoint: "http://127.0.0.1:8000/api/login",
+      formData: {
+        name: "",
+        email: "",
+        "phone-number": "",
+        password: "",
+        "password-check": "",
+      } as any,
+      endPoint: "http://127.0.0.1:8000/api/register",
       pageType: "Register",
+      alertMessage: "",
       response: {} as any,
     };
   },
   methods: {
-    async register(formData: any): Promise<any> {
+    async register(): Promise<any> {
       let requestBody = new URLSearchParams();
-      for (let each in formData) {
-        requestBody.append(each, formData[each]);
+      for (let each in this.formData) {
+        requestBody.append(each, this.formData[each]);
       }
-      // The axios approach
-      // this.$http.defaults.withCredentials = true;
-      // this.response = await this.$http
-      //   .post(this.endPoint, requestBody)
-      //   .then((resp) => resp);
-
       // The fetch approach
       this.response = await fetch(this.endPoint, {
         method: "post",
@@ -90,12 +106,31 @@ export default defineComponent({
       }).then((resp) => resp.json());
 
       if (this.response.status === "passed") {
+        store.commit("login");
         this.$router.push("/");
-      } else if (this.response.status === "duplicated email") {
-      } else if (this.response.status === "different password") {
-      } else if (this.response.status === "password too simple") {
-      } else if (this.response.status === "name too long") {
-      } else if (this.response.status === "info not sufficient") {
+      } else {
+        this.alertMessage = this.response.status;
+        if (this.response.status === "info not sufficient") {
+        } else if (
+          this.response.status === "name too long" ||
+          this.response.status === "name too short"
+        ) {
+          this.fields
+            .filter((e) => e.fieldName === "name")
+            .forEach((e) => (e.shouldAlert = true));
+        } else if (this.response.status === "duplicated email") {
+          this.fields
+            .filter((e) => e.fieldName === "email")
+            .forEach((e) => (e.shouldAlert = true));
+        } else if (this.response.status === "password too simple") {
+          this.fields
+            .filter((e) => e.fieldName === "password")
+            .forEach((e) => (e.shouldAlert = true));
+        } else if (this.response.status === "check your password") {
+          this.fields
+            .filter((e) => e.fieldName === "password-check")
+            .forEach((e) => (e.shouldAlert = true));
+        }
       }
     },
   },
@@ -103,4 +138,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.register-page {
+  margin: 20px;
+}
 </style>
