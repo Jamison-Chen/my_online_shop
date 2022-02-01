@@ -1,5 +1,6 @@
 <template>
   <div class="register-page">
+    <CurrentPathBar :parentPageList="fullPathList" />
     <UserForm
       :fields="fields"
       :formData="formData"
@@ -15,13 +16,14 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import store from "@/store";
+import CurrentPathBar from "@/components/CurrentPathBar.vue";
 import UserForm from "@/components/UserForm.vue";
-import { UserFormFieldInfo } from "@/components/MyInterface.vue";
+import { UserFormFieldInfo, PageInfo } from "@/myInterface";
 
 export default defineComponent({
   name: "Register",
   store: store,
-  components: { UserForm },
+  components: { UserForm, CurrentPathBar },
   data() {
     return {
       fields: [
@@ -91,7 +93,23 @@ export default defineComponent({
       pageType: "Register",
       alertMessage: "",
       response: {} as any,
+      parentPageList: [
+        {
+          name: "Home",
+          path: "/",
+        },
+      ] as PageInfo[],
     };
+  },
+  computed: {
+    fullPathList(): PageInfo[] {
+      return this.parentPageList.concat([
+        {
+          name: "Register",
+          path: "#",
+        },
+      ]);
+    },
   },
   methods: {
     async register(): Promise<any> {

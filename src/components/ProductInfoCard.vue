@@ -14,10 +14,7 @@
       <div class="price-tag">${{ productInfo.unit_price }}</div>
       <div class="description-tag">{{ productInfo.description }}</div>
       <div class="footer">
-        <ButtonAddToFavorites
-          :productId="productInfo.id.toString()"
-          :isFavorite="productInfo.is_favorite"
-        />
+        <ButtonAddToFavorites :productInfo="productInfo" />
       </div>
     </div>
   </div>
@@ -27,7 +24,7 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 import ButtonAddToFavorites from "./ButtonAddToFavorites.vue";
-import { ProductInfo } from "./MyInterface.vue";
+import { ProductInfo } from "@/myInterface";
 
 export default defineComponent({
   name: "ProductInfoCard",

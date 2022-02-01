@@ -14,7 +14,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import { PageInfo } from "./MyInterface.vue";
+import { PageInfo } from "@/myInterface";
 
 export default defineComponent({
   props: {

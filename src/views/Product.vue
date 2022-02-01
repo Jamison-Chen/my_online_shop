@@ -47,16 +47,25 @@ import { defineComponent } from "vue";
 import CurrentPathBar from "@/components/CurrentPathBar.vue";
 import ProductNonPictureSection from "@/components/ProductNonPictureSection.vue";
 import PageBlock from "@/components/PageBlock.vue";
-import { ProductInfo, PageInfo } from "@/components/MyInterface.vue";
+import { ProductInfo, PageInfo } from "@/myInterface";
 
 export default defineComponent({
   name: "Product",
   components: { CurrentPathBar, ProductNonPictureSection, PageBlock },
-  props: {},
   data() {
     return {
       status: "waiting" as "waiting" | "success" | "failed",
-      productInfo: {} as ProductInfo,
+      productInfo: {
+        id: "",
+        name: "",
+        unit_price: NaN,
+        category: "",
+        brand: "",
+        description: "",
+        inventory: NaN,
+        quantity_sold: NaN,
+        is_favorite: false,
+      } as ProductInfo,
       parentPageList: [
         {
           name: "Home",
@@ -105,7 +114,9 @@ export default defineComponent({
   async beforeRouteUpdate(to, from) {
     // react to route changes
     if (to.params.productId !== from.params.productId) {
-      this.productInfo = (await this.fetchData(to.params.productId))["data"];
+      this.productInfo = (await this.fetchData(this.$route.params.productId))[
+        "data"
+      ];
     }
   },
 });

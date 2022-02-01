@@ -12,32 +12,28 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import store from "@/store";
 import IconBase from "./IconBase.vue";
 import IconHeart from "./icons/IconHeart.vue";
 import IconHeartFill from "./icons/IconHeartFill.vue";
+import { ProductInfo } from "@/myInterface";
 
 export default defineComponent({
   store: store,
   components: { IconBase, IconHeart, IconHeartFill },
   props: {
-    productId: {
-      type: String,
+    productInfo: {
+      type: Object as PropType<ProductInfo>,
       required: true,
     },
-    isFavorite: {
-      type: Boolean,
-      required: true,
-    },
-  },
-  data() {
-    return {
-      isCurrentlyFavorite: this.isFavorite as boolean,
-      endPoint: "http://127.0.0.1:8000/api/favorites" as string,
-    };
   },
   computed: {
+    isCurrentlyFavorite(): boolean {
+      return store.state.favoriteList.some(
+        (each) => each.id === this.productInfo.id
+      );
+    },
     favCaption(): string {
       if (store.state.isLoggedIn) {
         if (this.isCurrentlyFavorite) return "Remove from Favorites";
@@ -51,19 +47,11 @@ export default defineComponent({
   methods: {
     changeFavoriteStatus(): void {
       if (store.state.isLoggedIn) {
-        this.callAPI(this.isCurrentlyFavorite ? "delete" : "create");
-        this.isCurrentlyFavorite = !this.isCurrentlyFavorite;
+        store.dispatch("updateFavoriteList", {
+          productInfo: this.productInfo,
+          operation: this.isCurrentlyFavorite ? "delete" : "create",
+        });
       } else this.$router.push("/login");
-    },
-    async callAPI(operation: "create" | "delete"): Promise<void> {
-      let requestBody = new URLSearchParams();
-      requestBody.append("operation", operation);
-      requestBody.append("product", this.productId);
-      fetch(this.endPoint, {
-        method: "post",
-        body: requestBody,
-        credentials: "include",
-      });
     },
   },
 });

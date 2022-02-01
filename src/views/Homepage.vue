@@ -21,10 +21,7 @@ import { defineComponent } from "vue";
 import PictureCarousel from "@/components/PictureCarousel.vue"; // @ is an alias to /src
 import PageBlock from "@/components/PageBlock.vue";
 import CategoryInfoCard from "@/components/CategoryInfoCard.vue";
-import {
-  CarouselContentInfo,
-  CategoryInfo,
-} from "@/components/MyInterface.vue";
+import { CarouselContentInfo, CategoryInfo } from "@/myInterface";
 import store from "@/store";
 
 export default defineComponent({

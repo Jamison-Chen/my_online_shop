@@ -5,11 +5,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-export default defineComponent({
-  created() {
-    console.log();
-  },
-});
+export default defineComponent({});
 </script>
 
 <style lang="scss" scoped>

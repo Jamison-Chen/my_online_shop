@@ -1,32 +1,18 @@
 <template>
-  <div class="categorized-page">
-    <CurrentPathBar :parentPageList="fullPathList" />
-    <div id="main">
-      <ProductInfoCard
-        v-for="each in products"
-        :key="each.id"
-        :productInfo="each"
-      />
-    </div>
-  </div>
+  <ProductListPage :fullPathList="fullPathList" :products="products" />
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import CurrentPathBar from "@/components/CurrentPathBar.vue";
-import ProductInfoCard from "@/components/ProductInfoCard.vue";
-import { ProductInfo, PageInfo } from "@/components/MyInterface.vue";
+import ProductListPage from "@/components/ProductListPage.vue";
+import { ProductInfo, PageInfo } from "@/myInterface";
 
 export default defineComponent({
-  components: { ProductInfoCard, CurrentPathBar },
+  name: "Categorized",
+  components: { ProductListPage },
   data() {
     return {
-      parentPageList: [
-        {
-          name: "Home",
-          path: "/",
-        },
-      ] as PageInfo[],
+      parentPageList: [{ name: "Home", path: "/" }] as PageInfo[],
       categoryName: this.$route.params.category as string,
       products: [] as ProductInfo[],
     };
@@ -34,10 +20,7 @@ export default defineComponent({
   computed: {
     fullPathList(): PageInfo[] {
       return this.parentPageList.concat([
-        {
-          name: this.categoryName,
-          path: "#",
-        },
+        { name: this.categoryName, path: "#" },
       ]);
     },
   },
@@ -62,15 +45,4 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-.categorized-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  #main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 80%;
-  }
-}
 </style>

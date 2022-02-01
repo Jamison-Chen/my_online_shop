@@ -47,7 +47,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import { UserFormFieldInfo } from "./MyInterface.vue";
+import { UserFormFieldInfo } from "@/myInterface";
 
 export default defineComponent({
   props: {

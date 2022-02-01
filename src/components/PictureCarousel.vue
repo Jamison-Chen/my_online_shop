@@ -27,7 +27,7 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import { CarouselContentInfo } from "./MyInterface.vue";
+import { CarouselContentInfo } from "@/myInterface";
 
 export default defineComponent({
   props: {

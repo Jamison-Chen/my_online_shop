@@ -3,7 +3,7 @@
     <a id="logo" href="/">Hello World</a>
     <SearchBar :iconSize="iconSize" />
     <div id="side-button-bar">
-      <a href="#" class="side-button" data-title="Favorites">
+      <a href="/favorites" class="side-button" data-title="Favorites">
         <IconBase :sideLength="iconSize"><IconHeart /></IconBase>
       </a>
       <div class="side-button" data-title="Cart">
@@ -45,8 +45,8 @@ export default defineComponent({
       return store.state.isLoggedIn;
     },
   },
-  async created() {
-    await store.dispatch("checkLoginStatus");
+  created() {
+    store.dispatch("checkLoginStatus");
   },
 });
 </script>

@@ -18,6 +18,11 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("../views/SearchResultPage.vue"),
     },
     {
+        path: "/favorites",
+        name: "Favorites",
+        component: () => import("../views/FavoriteListPage.vue"),
+    },
+    {
         path: "/product/:productId",
         name: "Product",
         component: () => import("../views/Product.vue"),

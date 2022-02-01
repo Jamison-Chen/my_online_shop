@@ -1,35 +1,20 @@
 <template>
-  <div class="search-result-page">
-    <CurrentPathBar :parentPageList="fullPathList" />
-    <div id="main">
-      <ProductInfoCard
-        v-for="each in productsResponded"
-        :key="each.id"
-        :productInfo="each"
-        :isFavorite="false"
-      />
-    </div>
-  </div>
+  <ProductListPage :fullPathList="fullPathList" :products="products" />
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import CurrentPathBar from "@/components/CurrentPathBar.vue";
-import ProductInfoCard from "@/components/ProductInfoCard.vue";
-import { ProductInfo, PageInfo } from "@/components/MyInterface.vue";
+import ProductListPage from "@/components/ProductListPage.vue";
+import { ProductInfo, PageInfo } from "@/myInterface";
 
 export default defineComponent({
   name: "SearchResult",
-  components: { CurrentPathBar, ProductInfoCard },
-  async created() {
-    // TODOS: Arrange the search result.
-    this.productsResponded = (await this.search())["data"];
-  },
+  components: { ProductListPage },
   data() {
     return {
       status: "waiting" as "waiting" | "success" | "failed",
       parentPageList: [{ name: "Home", path: "/" }] as PageInfo[],
-      productsResponded: [] as ProductInfo[],
+      products: [] as ProductInfo[],
     };
   },
   computed: {
@@ -52,25 +37,18 @@ export default defineComponent({
         });
     },
   },
+  async created() {
+    // TODOS: Arrange the search result.
+    this.products = (await this.search())["data"];
+  },
   async beforeRouteUpdate(to, from) {
     // react to route changes
     if (to.query.query !== from.query.query && to.query.query !== "") {
-      this.productsResponded = (await this.search())["data"];
+      this.products = (await this.search())["data"];
     }
   },
 });
 </script>
 
 <style lang="scss" scoped>
-.search-result-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  #main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 80%;
-  }
-}
 </style>

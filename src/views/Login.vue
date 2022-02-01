@@ -1,5 +1,6 @@
 <template>
   <div class="login-page">
+    <CurrentPathBar :parentPageList="fullPathList" />
     <UserForm
       :fields="fields"
       :formData="formData"
@@ -14,14 +15,15 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import CurrentPathBar from "@/components/CurrentPathBar.vue";
 import UserForm from "@/components/UserForm.vue";
-import { UserFormFieldInfo } from "@/components/MyInterface.vue";
+import { UserFormFieldInfo, PageInfo } from "@/myInterface";
 import store from "@/store";
 
 export default defineComponent({
   name: "Login",
   store: store,
-  components: { UserForm },
+  components: { UserForm, CurrentPathBar },
   data() {
     return {
       fields: [
@@ -51,7 +53,23 @@ export default defineComponent({
       endPoint: "http://127.0.0.1:8000/api/login" as string,
       pageType: "Login" as string,
       alertMessage: "",
+      parentPageList: [
+        {
+          name: "Home",
+          path: "/",
+        },
+      ] as PageInfo[],
     };
+  },
+  computed: {
+    fullPathList(): PageInfo[] {
+      return this.parentPageList.concat([
+        {
+          name: "Login",
+          path: "#",
+        },
+      ]);
+    },
   },
   methods: {
     async login(): Promise<any> {
@@ -60,7 +78,6 @@ export default defineComponent({
         requestBody.append(each, this.formData[each]);
       }
       await store.dispatch("checkLoginStatus", requestBody);
-
       let loginStatus = store.state.loginStatus;
       if (store.state.isLoggedIn) this.$router.push("/");
       else if (loginStatus === "user not found") {

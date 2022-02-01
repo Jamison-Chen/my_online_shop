@@ -1,28 +1,27 @@
 <template>
   <div id="non-picture-section">
     <h1 id="product-name">{{ productInfo.name }}</h1>
-    <div id="unit-price">{{ priceWithDollarSign }}</div>
+    <div id="unit-price">${{ productInfo.unit_price }}</div>
     <div id="description" v-if="productInfo.description !== ''">
       {{ productInfo.description }}
+    </div>
+    <div id="footer">
+      <ButtonAddToFavorites :productInfo="productInfo" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import { ProductInfo } from "./MyInterface.vue";
+import { ProductInfo } from "@/myInterface";
+import ButtonAddToFavorites from "./ButtonAddToFavorites.vue";
 
 export default defineComponent({
+  components: { ButtonAddToFavorites },
   props: {
     productInfo: {
       type: Object as PropType<ProductInfo>,
-      require: true,
-    },
-  },
-  computed: {
-    priceWithDollarSign(): string {
-      let price: number | undefined = this.productInfo?.unit_price;
-      return `$${price}`;
+      required: true,
     },
   },
 });
@@ -49,6 +48,12 @@ export default defineComponent({
     font-size: $font-size;
     line-height: $font-size * 1.5;
     margin: 10px 0;
+  }
+  #footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin: 0 10px;
   }
 }
 </style>
