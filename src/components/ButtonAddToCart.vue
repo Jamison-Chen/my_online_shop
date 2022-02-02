@@ -1,14 +1,20 @@
 <template>
   <div class="add-to-cart-section">
-    {{ productId }}{{ productSpecSelected }}
+    {{ selectedInventoryId }}
     <input
       class="quantity-input"
       type="number"
       name="quantity"
       v-model="quantity"
+      :disabled="selectedInventoryId === undefined"
     />
-    <div class="cart-button" :data-title="caption" @click="addToCart">
-      <IconBase :sideLength="26" :color="'#000'">
+    <div
+      class="cart-button"
+      :class="{ disabled: selectedInventoryId === undefined }"
+      :data-title="caption"
+      @click="addToCart"
+    >
+      <IconBase :sideLength="26">
         <IconCart />
       </IconBase>
     </div>
@@ -25,12 +31,7 @@ export default defineComponent({
   store: store,
   components: { IconBase, IconCart },
   props: {
-    productId: {
-      type: String,
-      required: true,
-    },
-    productSpecSelected: {
-      type: Object,
+    selectedInventoryId: {
       required: true,
     },
   },
@@ -42,14 +43,31 @@ export default defineComponent({
   computed: {
     caption(): string {
       if (store.state.isLoggedIn) {
-        return "Add to Cart";
+        if (this.selectedInventoryId !== undefined) {
+          return "Add to Cart";
+        }
+        return "Out of Stock";
       } else return "Please Log In";
     },
   },
   methods: {
     addToCart(): void {
       if (store.state.isLoggedIn) {
-        // do a post request
+        if (this.selectedInventoryId !== undefined) {
+          //TODOS: do a post request
+          let requestBody = new URLSearchParams();
+          requestBody.append("operation", "create");
+          requestBody.append(
+            "inventory_id",
+            this.selectedInventoryId as string
+          );
+          requestBody.append("quantity", this.quantity.toString());
+          fetch("http://127.0.0.1:8000/api/cart", {
+            method: "post",
+            body: requestBody,
+            credentials: "include",
+          }).then((res) => res.json());
+        }
       } else this.$router.push("/login");
     },
   },
@@ -72,6 +90,9 @@ export default defineComponent({
     letter-spacing: 1px;
     margin: 10px 0;
     background-color: transparent;
+    &:disabled {
+      color: #ccc;
+    }
     &::-webkit-inner-spin-button {
       height: 30px;
     }
@@ -82,6 +103,11 @@ export default defineComponent({
     position: relative;
     display: flex;
     align-items: center;
+    color: #000;
+    &.disabled {
+      cursor: no-drop;
+      color: #888;
+    }
     &:hover {
       opacity: 0.8;
     }

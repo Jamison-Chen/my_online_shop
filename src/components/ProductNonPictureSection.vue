@@ -17,10 +17,7 @@
       />
     </div>
     <div id="footer">
-      <ButtonAddToCart
-        :productSpecSelected="selectedSpecObject"
-        :productId="`${productInfo.id}`"
-      />
+      <ButtonAddToCart :selectedInventoryId="selectedInventoryId" />
       <ButtonAddToFavorites :productInfo="productInfo" />
     </div>
   </div>
@@ -95,12 +92,13 @@ export default defineComponent({
       }
       return res;
     },
-    selectedSpecObject(): any {
-      let res: any = {};
+    selectedInventoryId(): string {
+      let key = "";
       for (let i = 0; i < this.specificationGroupName.length; i++) {
-        res[this.specificationGroupName[i]] = this.updatedSelectedSpec[i];
+        key += `${this.specificationGroupName[i]}:${this.updatedSelectedSpec[i]}/`;
       }
-      return res;
+      key = key.substring(0, key.length - 1);
+      return this.productInfo.inventory_id[key];
     },
   },
   methods: {
