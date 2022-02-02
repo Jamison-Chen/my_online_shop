@@ -62,9 +62,6 @@ export default defineComponent({
         category: "",
         brand: "",
         description: "",
-        inventory: NaN,
-        quantity_sold: NaN,
-        is_favorite: false,
       } as ProductInfo,
       parentPageList: [
         {

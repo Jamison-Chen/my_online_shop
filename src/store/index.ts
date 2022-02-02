@@ -88,6 +88,12 @@ export default createStore({
                 operation: "create" | "delete";
             }
         ): Promise<void> {
+            commit(
+                payload.operation === "create"
+                    ? "addToFavoriteList"
+                    : "deleteFromFavoriteList",
+                payload.productInfo
+            );
             let requestBody = new URLSearchParams();
             requestBody.append("operation", payload.operation);
             requestBody.append("product", payload.productInfo.id);
@@ -98,11 +104,12 @@ export default createStore({
                     credentials: "include",
                 }).then((res) => res.json())) as any
             )["status"];
-            if (resp === "succeeded") {
+            if (resp !== "succeeded") {
+                // perform rollback
                 commit(
                     payload.operation === "create"
-                        ? "addToFavoriteList"
-                        : "deleteFromFavoriteList",
+                        ? "deleteFromFavoriteList"
+                        : "addToFavoriteList",
                     payload.productInfo
                 );
             }

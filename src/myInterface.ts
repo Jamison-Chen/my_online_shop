@@ -5,9 +5,7 @@ export interface ProductInfo {
     category: string;
     brand: string;
     description: string;
-    inventory: number;
-    quantity_sold: number;
-    is_favorite: boolean;
+    inventory: any;
 }
 
 export interface CategoryInfo {
