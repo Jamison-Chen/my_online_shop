@@ -6,6 +6,7 @@ export interface ProductInfo {
     brand: string;
     description: string;
     inventory: any;
+    inventory_id: any;
 }
 
 export interface CategoryInfo {

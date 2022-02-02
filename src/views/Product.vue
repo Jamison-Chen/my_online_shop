@@ -62,6 +62,8 @@ export default defineComponent({
         category: "",
         brand: "",
         description: "",
+        inventory: {},
+        inventory_id: {},
       } as ProductInfo,
       parentPageList: [
         {

@@ -62,6 +62,8 @@ export default defineComponent({
   padding: 10px;
   cursor: pointer;
   position: relative;
+  display: flex;
+  align-items: center;
   &:hover {
     opacity: 0.8;
   }

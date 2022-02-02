@@ -6,14 +6,21 @@
       {{ productInfo.description }}
     </div>
     <div id="product-specification">
-      {{ specificationMap }}
-      <!-- <ProductSpecificationOptionList
-        v-for="each in specificationMap"
+      <ProductSpecificationOptionList
+        v-for="(each, idx) in specificationGroupList"
         :key="each"
-        :options="specificationMap[each]"
-      /> -->
+        :options="each"
+        :idxOfParent="idx"
+        :groupName="specificationGroupName[idx]"
+        :defaultSelected="updatedSelectedSpec[idx]"
+        @updateSelection="updateSelection($event)"
+      />
     </div>
     <div id="footer">
+      <ButtonAddToCart
+        :productSpecSelected="selectedSpecObject"
+        :productId="`${productInfo.id}`"
+      />
       <ButtonAddToFavorites :productInfo="productInfo" />
     </div>
   </div>
@@ -22,29 +29,85 @@
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
 import { ProductInfo } from "@/myInterface";
-import ButtonAddToFavorites from "./ButtonAddToFavorites.vue";
 import ProductSpecificationOptionList from "./ProductSpecificationOptionList.vue";
+import ButtonAddToFavorites from "./ButtonAddToFavorites.vue";
+import ButtonAddToCart from "./ButtonAddToCart.vue";
 
 export default defineComponent({
-  components: { ButtonAddToFavorites, ProductSpecificationOptionList },
+  components: {
+    ProductSpecificationOptionList,
+    ButtonAddToFavorites,
+    ButtonAddToCart,
+  },
   props: {
     productInfo: {
       type: Object as PropType<ProductInfo>,
       required: true,
     },
   },
+  data() {
+    return {
+      // the reason of not using an object as the data structure
+      // is due to the async data rendering issue
+      initSpecGroupName: [] as string[],
+      selectedSpecList: [] as string[],
+    };
+  },
   computed: {
-    specificationMap(): any {
-      let res: any[] = [];
-      for (let each in this.productInfo.inventory as any) {
-        let sp = each.split("_");
-        for (let i = 0; i < sp.length; i++) {
-          if (res[i] === undefined) res[i] = [sp[i]];
-          else (res[i] as Array<string>).push(sp[i]);
+    specificationGroupName() {
+      if (this.initSpecGroupName.length === 0) {
+        // select the first combination as the default
+        for (let each in this.productInfo.inventory as any) {
+          let specs = each.split("/");
+          let res = [];
+          for (let eachSpec of specs) res.push(eachSpec.split(":")[0]);
+          return res;
         }
       }
-      for (let i = 0; i < res.length; i++) res[i] = new Set(res[i]);
+      return this.initSpecGroupName;
+    },
+    updatedSelectedSpec: {
+      get(): string[] {
+        if (this.selectedSpecList.length === 0) {
+          // select the first combination as the default
+          for (let each in this.productInfo.inventory as any) {
+            let specs = each.split("/");
+            let res = [];
+            for (let eachSpec of specs) res.push(eachSpec.split(":")[1]);
+            return res;
+          }
+        }
+        return this.selectedSpecList;
+      },
+      set(newCombination: string[]): void {
+        this.selectedSpecList = newCombination;
+      },
+    },
+    specificationGroupList(): Set<string>[] {
+      let res: any[] = [];
+      for (let each in this.productInfo.inventory as any) {
+        let specs = each.split("/");
+        for (let i = 0; i < specs.length; i++) {
+          let s = specs[i].split(":")[1];
+          if (res[i] === undefined) res[i] = new Set([s]);
+          else (res[i] as Set<string>).add(s);
+        }
+      }
       return res;
+    },
+    selectedSpecObject(): any {
+      let res: any = {};
+      for (let i = 0; i < this.specificationGroupName.length; i++) {
+        res[this.specificationGroupName[i]] = this.updatedSelectedSpec[i];
+      }
+      return res;
+    },
+  },
+  methods: {
+    updateSelection(e: any): void {
+      let copy = [...this.updatedSelectedSpec];
+      copy[e.idx] = e.selection;
+      this.updatedSelectedSpec = copy;
     },
   },
 });
@@ -77,6 +140,9 @@ export default defineComponent({
     display: flex;
     justify-content: flex-end;
     align-items: center;
+  }
+  #product-specification {
+    margin: 10px 0;
   }
 }
 </style>
