@@ -6,7 +6,11 @@
       <a href="/favorites" class="side-button" data-title="Favorites">
         <IconBase :sideLength="iconSize"><IconHeart /></IconBase>
       </a>
-      <div class="side-button" data-title="Cart">
+      <div
+        class="side-button"
+        data-title="Cart"
+        @click="toggleCartAndFetchCartData"
+      >
         <IconBase :sideLength="iconSize"><IconCart /></IconBase>
       </div>
       <a
@@ -18,6 +22,10 @@
       </a>
     </div>
   </div>
+  <CartPreviewSection
+    :isActive="isCartPreviewSectionActive"
+    @close="isCartPreviewSectionActive = false"
+  />
 </template>
 
 <script lang="ts">
@@ -27,14 +35,23 @@ import IconBase from "./IconBase.vue";
 import IconHeart from "./icons/IconHeart.vue";
 import IconCart from "./icons/IconCart.vue";
 import IconPersonFill from "./icons/IconPersonFill.vue";
+import CartPreviewSection from "./CartPreviewSection.vue";
 import store from "@/store";
 
 export default defineComponent({
   store: store,
-  components: { SearchBar, IconBase, IconHeart, IconCart, IconPersonFill },
+  components: {
+    SearchBar,
+    IconBase,
+    IconHeart,
+    IconCart,
+    IconPersonFill,
+    CartPreviewSection,
+  },
   data() {
     return {
       iconSize: 22 as number,
+      isCartPreviewSectionActive: false as boolean,
     };
   },
   computed: {
@@ -43,6 +60,14 @@ export default defineComponent({
     },
     isLoggedIn(): boolean {
       return store.state.isLoggedIn;
+    },
+  },
+  methods: {
+    toggleCartAndFetchCartData(): void {
+      if (this.$route.path !== "/cart") {
+        this.isCartPreviewSectionActive = true;
+        store.dispatch("getCartItemList");
+      }
     },
   },
   created() {

@@ -9,6 +9,17 @@ export interface ProductInfo {
     inventory_id: any;
 }
 
+export interface CartItemInfo {
+    cart_item_id: string;
+    product_id: string;
+    product_name: string;
+    color: string;
+    size: string;
+    unit_price: number;
+    quantity: number;
+    subtotal_costs: number;
+}
+
 export interface CategoryInfo {
     id: string;
     name: string;

@@ -64,9 +64,6 @@ export default defineComponent({
   position: relative;
   display: flex;
   align-items: center;
-  &:hover {
-    opacity: 0.8;
-  }
   &[data-title]:hover::after {
     content: attr(data-title);
     background-color: #000;

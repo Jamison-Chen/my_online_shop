@@ -54,19 +54,10 @@ export default defineComponent({
     addToCart(): void {
       if (store.state.isLoggedIn) {
         if (this.selectedInventoryId !== undefined) {
-          //TODOS: do a post request
-          let requestBody = new URLSearchParams();
-          requestBody.append("operation", "create");
-          requestBody.append(
-            "inventory_id",
-            this.selectedInventoryId as string
-          );
-          requestBody.append("quantity", this.quantity.toString());
-          fetch("http://127.0.0.1:8000/api/cart", {
-            method: "post",
-            body: requestBody,
-            credentials: "include",
-          }).then((res) => res.json());
+          store.dispatch("addToCart", {
+            selectedInventoryId: this.selectedInventoryId as string,
+            quantity: this.quantity,
+          });
         }
       } else this.$router.push("/login");
     },

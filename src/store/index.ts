@@ -1,5 +1,5 @@
 import { createStore } from "vuex";
-import { ProductInfo, UserInfo } from "@/myInterface";
+import { ProductInfo, CartItemInfo, UserInfo } from "@/myInterface";
 
 export default createStore({
     state: {
@@ -11,6 +11,9 @@ export default createStore({
             | "user not found",
         userInfo: {} as UserInfo,
         favoriteList: [] as ProductInfo[],
+        cartItemList: [] as CartItemInfo[],
+        cartTotalCosts: NaN as number,
+        freight: NaN as number,
     },
     mutations: {
         checkLoginStatus(state, response): void {
@@ -33,11 +36,47 @@ export default createStore({
             state.favoriteList.push(productInfo);
         },
         deleteFromFavoriteList(state, productInfo: ProductInfo): void {
-            state.favoriteList = state.favoriteList.filter(
-                (each) =>
+            state.favoriteList = state.favoriteList.filter((each) => {
+                return (
                     each.id !== productInfo.id &&
                     each.id.toString() !== productInfo.id
-            );
+                );
+            });
+        },
+        getCartItemList(state, response): void {
+            state.cartItemList = response["data"]["cart_items"];
+            state.cartTotalCosts = response["data"]["total_costs"];
+            state.freight = response["data"]["freight"];
+        },
+        // addToCart(
+        //     state,
+        //     payload: {
+        //         cartItemInfo: CartItemInfo;
+        //         totalCosts: number;
+        //         freight: number;
+        //     }
+        // ): void {
+        //     state.cartItemList.push(payload.cartItemInfo);
+        //     state.cartTotalCosts = payload.totalCosts;
+        //     state.freight = payload.freight;
+        // },
+        deleteFromCart(
+            state,
+            payload: {
+                cartItemInfo: CartItemInfo;
+                totalCosts: number;
+                freight: number;
+            }
+        ): void {
+            state.cartItemList = state.cartItemList.filter((each) => {
+                return (
+                    each.cart_item_id !== payload.cartItemInfo.cart_item_id &&
+                    each.cart_item_id.toString() !==
+                        payload.cartItemInfo.cart_item_id
+                );
+            });
+            state.cartTotalCosts = payload.totalCosts;
+            state.freight = payload.freight;
         },
     },
     actions: {
@@ -105,7 +144,7 @@ export default createStore({
                 }).then((res) => res.json())) as any
             )["status"];
             if (resp !== "succeeded") {
-                // perform rollback
+                // rollback
                 commit(
                     payload.operation === "create"
                         ? "deleteFromFavoriteList"
@@ -113,6 +152,50 @@ export default createStore({
                     payload.productInfo
                 );
             }
+        },
+        async getCartItemList({ commit }): Promise<void> {
+            let requestBody = new URLSearchParams();
+            requestBody.append("operation", "read");
+            let resp = await fetch("http://127.0.0.1:8000/api/cart", {
+                method: "post",
+                body: requestBody,
+                credentials: "include",
+            }).then((res) => res.json());
+            commit("getCartItemList", resp);
+        },
+        async addToCart(
+            { commit },
+            payload: { selectedInventoryId: string; quantity: number }
+        ): Promise<void> {
+            let requestBody = new URLSearchParams();
+            requestBody.append("operation", "create");
+            requestBody.append("inventory_id", payload.selectedInventoryId);
+            requestBody.append("quantity", payload.quantity.toString());
+            fetch("http://127.0.0.1:8000/api/cart", {
+                method: "post",
+                body: requestBody,
+                credentials: "include",
+            }).then((res) => res.json());
+        },
+        async deleteFromCart(
+            { commit },
+            cartItemInfo: CartItemInfo
+        ): Promise<void> {
+            let requestBody = new URLSearchParams();
+            requestBody.append("operation", "delete");
+            requestBody.append("cart_item_id", cartItemInfo.cart_item_id);
+            let resp = (
+                (await fetch("http://127.0.0.1:8000/api/cart", {
+                    method: "post",
+                    body: requestBody,
+                    credentials: "include",
+                }).then((res) => res.json())) as any
+            )["data"];
+            commit("deleteFromCart", {
+                cartItemInfo: cartItemInfo,
+                totalCosts: resp["total_costs"],
+                freight: resp["freight"],
+            });
         },
     },
     modules: {},
