@@ -64,7 +64,12 @@ export default defineComponent({
   },
   methods: {
     toggleCartAndFetchCartData(): void {
-      if (this.$route.path !== "/cart") {
+      if (
+        this.$route.path !== "/cart" &&
+        this.$route.path !== "/checkout" &&
+        this.$route.path !== "/login" &&
+        this.$route.path !== "/register"
+      ) {
         this.isCartPreviewSectionActive = true;
         store.dispatch("getCartItemList");
       }

@@ -80,7 +80,7 @@ export default defineComponent({
 $noisyWhite: #ccc;
 $lightGray: #aaa;
 $black: #000;
-$red: #d02;
+$red: #b01;
 $white: #fff;
 $blue: #08f;
 #user-form {

@@ -1,6 +1,5 @@
 <template>
   <div class="add-to-cart-section">
-    {{ selectedInventoryId }}
     <input
       class="quantity-input"
       type="number"
@@ -19,6 +18,7 @@
       </IconBase>
     </div>
   </div>
+  <MessageBox />
 </template>
 
 <script lang="ts">
@@ -26,10 +26,11 @@ import { defineComponent } from "vue";
 import store from "@/store";
 import IconBase from "./IconBase.vue";
 import IconCart from "./icons/IconCart.vue";
+import MessageBox from "./MessageBox.vue";
 
 export default defineComponent({
   store: store,
-  components: { IconBase, IconCart },
+  components: { IconBase, IconCart, MessageBox },
   props: {
     selectedInventoryId: {
       required: true,
@@ -51,10 +52,10 @@ export default defineComponent({
     },
   },
   methods: {
-    addToCart(): void {
+    async addToCart(): Promise<void> {
       if (store.state.isLoggedIn) {
         if (this.selectedInventoryId !== undefined) {
-          store.dispatch("addToCart", {
+          await store.dispatch("addToCart", {
             selectedInventoryId: this.selectedInventoryId as string,
             quantity: this.quantity,
           });

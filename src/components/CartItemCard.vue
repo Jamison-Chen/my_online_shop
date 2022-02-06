@@ -87,6 +87,7 @@ export default defineComponent({
       text-align: start;
       &.product-name {
         font-size: 1.1rem;
+        width: fit-content;
       }
       &.specification {
         font-size: 0.9rem;

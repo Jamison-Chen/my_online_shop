@@ -1,8 +1,8 @@
 <template>
-  <div id="proceed-to-checkout-button">
+  <a id="proceed-to-checkout-button" :href="buttonLink">
     <IconBase><IconCheck /></IconBase>
     <span class="checkout-caption">Checkout</span>
-  </div>
+  </a>
 </template>
 
 <script lang="ts">
@@ -14,6 +14,11 @@ export default defineComponent({
   components: {
     IconBase,
     IconCheck,
+  },
+  computed: {
+    buttonLink(): string {
+      return this.$route.path !== "/cart" ? "/cart" : "/checkout";
+    },
   },
 });
 </script>
