@@ -1,7 +1,7 @@
 <template>
   <a id="proceed-to-checkout-button" :href="buttonLink">
     <IconBase><IconCheck /></IconBase>
-    <span class="checkout-caption">Checkout</span>
+    <span class="checkout-caption"><slot /></span>
   </a>
 </template>
 

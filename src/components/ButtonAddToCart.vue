@@ -18,7 +18,11 @@
       </IconBase>
     </div>
   </div>
-  <MessageBox />
+  <MessageBox
+    :isActive="shouldShowMessageBox"
+    :message="statusResponded"
+    :type="messageType"
+  />
 </template>
 
 <script lang="ts">
@@ -38,7 +42,8 @@ export default defineComponent({
   },
   data() {
     return {
-      quantity: 1,
+      quantity: 1 as number,
+      shouldShowMessageBox: false as boolean,
     };
   },
   computed: {
@@ -50,6 +55,14 @@ export default defineComponent({
         return "Out of Stock";
       } else return "Please Log In";
     },
+    statusResponded(): string {
+      return store.state.addToCartStatus;
+    },
+    messageType(): string {
+      return store.state.addToCartStatus === "succeeded"
+        ? "success"
+        : "warning";
+    },
   },
   methods: {
     async addToCart(): Promise<void> {
@@ -59,6 +72,11 @@ export default defineComponent({
             selectedInventoryId: this.selectedInventoryId as string,
             quantity: this.quantity,
           });
+          // this.shouldShowMessageBox = true;
+          setTimeout(() => {
+            this.shouldShowMessageBox = true;
+            setTimeout(() => (this.shouldShowMessageBox = false), 1500);
+          }, 100);
         }
       } else this.$router.push("/login");
     },

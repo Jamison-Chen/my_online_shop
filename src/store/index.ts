@@ -14,6 +14,8 @@ export default createStore({
         cartItemList: [] as CartItemInfo[],
         cartTotalCosts: NaN as number,
         freight: NaN as number,
+        cartItemCount: NaN as number,
+        addToCartStatus: "..." as string,
     },
     mutations: {
         checkLoginStatus(state, response): void {
@@ -47,25 +49,18 @@ export default createStore({
             state.cartItemList = response["data"]["cart_items"];
             state.cartTotalCosts = response["data"]["total_costs"];
             state.freight = response["data"]["freight"];
+            state.cartItemCount = response["data"]["count"];
         },
-        // addToCart(
-        //     state,
-        //     payload: {
-        //         cartItemInfo: CartItemInfo;
-        //         totalCosts: number;
-        //         freight: number;
-        //     }
-        // ): void {
-        //     state.cartItemList.push(payload.cartItemInfo);
-        //     state.cartTotalCosts = payload.totalCosts;
-        //     state.freight = payload.freight;
-        // },
+        addToCart(state, response): void {
+            state.cartItemCount = response["data"]["count"];
+            state.addToCartStatus = response["status"];
+            setTimeout(() => (state.addToCartStatus = "..."), 2000);
+        },
         deleteFromCart(
             state,
             payload: {
                 cartItemInfo: CartItemInfo;
-                totalCosts: number;
-                freight: number;
+                response: any;
             }
         ): void {
             state.cartItemList = state.cartItemList.filter((each) => {
@@ -75,8 +70,9 @@ export default createStore({
                         payload.cartItemInfo.cart_item_id
                 );
             });
-            state.cartTotalCosts = payload.totalCosts;
-            state.freight = payload.freight;
+            state.cartTotalCosts = payload.response["data"]["total_costs"];
+            state.freight = payload.response["data"]["freight"];
+            state.cartItemCount = payload.response["data"]["count"];
         },
     },
     actions: {
@@ -171,11 +167,12 @@ export default createStore({
             requestBody.append("operation", "create");
             requestBody.append("inventory_id", payload.selectedInventoryId);
             requestBody.append("quantity", payload.quantity.toString());
-            fetch("http://127.0.0.1:8000/api/cart", {
+            let resp = await fetch("http://127.0.0.1:8000/api/cart", {
                 method: "post",
                 body: requestBody,
                 credentials: "include",
             }).then((res) => res.json());
+            commit("addToCart", resp);
         },
         async deleteFromCart(
             { commit },
@@ -184,17 +181,14 @@ export default createStore({
             let requestBody = new URLSearchParams();
             requestBody.append("operation", "delete");
             requestBody.append("cart_item_id", cartItemInfo.cart_item_id);
-            let resp = (
-                (await fetch("http://127.0.0.1:8000/api/cart", {
-                    method: "post",
-                    body: requestBody,
-                    credentials: "include",
-                }).then((res) => res.json())) as any
-            )["data"];
+            let resp = await fetch("http://127.0.0.1:8000/api/cart", {
+                method: "post",
+                body: requestBody,
+                credentials: "include",
+            }).then((res) => res.json());
             commit("deleteFromCart", {
                 cartItemInfo: cartItemInfo,
-                totalCosts: resp["total_costs"],
-                freight: resp["freight"],
+                response: resp,
             });
         },
     },

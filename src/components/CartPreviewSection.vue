@@ -25,7 +25,7 @@
       </div>
     </div>
     <div class="button-container">
-      <ButtonProceedToCheckout />
+      <ButtonProceedToCheckout>Proceed to Checkout</ButtonProceedToCheckout>
     </div>
   </div>
 </template>

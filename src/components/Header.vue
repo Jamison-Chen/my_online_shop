@@ -7,7 +7,9 @@
         <IconBase :sideLength="iconSize"><IconHeart /></IconBase>
       </a>
       <div
-        class="side-button"
+        class="side-button cart"
+        :data-count="cartItemNumber"
+        :class="{ 'show-item-count': shouldShowItemCount }"
         data-title="Cart"
         @click="toggleCartAndFetchCartData"
       >
@@ -61,6 +63,16 @@ export default defineComponent({
     isLoggedIn(): boolean {
       return store.state.isLoggedIn;
     },
+    cartItemNumber(): number {
+      return store.state.cartItemCount;
+    },
+    shouldShowItemCount(): boolean {
+      return (
+        Boolean(store.state.cartItemCount) &&
+        this.$route.path !== "/cart" &&
+        this.$route.path !== "/checkout"
+      );
+    },
   },
   methods: {
     toggleCartAndFetchCartData(): void {
@@ -77,6 +89,7 @@ export default defineComponent({
   },
   created() {
     store.dispatch("checkLoginStatus");
+    store.dispatch("getCartItemList");
   },
 });
 </script>
@@ -131,6 +144,18 @@ export default defineComponent({
         left: 50%;
         transform: translateX(-50%);
         box-shadow: 2px 2px 10px 2px #ccc;
+      }
+      &.cart.show-item-count[data-count]::before {
+        content: attr(data-count);
+        position: absolute;
+        top: 0;
+        right: 0;
+        transform: translate(50%, -50%) scale(0.8);
+        padding: 2px 4px;
+        border-radius: 100%;
+        background-color: #d01;
+        color: #fff;
+        font-size: 0.7rem;
       }
     }
   }

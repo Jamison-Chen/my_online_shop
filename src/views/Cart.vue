@@ -22,7 +22,7 @@
           <span>Total:</span><span>{{ total }}</span>
         </div>
         <div class="button-container">
-          <ButtonProceedToCheckout />
+          <ButtonProceedToCheckout>Checkout</ButtonProceedToCheckout>
         </div>
       </div>
     </div>
