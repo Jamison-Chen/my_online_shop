@@ -42,7 +42,7 @@ export default defineComponent({
   methods: {
     async logout(): Promise<void> {
       await store.dispatch("logout");
-      this.$router.push("/");
+      window.location.replace("/");
     },
   },
 });

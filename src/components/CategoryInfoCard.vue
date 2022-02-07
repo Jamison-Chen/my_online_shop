@@ -29,11 +29,7 @@ export default defineComponent({
       required: true,
     },
   },
-  methods: {
-    // goToCategorizedPage(category: string): void {
-    //   this.$router.push(`/${category}`);
-    // },
-  },
+  methods: {},
 });
 </script>
 

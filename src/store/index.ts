@@ -21,7 +21,7 @@ export default createStore({
         checkLoginStatus(state, response): void {
             state.isLoggedIn = response["status"] === "passed" ? true : false;
             state.loginStatus = response["status"];
-            state.userInfo.name = response["data"]["name"];
+            state.userInfo = response["data"];
         },
         login(state): void {
             state.isLoggedIn = true;
@@ -95,9 +95,6 @@ export default createStore({
                 // accept the "set-cookie" header of the response
             }).then((res) => res.json());
             commit("checkLoginStatus", resp);
-
-            // Get Favorite List
-            if (state.isLoggedIn) dispatch("getFavoriteList");
         },
         async logout({ commit }): Promise<void> {
             let resp = await fetch("http://127.0.0.1:8000/api/logout", {

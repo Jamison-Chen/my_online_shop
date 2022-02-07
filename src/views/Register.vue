@@ -126,7 +126,7 @@ export default defineComponent({
 
       if (this.response.status === "passed") {
         store.commit("login");
-        this.$router.push("/");
+        window.location.replace("/");
       } else {
         this.alertMessage = this.response.status;
         if (this.response.status === "info not sufficient") {

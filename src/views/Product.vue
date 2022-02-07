@@ -1,5 +1,5 @@
 <template>
-  <div class="product-page" v-if="status === 'success'">
+  <div id="product-page" v-if="status === 'success'">
     <CurrentPathBar :parentPageList="fullPathList" />
     <div id="main">
       <div id="picture-section">
@@ -37,10 +37,10 @@
       ></div>
     </PageBlock>
   </div>
-  <div class="product-page" v-else-if="status === 'failed'">
+  <div id="product-page" v-else-if="status === 'failed'">
     <h1>Product Not Found</h1>
   </div>
-  <div class="product-page" v-else></div>
+  <div id="product-page" v-else></div>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";

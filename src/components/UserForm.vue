@@ -115,14 +115,14 @@ $blue: #08f;
         &::placeholder {
           color: $noisyWhite;
         }
-        & + span.alter-mark:after {
+        & + span.alter-mark::after {
           content: "✖";
           color: transparent;
         }
         &.should-alert {
           &:invalid {
             outline-color: $red;
-            & + span.alter-mark:after {
+            & + span.alter-mark::after {
               color: $red;
             }
           }

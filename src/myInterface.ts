@@ -60,4 +60,6 @@ export interface UserFormFieldInfo {
 
 export interface UserInfo {
     name: string;
+    email: string;
+    phone_number: string;
 }

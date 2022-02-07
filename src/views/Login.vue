@@ -79,7 +79,7 @@ export default defineComponent({
       }
       await store.dispatch("checkLoginStatus", requestBody);
       let loginStatus = store.state.loginStatus;
-      if (store.state.isLoggedIn) this.$router.push("/");
+      if (store.state.isLoggedIn) window.location.replace("/");
       else if (loginStatus === "user not found") {
         this.alertMessage = store.state.loginStatus;
         this.formData.email = "";

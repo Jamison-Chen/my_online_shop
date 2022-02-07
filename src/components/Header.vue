@@ -90,6 +90,7 @@ export default defineComponent({
   created() {
     store.dispatch("checkLoginStatus");
     store.dispatch("getCartItemList");
+    store.dispatch("getFavoriteList");
   },
 });
 </script>
