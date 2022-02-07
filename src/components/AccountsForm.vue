@@ -2,24 +2,24 @@
   <div id="user-form">
     <div class="brand-icon"></div>
     <div class="input-table">
-      <div class="input-row" v-for="each in fields" :key="each.fieldName">
-        <label :for="each.fieldName">{{ each.nameDisplayed }}</label>
+      <div class="input-row" v-for="each in fields" :key="each.inputName">
+        <label :for="each.inputName">{{ each.nameDisplayed }}</label>
         <span class="required-mark">{{ each.required ? "*" : "" }}</span>
         <input
           :type="each.type"
-          :name="each.fieldName"
+          :name="each.inputName"
           :required="each.required"
           :pattern="each.pattern"
           :placeholder="each.placeholder"
           :class="{ 'should-alert': each.shouldAlert }"
+          :disabled="each.disabled"
           @input="
             $emit('input', {
-              fieldName: each.fieldName,
-              value: formData[each.fieldName],
+              inputName: each.inputName,
+              value: localFormData[each.inputName],
             })
           "
-          v-model="formData[each.fieldName]"
-          size="20"
+          v-model="formData[each.inputName]"
         />
         <span class="alter-mark"></span>
       </div>
@@ -47,12 +47,12 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
-import { UserFormFieldInfo } from "@/myInterface";
+import { UserInfoInputSetting } from "@/myInterface";
 
 export default defineComponent({
   props: {
     fields: {
-      type: Array as PropType<UserFormFieldInfo[]>,
+      type: Array as PropType<UserInfoInputSetting[]>,
       required: true,
     },
     formData: {
@@ -73,6 +73,11 @@ export default defineComponent({
     },
   },
   emits: ["input", "clickSubmitButton"],
+  computed: {
+    localFormData(): any {
+      return this.formData;
+    },
+  },
 });
 </script>
 

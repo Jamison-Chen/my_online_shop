@@ -7,7 +7,7 @@
       :endPoint="endPoint"
       :pageType="pageType"
       :alertMessage="alertMessage"
-      @input="this.formData[$event.fieldName] = $event.value"
+      @input="formData[$event.inputName] = $event.value"
       @clickSubmitButton="login"
     />
   </div>
@@ -16,8 +16,8 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import CurrentPathBar from "@/components/CurrentPathBar.vue";
-import UserForm from "@/components/UserForm.vue";
-import { UserFormFieldInfo, PageInfo } from "@/myInterface";
+import UserForm from "@/components/AccountsForm.vue";
+import { UserInfoInputSetting, PageInfo } from "@/myInterface";
 import store from "@/store";
 
 export default defineComponent({
@@ -28,24 +28,26 @@ export default defineComponent({
     return {
       fields: [
         {
-          fieldName: "email",
+          inputName: "email",
           nameDisplayed: "Email",
           type: "email",
           required: false,
           pattern: "[A-Za-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$",
           placeholder: " ",
           shouldAlert: false,
+          disabled: false,
         },
         {
-          fieldName: "password",
+          inputName: "password",
           nameDisplayed: "Password",
           type: "password",
           required: false,
           pattern: "[a-z0-9A-Z]+",
           placeholder: " ",
           shouldAlert: false,
+          disabled: false,
         },
-      ] as UserFormFieldInfo[],
+      ] as UserInfoInputSetting[],
       formData: {
         email: "",
         password: "",
@@ -84,17 +86,17 @@ export default defineComponent({
         this.alertMessage = store.state.loginStatus;
         this.formData.email = "";
         this.fields
-          .filter((e) => e.fieldName === "email")
+          .filter((e) => e.inputName === "email")
           .forEach((e) => (e.shouldAlert = true));
         this.formData.password = "";
         this.fields
-          .filter((e) => e.fieldName === "password")
+          .filter((e) => e.inputName === "password")
           .forEach((e) => (e.shouldAlert = true));
       } else if (loginStatus === "wrong password") {
         this.alertMessage = store.state.loginStatus;
         this.formData.password = "";
         this.fields
-          .filter((e) => e.fieldName === "password")
+          .filter((e) => e.inputName === "password")
           .forEach((e) => (e.shouldAlert = true));
       }
     },

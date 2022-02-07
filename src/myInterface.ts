@@ -36,8 +36,8 @@ export interface CarouselContentInfo {
     title: string;
 }
 
-export interface UserFormFieldInfo {
-    fieldName:
+export interface UserInfoInputSetting {
+    inputName:
         | "name"
         | "email"
         | "password"
@@ -56,6 +56,7 @@ export interface UserFormFieldInfo {
     pattern: string;
     placeholder: string;
     shouldAlert: boolean;
+    disabled: boolean;
 }
 
 export interface UserInfo {

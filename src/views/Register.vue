@@ -7,7 +7,7 @@
       :endPoint="endPoint"
       :pageType="pageType"
       :alertMessage="alertMessage"
-      @input="this.formData[$event.fieldName] = $event.value"
+      @input="formData[$event.inputName] = $event.value"
       @clickSubmitButton="register"
     />
   </div>
@@ -17,8 +17,8 @@
 import { defineComponent } from "vue";
 import store from "@/store";
 import CurrentPathBar from "@/components/CurrentPathBar.vue";
-import UserForm from "@/components/UserForm.vue";
-import { UserFormFieldInfo, PageInfo } from "@/myInterface";
+import UserForm from "@/components/AccountsForm.vue";
+import { UserInfoInputSetting, PageInfo } from "@/myInterface";
 
 export default defineComponent({
   name: "Register",
@@ -28,60 +28,66 @@ export default defineComponent({
     return {
       fields: [
         {
-          fieldName: "name",
+          inputName: "name",
           nameDisplayed: "Your Name",
           type: "text",
           required: true,
-          pattern: ".{3,32}",
+          pattern: ".{2,32}",
           placeholder: " ",
           shouldAlert: false,
+          disabled: false,
         },
         {
-          fieldName: "email",
+          inputName: "email",
           nameDisplayed: "Email",
           type: "email",
           required: true,
           pattern: "[A-Za-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$",
           placeholder: " ",
           shouldAlert: false,
+          disabled: false,
         },
         {
-          fieldName: "phone-number",
+          inputName: "phone-number",
           nameDisplayed: "Phone #",
           type: "tel",
           required: false,
           pattern: "09[0-9]{8}",
           placeholder: "09XXXXXXXX",
           shouldAlert: false,
+          disabled: false,
         },
         {
-          fieldName: "date-of-birth",
+          inputName: "date-of-birth",
           nameDisplayed: "Date Of Birth",
           type: "date",
           required: false,
           pattern: ".+",
           placeholder: " ",
           shouldAlert: false,
+          disabled: false,
         },
         {
-          fieldName: "password",
+          inputName: "password",
           nameDisplayed: "Password",
           type: "password",
           required: true,
           pattern: "[A-Za-z0-9]{8,}",
           placeholder: " ",
           shouldAlert: false,
+          disabled: false,
         },
         {
-          fieldName: "password-check",
+          inputName: "password-check",
           nameDisplayed: "Password Check",
           type: "password",
           required: true,
           pattern: "[a-z0-9]+",
           placeholder: " ",
           shouldAlert: false,
+          disabled: false,
         },
-      ] as UserFormFieldInfo[],
+      ] as UserInfoInputSetting[],
       formData: {
         name: "",
         email: "",
@@ -135,19 +141,19 @@ export default defineComponent({
           this.response.status === "name too short"
         ) {
           this.fields
-            .filter((e) => e.fieldName === "name")
+            .filter((e) => e.inputName === "name")
             .forEach((e) => (e.shouldAlert = true));
         } else if (this.response.status === "duplicated email") {
           this.fields
-            .filter((e) => e.fieldName === "email")
+            .filter((e) => e.inputName === "email")
             .forEach((e) => (e.shouldAlert = true));
         } else if (this.response.status === "password too simple") {
           this.fields
-            .filter((e) => e.fieldName === "password")
+            .filter((e) => e.inputName === "password")
             .forEach((e) => (e.shouldAlert = true));
         } else if (this.response.status === "check your password") {
           this.fields
-            .filter((e) => e.fieldName === "password-check")
+            .filter((e) => e.inputName === "password-check")
             .forEach((e) => (e.shouldAlert = true));
         }
       }
