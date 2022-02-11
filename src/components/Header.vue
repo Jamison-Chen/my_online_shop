@@ -101,7 +101,7 @@ export default defineComponent({
   justify-content: space-between;
   align-items: center;
   height: 70px;
-  color: #444;
+  color: $deepGray;
   z-index: 1000;
   &.at-homepage {
     position: absolute;
@@ -133,8 +133,8 @@ export default defineComponent({
         opacity: 0.8;
       }
       &[data-title]:hover::after {
-        background-color: #000;
-        color: #fff;
+        background-color: $black;
+        color: $white;
         padding: 2px 6px 4px 6px;
         font-size: 0.8rem;
         letter-spacing: 1px;
@@ -144,7 +144,7 @@ export default defineComponent({
         top: 130%;
         left: 50%;
         transform: translateX(-50%);
-        box-shadow: 2px 2px 10px 2px #ccc;
+        box-shadow: 2px 2px 10px 2px $noisyWhite;
       }
       &.cart.show-item-count[data-count]::before {
         content: attr(data-count);
@@ -154,8 +154,8 @@ export default defineComponent({
         transform: translate(50%, -50%) scale(0.8);
         padding: 2px 4px;
         border-radius: 100%;
-        background-color: #d01;
-        color: #fff;
+        background-color: $lightRed;
+        color: $white;
         font-size: 0.7rem;
       }
     }

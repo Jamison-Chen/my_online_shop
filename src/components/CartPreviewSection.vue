@@ -74,7 +74,7 @@ export default defineComponent({
   left: 0;
   height: 100vh;
   width: 100vw;
-  background-color: #000;
+  background-color: $black;
   opacity: 0.5;
   z-index: 1000;
   display: none;
@@ -95,7 +95,7 @@ export default defineComponent({
   border-bottom-left-radius: 10px;
   box-sizing: border-box;
   padding-top: 20px;
-  background-color: #fff;
+  background-color: $white;
   z-index: 1100;
   transition-duration: 300ms;
   &.active {
@@ -112,7 +112,7 @@ export default defineComponent({
     .total-calc-section {
       margin: 0 10px;
       padding: 20px;
-      border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid $noisyWhite;
       .total-calc {
         padding: 5px 0;
         display: flex;
@@ -131,9 +131,9 @@ export default defineComponent({
       height: 1px;
     }
     &::-webkit-scrollbar-thumb {
-      background: #ccc;
+      background: $noisyWhite;
       &:hover {
-        background: #aaa;
+        background: $lightGray;
       }
     }
   }

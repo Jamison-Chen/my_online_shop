@@ -37,20 +37,8 @@ export interface CarouselContentInfo {
 }
 
 export interface UserInfoInputSetting {
-    inputName:
-        | "name"
-        | "email"
-        | "password"
-        | "date_of_birth"
-        | "phone_number"
-        | "password-check";
-    nameDisplayed:
-        | "Name"
-        | "Email"
-        | "Password"
-        | "Date of Birth"
-        | "Phone #"
-        | "Password Check";
+    inputName: string;
+    nameDisplayed: string;
     type: "text" | "email" | "password" | "date" | "tel";
     required: boolean;
     pattern: string;

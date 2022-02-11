@@ -53,9 +53,9 @@ export default defineComponent({
   margin: 10px 0 20px 0;
   font-family: inherit;
   font-size: 1.2rem;
-  background-color: #000;
+  background-color: $black;
   border: none;
-  color: #fff;
+  color: $white;
   padding: 4px 12px 8px 12px;
   border-radius: 2px;
   cursor: pointer;

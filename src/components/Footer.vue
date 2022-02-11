@@ -12,7 +12,7 @@ export default defineComponent({});
 #footer {
   padding: 10vh 0;
   font-size: 0.8rem;
-  color: #888;
+  color: $gray;
   letter-spacing: 1px;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="login-page">
     <CurrentPathBar :parentPageList="fullPathList" />
-    <UserForm
+    <AccountForm
       :fields="fields"
       :formData="formData"
       :endPoint="endPoint"
@@ -16,14 +16,14 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import CurrentPathBar from "@/components/CurrentPathBar.vue";
-import UserForm from "@/components/AccountsForm.vue";
+import AccountForm from "@/components/AccountsForm.vue";
 import { UserInfoInputSetting, PageInfo } from "@/myInterface";
 import store from "@/store";
 
 export default defineComponent({
   name: "Login",
   store: store,
-  components: { UserForm, CurrentPathBar },
+  components: { AccountForm, CurrentPathBar },
   data() {
     return {
       fields: [

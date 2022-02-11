@@ -101,15 +101,17 @@
       <div class="block">
         <div class="title">Payment Method</div>
         <div class="form-input-section">
-          <label for="payment-method">
+          <label for="payment-method" class="payment-method-menu">
             Payment Method
             <select name="payment-method" v-model="paymentMethod">
+              <option value="" hidden disabled>Please Select One</option>
               <option value="cash-on-delivery">Cash on Delivery</option>
               <option value="in-store-pickup">In-Store Pickup</option>
               <option value="home-delivery">Home Delivery</option>
             </select>
           </label>
           <FormInput
+            v-if="paymentMethod === 'home-delivery'"
             :setting="{
               inputName: 'address',
               nameDisplayed: 'Address',
@@ -182,14 +184,14 @@ export default defineComponent({
         letter-spacing: 1px;
         margin: 10px 0;
         .info-sync-button {
-          color: #08f;
+          color: $lightBlue;
           letter-spacing: initial;
           font-size: 0.8rem;
           padding: 2px 4px;
           margin: 0 5px;
           cursor: pointer;
           &:hover {
-            color: #07d;
+            color: $blue;
           }
         }
       }
@@ -197,7 +199,7 @@ export default defineComponent({
         label {
           display: inline-block;
           select {
-            border: 1px solid #aaa;
+            border: 1px solid $lightGray;
             border-radius: 2px;
             padding: 3px;
             margin: 10px;
@@ -205,6 +207,9 @@ export default defineComponent({
             font-family: inherit;
             letter-spacing: 1px;
           }
+        }
+        .payment-method-menu {
+          display: block;
         }
       }
     }

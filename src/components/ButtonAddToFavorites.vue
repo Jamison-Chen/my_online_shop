@@ -66,8 +66,8 @@ export default defineComponent({
   align-items: center;
   &[data-title]:hover::after {
     content: attr(data-title);
-    background-color: #000;
-    color: #fff;
+    background-color: $black;
+    color: $white;
     padding: 2px 6px 4px 6px;
     font-size: 0.8rem;
     letter-spacing: 1px;
@@ -76,7 +76,7 @@ export default defineComponent({
     top: 90%;
     left: 50%;
     transform: translateX(-50%);
-    box-shadow: 2px 2px 10px 2px #ccc;
+    box-shadow: 2px 2px 10px 2px $noisyWhite;
   }
 }
 </style>

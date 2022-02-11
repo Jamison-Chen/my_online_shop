@@ -82,12 +82,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-$noisyWhite: #ccc;
-$lightGray: #aaa;
-$black: #000;
-$red: #b01;
-$white: #fff;
-$blue: #08f;
 #user-form {
   width: 320px;
   margin: auto;
@@ -107,7 +101,7 @@ $blue: #08f;
         vertical-align: middle;
       }
       .required-mark {
-        color: $red;
+        color: $lightRed;
       }
       & > input {
         display: table-cell;
@@ -126,9 +120,9 @@ $blue: #08f;
         }
         &.should-alert {
           &:invalid {
-            outline-color: $red;
+            outline-color: $lightRed;
             & + span.alter-mark::after {
-              color: $red;
+              color: $lightRed;
             }
           }
         }
@@ -139,7 +133,7 @@ $blue: #08f;
     margin: 10px 0;
     padding: 5px;
     border-radius: 5px;
-    color: $red;
+    color: $lightRed;
     font-size: 0.8rem;
     border: 2px solid #dd002277;
     background-color: #dd002222;
@@ -164,7 +158,7 @@ $blue: #08f;
     text-align: center;
     font-size: 0.9rem;
     & > a {
-      color: $blue;
+      color: $lightBlue;
     }
   }
 }

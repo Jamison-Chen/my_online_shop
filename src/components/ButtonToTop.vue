@@ -21,6 +21,6 @@ export default defineComponent({
   right: 1vh;
   padding: 5px;
   cursor: pointer;
-  color: #444;
+  color: $deepGray;
 }
 </style>

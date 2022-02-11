@@ -129,7 +129,7 @@ export default defineComponent({
   }
   #description {
     $font-size: 1rem;
-    color: #888;
+    color: $gray;
     font-size: $font-size;
     line-height: $font-size * 1.5;
     margin: 10px 0;

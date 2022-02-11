@@ -25,12 +25,12 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 #proceed-to-checkout-button {
-  background-color: #000;
+  background-color: $black;
   border-radius: 2px;
   padding: 8px 12px;
   width: 70%;
   letter-spacing: 1px;
-  color: #fff;
+  color: $white;
   display: flex;
   justify-content: center;
   align-items: center;

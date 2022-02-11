@@ -50,11 +50,11 @@ export default defineComponent({
     margin: 10px 0;
     font-size: 1.1rem;
     letter-spacing: 2px;
-    color: #444;
+    color: $deepGray;
   }
   &:hover {
     text-decoration-line: underline;
-    text-decoration-color: #444;
+    text-decoration-color: $deepGray;
   }
 }
 </style>

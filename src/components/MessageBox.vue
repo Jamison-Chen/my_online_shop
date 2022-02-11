@@ -44,14 +44,12 @@ export default defineComponent({
     transition-duration: 100ms;
   }
   &.warning {
-    color: #b01;
-    background-color: #fbc;
-    border-color: #c12;
+    color: $white;
+    background-color: $red;
   }
   &.success {
-    color: #0a1;
-    background-color: #bfc;
-    border-color: #0b3;
+    color: $white;
+    background-color: $green;
   }
 }
 </style>

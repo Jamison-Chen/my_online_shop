@@ -64,9 +64,9 @@ export default defineComponent({
     margin: 0 10px;
     padding: 6px 12px;
     border-radius: 5px;
-    border: 1px solid #ccc;
+    border: 1px solid $noisyWhite;
     &.checked {
-      border: 2px solid #000;
+      border: 2px solid $black;
       font-weight: bold;
     }
     .option-input[type="radio"] {

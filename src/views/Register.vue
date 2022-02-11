@@ -1,7 +1,7 @@
 <template>
   <div class="register-page">
     <CurrentPathBar :parentPageList="fullPathList" />
-    <UserForm
+    <AccountForm
       :fields="fields"
       :formData="formData"
       :endPoint="endPoint"
@@ -17,13 +17,13 @@
 import { defineComponent } from "vue";
 import store from "@/store";
 import CurrentPathBar from "@/components/CurrentPathBar.vue";
-import UserForm from "@/components/AccountsForm.vue";
+import AccountForm from "@/components/AccountsForm.vue";
 import { UserInfoInputSetting, PageInfo } from "@/myInterface";
 
 export default defineComponent({
   name: "Register",
   store: store,
-  components: { UserForm, CurrentPathBar },
+  components: { AccountForm, CurrentPathBar },
   data() {
     return {
       fields: [

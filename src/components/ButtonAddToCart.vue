@@ -95,13 +95,13 @@ export default defineComponent({
     width: 80px;
     outline: none;
     border: none;
-    border-bottom: 1px solid #aaa;
+    border-bottom: 1px solid $lightGray;
     text-align: center;
     letter-spacing: 1px;
     margin: 10px 0;
     background-color: transparent;
     &:disabled {
-      color: #ccc;
+      color: $noisyWhite;
     }
     &::-webkit-inner-spin-button {
       height: 30px;
@@ -113,10 +113,10 @@ export default defineComponent({
     position: relative;
     display: flex;
     align-items: center;
-    color: #000;
+    color: $black;
     &.disabled {
       cursor: no-drop;
-      color: #888;
+      color: $gray;
     }
     &:hover {
       opacity: 0.8;
@@ -124,8 +124,8 @@ export default defineComponent({
     &[data-title]:hover::after {
       content: attr(data-title);
       white-space: nowrap;
-      background-color: #000;
-      color: #fff;
+      background-color: $black;
+      color: $white;
       padding: 2px 6px 4px 6px;
       font-size: 0.8rem;
       letter-spacing: 1px;
@@ -135,7 +135,7 @@ export default defineComponent({
       top: 100%;
       left: 50%;
       transform: translateX(-50%);
-      box-shadow: 2px 2px 10px 2px #ccc;
+      box-shadow: 2px 2px 10px 2px $noisyWhite;
     }
   }
 }

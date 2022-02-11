@@ -89,7 +89,7 @@ export default defineComponent({
       height: 10px;
       margin: 0 5px;
       border-radius: 100px;
-      background-color: #000;
+      background-color: $black;
       opacity: 0.2;
       &:hover,
       &.active {

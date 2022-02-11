@@ -32,9 +32,9 @@ export default defineComponent({
 
 ::-webkit-scrollbar-thumb {
   border-radius: 100px;
-  background: #aaa;
+  background: $lightGray;
   &:hover {
-    background: #888;
+    background: $gray;
   }
 }
 

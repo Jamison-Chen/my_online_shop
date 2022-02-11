@@ -62,7 +62,7 @@ export default defineComponent({
   padding: 30px 0 10px 0;
   margin: 0 10px;
   display: flex;
-  border-bottom: 1px solid #f0f0f0;
+  border-bottom: 1px solid $almostWhite;
   box-sizing: border-box;
   min-height: 160px;
   .trash-can-button {
@@ -93,7 +93,7 @@ export default defineComponent({
         font-size: 0.9rem;
       }
       &.price-quantity {
-        color: #aaa;
+        color: $lightGray;
       }
       &.subtotal {
         text-align: end;

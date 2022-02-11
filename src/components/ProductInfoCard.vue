@@ -61,12 +61,12 @@ export default defineComponent({
     flex-direction: column;
     letter-spacing: 1px;
     .category-tag {
-      color: #aaa;
+      color: $lightGray;
       font-size: 0.8 * $base-font-size;
     }
     .name-tag {
       text-decoration: none;
-      color: #000;
+      color: $black;
       font-size: 1.4 * $base-font-size;
       margin: 10px 0;
     }
@@ -76,7 +76,7 @@ export default defineComponent({
     }
     .description-tag {
       font-size: $base-font-size;
-      color: #888;
+      color: $gray;
       line-height: 1.5 * $base-font-size;
       text-align: justify;
       text-justify: inter-ideograph;

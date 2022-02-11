@@ -51,7 +51,7 @@ export default defineComponent({
   align-items: center;
   #search-input {
     border: none;
-    border-bottom: 1px solid #aaa;
+    border-bottom: 1px solid $lightGray;
     margin: 0 10px;
     padding: 0 10px 5px 10px;
     font-size: 1.2rem;
@@ -59,16 +59,16 @@ export default defineComponent({
     font-family: inherit;
     background-color: transparent;
     &::-webkit-search-cancel-button {
-      background: #888;
+      background: $gray;
     }
     &::placeholder {
       font-size: 1.4rem;
-      color: #ddd;
+      color: $noisyWhite;
       font-weight: 100;
     }
     &:focus {
       outline: none;
-      border-bottom-color: #888;
+      border-bottom-color: $gray;
     }
   }
   #search-button {

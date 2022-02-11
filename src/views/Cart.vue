@@ -84,13 +84,13 @@ export default defineComponent({
       left: 0;
       height: fit-content;
       border-radius: 10px;
-      border: 1px solid #ccc;
+      border: 1px solid $noisyWhite;
       margin: 20px;
       box-sizing: border-box;
       .total-calc-section {
         margin: 0 10px;
         padding: 20px;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid $noisyWhite;
         .total-calc {
           padding: 5px 0;
           display: flex;

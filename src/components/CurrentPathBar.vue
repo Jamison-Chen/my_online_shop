@@ -31,12 +31,12 @@ export default defineComponent({
   margin-bottom: 10px;
   .part-of-path {
     display: inline;
-    color: #aaa;
+    color: $lightGray;
     letter-spacing: 1px;
 
     .path-name {
       text-decoration: none;
-      color: #aaa;
+      color: $lightGray;
     }
   }
 }
