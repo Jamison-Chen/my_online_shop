@@ -102,7 +102,7 @@
         <div class="title">Payment Method</div>
         <div class="form-input-section">
           <label for="payment-method" class="payment-method-menu">
-            Payment Method
+            Pickup Method
             <select name="payment-method" v-model="paymentMethod">
               <option value="" hidden disabled>Please Select One</option>
               <option value="cash-on-delivery">Cash on Delivery</option>
@@ -125,7 +125,47 @@
             :initialValue="address"
             @input="address = $event"
           />
+          <div
+            class="store-link-list"
+            v-if="
+              (paymentMethod === 'cash-on-delivery' ||
+                paymentMethod === 'in-store-pickup') &&
+              Object.keys(pickupStoreInfo).length === 0
+            "
+          >
+            <a href="#" class="store-link">7-11</a>
+            <a href="#" class="store-link">FamilyMart</a>
+            <a href="#" class="store-link">OK</a>
+          </div>
+          <div
+            class="store-to-pickup"
+            v-if="
+              (paymentMethod === 'cash-on-delivery' ||
+                paymentMethod === 'in-store-pickup') &&
+              Object.keys(pickupStoreInfo).length !== 0
+            "
+          >
+            <FormInput
+              :setting="{
+                inputName: 'store-to-pickup',
+                nameDisplayed: 'Store to pickup',
+                type: 'text',
+                required: false,
+                pattern: '.+',
+                placeholder: ' ',
+                shouldAlert: false,
+                disabled: true,
+              }"
+              :initialValue="address"
+            />
+            <span class="re-choose-store-button"> Choose Again </span>
+          </div>
         </div>
+      </div>
+      <div class="submit-button-bar">
+        <button class="submit-button">Submit</button>
+        <button class="submit-button">Submit and Pay with Credit Card</button>
+        <button class="submit-button">Submit and Pay via ATM Transfer</button>
       </div>
     </div>
   </div>
@@ -151,6 +191,7 @@ export default defineComponent({
       receiverInfo: {} as UserInfo,
       paymentMethod: "" as string,
       address: "" as string,
+      pickupStoreInfo: { data: "hi" } as any,
     };
   },
   computed: {
@@ -210,6 +251,52 @@ export default defineComponent({
         }
         .payment-method-menu {
           display: block;
+        }
+        .store-link-list {
+          display: flex;
+          .store-link {
+            padding: 10px 15px;
+            letter-spacing: 1px;
+            border-radius: 5px;
+            border: 1px solid $lightGray;
+            margin-right: 20px;
+            &:hover {
+              border-color: $gray;
+            }
+          }
+        }
+        .store-to-pickup {
+          .re-choose-store-button {
+            color: $lightBlue;
+            letter-spacing: initial;
+            font-size: 0.8rem;
+            padding: 2px 4px;
+            margin: 0 5px;
+            cursor: pointer;
+            &:hover {
+              color: $blue;
+            }
+          }
+        }
+      }
+    }
+    .submit-button-bar {
+      button {
+        font-family: inherit;
+        font-size: 1rem;
+        letter-spacing: 1px;
+        display: block;
+        margin: 20px 0;
+        padding: 6px 10px;
+        background-color: $black;
+        color: $white;
+        border-radius: 2px;
+        border: 1px solid $black;
+        transition-duration: 500ms;
+        &:hover {
+          background-color: $white;
+          color: $black;
+          border-color: $lightGray;
         }
       }
     }
