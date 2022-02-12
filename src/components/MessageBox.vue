@@ -33,14 +33,12 @@ export default defineComponent({
   padding: 3px 10px;
   display: flex;
   align-items: center;
-  margin-bottom: 5px;
   font-size: 0.9rem;
-  transform: translate(-50%, 120%);
+  transform: translate(-50%, 100%);
   border-radius: 5px;
-  border: 1px solid;
   transition-duration: 300ms;
   &.active {
-    transform: translate(-50%, -10%);
+    transform: translate(-50%, -20%);
     transition-duration: 100ms;
   }
   &.warning {

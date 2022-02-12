@@ -72,7 +72,6 @@ export default defineComponent({
             selectedInventoryId: this.selectedInventoryId as string,
             quantity: this.quantity,
           });
-          // this.shouldShowMessageBox = true;
           setTimeout(() => {
             this.shouldShowMessageBox = true;
             setTimeout(() => (this.shouldShowMessageBox = false), 1500);

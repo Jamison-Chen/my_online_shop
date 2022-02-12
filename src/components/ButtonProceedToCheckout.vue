@@ -1,8 +1,8 @@
 <template>
-  <a id="proceed-to-checkout-button" :href="buttonLink">
+  <button id="proceed-to-checkout-button" @click="proceed">
     <IconBase><IconCheck /></IconBase>
     <span class="checkout-caption"><slot /></span>
-  </a>
+  </button>
 </template>
 
 <script lang="ts">
@@ -17,7 +17,24 @@ export default defineComponent({
   },
   computed: {
     buttonLink(): string {
-      return this.$route.path !== "/cart" ? "/cart" : "/checkout";
+      return "/checkout";
+    },
+  },
+  methods: {
+    async proceed(): Promise<void> {
+      if (this.$route.path !== "/cart") window.location.assign("/cart");
+      else {
+        let statusCode = await fetch(
+          "http://127.0.0.1:8000/api/cart/proceed_to_checkout",
+          {
+            method: "get",
+            credentials: "include",
+          }
+        ).then((resp) => resp.status);
+        if (statusCode === 404 || statusCode === 500) {
+          this.$router.push(`/error/${statusCode}`);
+        } else window.location.assign("/checkout");
+      }
     },
   },
 });
@@ -27,9 +44,10 @@ export default defineComponent({
 #proceed-to-checkout-button {
   background-color: $black;
   border-radius: 2px;
+  border: none;
+  font-family: inherit;
   padding: 8px 12px;
   width: 70%;
-  letter-spacing: 1px;
   color: $white;
   display: flex;
   justify-content: center;
@@ -40,6 +58,8 @@ export default defineComponent({
     opacity: 0.8;
   }
   .checkout-caption {
+    letter-spacing: 1px;
+    font-size: 1rem;
     padding: 0 10px;
   }
 }

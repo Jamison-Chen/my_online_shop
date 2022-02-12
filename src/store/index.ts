@@ -149,7 +149,7 @@ export default createStore({
         async getCartItemList({ commit }): Promise<void> {
             let requestBody = new URLSearchParams();
             requestBody.append("operation", "read");
-            let resp = await fetch("http://127.0.0.1:8000/api/cart", {
+            let resp = await fetch("http://127.0.0.1:8000/api/cart/", {
                 method: "post",
                 body: requestBody,
                 credentials: "include",
@@ -164,7 +164,7 @@ export default createStore({
             requestBody.append("operation", "create");
             requestBody.append("inventory_id", payload.selectedInventoryId);
             requestBody.append("quantity", payload.quantity.toString());
-            let resp = await fetch("http://127.0.0.1:8000/api/cart", {
+            let resp = await fetch("http://127.0.0.1:8000/api/cart/", {
                 method: "post",
                 body: requestBody,
                 credentials: "include",
@@ -178,7 +178,7 @@ export default createStore({
             let requestBody = new URLSearchParams();
             requestBody.append("operation", "delete");
             requestBody.append("cart_item_id", cartItemInfo.cart_item_id);
-            let resp = await fetch("http://127.0.0.1:8000/api/cart", {
+            let resp = await fetch("http://127.0.0.1:8000/api/cart/", {
                 method: "post",
                 body: requestBody,
                 credentials: "include",

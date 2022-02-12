@@ -82,20 +82,6 @@
             :initialValue="receiverInfo.phone_number"
             @input="receiverInfo.phone_number = $event"
           />
-          <FormInput
-            :setting="{
-              inputName: 'email-of-receiver',
-              nameDisplayed: 'Email',
-              type: 'email',
-              required: true,
-              pattern: '[A-Za-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$',
-              placeholder: ' ',
-              shouldAlert: false,
-              disabled: false,
-            }"
-            :initialValue="receiverInfo.email"
-            @input="receiverInfo.email = $event"
-          />
         </div>
       </div>
       <div class="block">
@@ -103,15 +89,19 @@
         <div class="form-input-section">
           <label for="payment-method" class="payment-method-menu">
             Pickup Method
-            <select name="payment-method" v-model="paymentMethod">
+            <select
+              name="payment-method"
+              v-model="paymentMethod"
+              @change="clearFormerSelection"
+            >
               <option value="" hidden disabled>Please Select One</option>
-              <option value="cash-on-delivery">Cash on Delivery</option>
-              <option value="in-store-pickup">In-Store Pickup</option>
-              <option value="home-delivery">Home Delivery</option>
+              <option value="Cash On Delivery">Cash on Delivery</option>
+              <option value="In-store Pickup">In-Store Pickup</option>
+              <option value="Home Delivery">Home Delivery</option>
             </select>
           </label>
           <FormInput
-            v-if="paymentMethod === 'home-delivery'"
+            v-if="paymentMethod === 'Home Delivery'"
             :setting="{
               inputName: 'address',
               nameDisplayed: 'Address',
@@ -128,21 +118,25 @@
           <div
             class="store-link-list"
             v-if="
-              (paymentMethod === 'cash-on-delivery' ||
-                paymentMethod === 'in-store-pickup') &&
-              Object.keys(pickupStoreInfo).length === 0
+              (paymentMethod === 'Cash On Delivery' ||
+                paymentMethod === 'In-store Pickup') &&
+              this.pickupStoreInfo.address === ''
             "
           >
-            <a href="#" class="store-link">7-11</a>
-            <a href="#" class="store-link">FamilyMart</a>
-            <a href="#" class="store-link">OK</a>
+            <a href="#" class="store-link" @click="setStoreInfo('7-11')"
+              >7-11</a
+            >
+            <a href="#" class="store-link" @click="setStoreInfo('FamilyMart')"
+              >FamilyMart</a
+            >
+            <a href="#" class="store-link" @click="setStoreInfo('OK')">OK</a>
           </div>
           <div
             class="store-to-pickup"
             v-if="
-              (paymentMethod === 'cash-on-delivery' ||
-                paymentMethod === 'in-store-pickup') &&
-              Object.keys(pickupStoreInfo).length !== 0
+              (paymentMethod === 'Cash On Delivery' ||
+                paymentMethod === 'In-store Pickup') &&
+              this.pickupStoreInfo.address !== ''
             "
           >
             <FormInput
@@ -156,32 +150,72 @@
                 shouldAlert: false,
                 disabled: true,
               }"
-              :initialValue="address"
+              :initialValue="pickupStoreInfo.address"
             />
-            <span class="re-choose-store-button"> Choose Again </span>
+            <span
+              class="re-choose-store-button"
+              @click="pickupStoreInfo.address = ''"
+            >
+              Choose Again
+            </span>
           </div>
         </div>
       </div>
-      <div class="submit-button-bar">
-        <button class="submit-button">Submit</button>
-        <button class="submit-button">Submit and Pay with Credit Card</button>
-        <button class="submit-button">Submit and Pay via ATM Transfer</button>
+      <div
+        class="submit-button-bar"
+        v-if="paymentMethod === 'Cash On Delivery'"
+      >
+        <button
+          class="submit-button"
+          :disabled="!canSubmitWithoutPaying"
+          @click="submit"
+        >
+          Submit
+        </button>
+      </div>
+      <div
+        class="submit-button-bar"
+        v-else-if="
+          paymentMethod === 'In-store Pickup' ||
+          paymentMethod === 'Home Delivery'
+        "
+      >
+        <button
+          class="submit-button"
+          :disabled="!canSubmitAndPay"
+          @click="submit"
+        >
+          Submit and Pay with Credit Card
+        </button>
+        <button
+          class="submit-button"
+          :disabled="!canSubmitAndPay"
+          @click="submit"
+        >
+          Submit and Pay via ATM Transfer
+        </button>
       </div>
     </div>
   </div>
+  <MessageBox
+    :isActive="shouldShowMessageBox"
+    :message="statusResponded"
+    type="warning"
+  />
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import CurrentPathBar from "@/components/CurrentPathBar.vue";
 import FormInput from "@/components/FormInput.vue";
+import MessageBox from "@/components/MessageBox.vue";
 import { PageInfo, UserInfo } from "@/myInterface";
 import store from "@/store";
 
 export default defineComponent({
   name: "Checkout",
   store: store,
-  components: { CurrentPathBar, FormInput },
+  components: { CurrentPathBar, FormInput, MessageBox },
   data() {
     return {
       parentPageList: [
@@ -191,7 +225,9 @@ export default defineComponent({
       receiverInfo: {} as UserInfo,
       paymentMethod: "" as string,
       address: "" as string,
-      pickupStoreInfo: { data: "hi" } as any,
+      pickupStoreInfo: { address: "" } as any,
+      shouldShowMessageBox: false as boolean,
+      statusResponded: "" as string,
     };
   },
   computed: {
@@ -201,11 +237,87 @@ export default defineComponent({
     userInfo(): UserInfo {
       return store.state.userInfo;
     },
+    canSubmitWithoutPaying(): boolean {
+      return (
+        this.paymentMethod === "Cash On Delivery" &&
+        this.pickupStoreInfo.address !== ""
+      );
+    },
+    canSubmitAndPay(): boolean {
+      return (
+        (this.paymentMethod === "Home Delivery" && this.address !== "") ||
+        (this.paymentMethod === "In-store Pickup" &&
+          this.pickupStoreInfo.address !== "")
+      );
+    },
   },
   methods: {
+    async checkCanCheckout(): Promise<void> {
+      let statusCode = await fetch("http://127.0.0.1:8000/api/order", {
+        method: "get",
+        credentials: "include",
+      }).then((resp) => resp.status);
+      if (statusCode === 404 || statusCode === 500) {
+        this.$router.push(`/error/${statusCode}`);
+      }
+    },
     syncInfo(): void {
       this.receiverInfo = { ...this.userInfo };
     },
+    setStoreInfo(address: string): void {
+      this.pickupStoreInfo.address = address;
+    },
+    clearFormerSelection(): void {
+      this.pickupStoreInfo.address = "";
+    },
+    async submit(): Promise<void> {
+      let requestBody = new URLSearchParams();
+      requestBody.append("operation", "create");
+      if (this.receiverInfo.name) {
+        requestBody.append("name_of_picker", this.receiverInfo.name);
+      }
+      if (this.receiverInfo.phone_number) {
+        requestBody.append(
+          "phone_number_of_picker",
+          this.receiverInfo.phone_number
+        );
+      }
+      if (this.paymentMethod) {
+        requestBody.append("payment_method", this.paymentMethod);
+      }
+      let addr =
+        this.paymentMethod === "Home Delivery"
+          ? this.address
+          : this.pickupStoreInfo.address;
+      if (addr) requestBody.append("address", addr);
+      let response = await fetch("http://127.0.0.1:8000/api/order", {
+        method: "post",
+        body: requestBody,
+        credentials: "include",
+      }).then((resp) => resp);
+      if (response.status === 404 || response.status === 500) {
+        this.$router.push(`/error/${response.status}`);
+      } else {
+        let status = ((await response.json()) as any)["status"];
+        if (status === "succeeded") window.location.replace("/thank-you");
+        else {
+          setTimeout(() => {
+            this.statusResponded = status;
+            this.shouldShowMessageBox = true;
+            setTimeout(() => {
+              this.shouldShowMessageBox = false;
+            }, 1500);
+          }, 100);
+        }
+      }
+    },
+  },
+  async created() {
+    await this.checkCanCheckout();
+  },
+  // react to route changes
+  async beforeRouteUpdate(to, from) {
+    await this.checkCanCheckout();
   },
 });
 </script>
@@ -293,10 +405,15 @@ export default defineComponent({
         border-radius: 2px;
         border: 1px solid $black;
         transition-duration: 500ms;
-        &:hover {
+        &:hover:not(:disabled) {
           background-color: $white;
           color: $black;
           border-color: $lightGray;
+        }
+        &:disabled {
+          background-color: $lightGray;
+          border-color: $lightGray;
+          cursor: not-allowed;
         }
       }
     }

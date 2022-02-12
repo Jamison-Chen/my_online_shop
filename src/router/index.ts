@@ -55,6 +55,16 @@ const routes: Array<RouteRecordRaw> = [
         name: "AccountCenter",
         component: () => import("../views/AccountCenter.vue"),
     },
+    {
+        path: "/error/:statusCode",
+        name: "Error",
+        component: () => import("../views/Error.vue"),
+    },
+    {
+        path: "/thank-you",
+        name: "ThankYou",
+        component: () => import("../views/ThankYouPage.vue"),
+    },
 ];
 
 const router = createRouter({
