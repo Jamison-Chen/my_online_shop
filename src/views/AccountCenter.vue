@@ -2,7 +2,9 @@
   <div id="account-center-page">
     <CurrentPathBar :parentPageList="fullPathList" />
     <h1>Hi, {{ userName }}</h1>
+    <a id="edit-profile-button" href="/account-center/edit">Edit</a>
     <input id="logout-button" type="button" value="Log Out" @click="logout" />
+    <router-view />
   </div>
 </template>
 
@@ -49,6 +51,16 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+#edit-profile-button {
+  display: block;
+  margin: 15px auto;
+  color: $lightBlue;
+  cursor: pointer;
+  width: fit-content;
+  &:hover {
+    color: $blue;
+  }
+}
 #logout-button {
   margin: 10px 0 20px 0;
   font-family: inherit;

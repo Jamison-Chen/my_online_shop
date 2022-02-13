@@ -56,6 +56,11 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("../views/AccountCenter.vue"),
     },
     {
+        path: "/account-center/edit",
+        name: "EditProfilePage",
+        component: () => import("../views/EditProfilePage.vue"),
+    },
+    {
         path: "/error/:statusCode",
         name: "Error",
         component: () => import("../views/Error.vue"),

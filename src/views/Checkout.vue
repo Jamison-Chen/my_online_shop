@@ -380,7 +380,6 @@ export default defineComponent({
         .store-to-pickup {
           .re-choose-store-button {
             color: $lightBlue;
-            letter-spacing: initial;
             font-size: 0.8rem;
             padding: 2px 4px;
             margin: 0 5px;
