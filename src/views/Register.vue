@@ -4,8 +4,8 @@
     <AccountForm
       :fields="fields"
       :formData="formData"
-      :endPoint="endPoint"
-      :pageType="pageType"
+      :pageName="pageName"
+      :buttonName="pageName"
       :alertMessage="alertMessage"
       @input="formData[$event.inputName] = $event.value"
       @clickSubmitButton="register"
@@ -82,7 +82,7 @@ export default defineComponent({
           nameDisplayed: "Password Check",
           type: "password",
           required: true,
-          pattern: "[a-z0-9]+",
+          pattern: "[A-Za-z0-9]+",
           placeholder: " ",
           shouldAlert: false,
           disabled: false,
@@ -95,8 +95,7 @@ export default defineComponent({
         password: "",
         "password-check": "",
       } as any,
-      endPoint: "http://127.0.0.1:8000/api/register",
-      pageType: "Register",
+      pageName: "Register",
       alertMessage: "",
       response: {} as any,
       parentPageList: [
@@ -124,7 +123,7 @@ export default defineComponent({
         requestBody.append(each, this.formData[each]);
       }
       // The fetch approach
-      this.response = await fetch(this.endPoint, {
+      this.response = await fetch("http://127.0.0.1:8000/api/register", {
         method: "post",
         body: requestBody,
         credentials: "include", // to accept the "set-cookie" header of the response

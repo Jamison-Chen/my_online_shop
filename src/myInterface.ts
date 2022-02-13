@@ -47,8 +47,16 @@ export interface UserInfoInputSetting {
     disabled: boolean;
 }
 
+export interface ReceiverInfo {
+    name: string;
+    phone_number: string;
+}
+
 export interface UserInfo {
     name: string;
     email: string;
     phone_number: string;
+    gender: string;
+    date_of_birth: Date;
+    account_type: string;
 }

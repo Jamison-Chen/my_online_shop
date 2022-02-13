@@ -2,7 +2,8 @@
   <div id="account-center-page">
     <CurrentPathBar :parentPageList="fullPathList" />
     <h1>Hi, {{ userName }}</h1>
-    <a id="edit-profile-button" href="/account-center/edit">Edit</a>
+    <a href="/account-center/edit">Edit Profile</a>
+    <a href="/account-center/password">Change Password</a>
     <input id="logout-button" type="button" value="Log Out" @click="logout" />
     <router-view />
   </div>
@@ -51,7 +52,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-#edit-profile-button {
+a {
   display: block;
   margin: 15px auto;
   color: $lightBlue;

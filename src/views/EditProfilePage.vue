@@ -1,5 +1,5 @@
 <template>
-  <div id="account-center-page">
+  <div id="edit-profile-page">
     <CurrentPathBar :parentPageList="fullPathList" />
   </div>
 </template>

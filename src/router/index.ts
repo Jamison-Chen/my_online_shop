@@ -61,6 +61,11 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("../views/EditProfilePage.vue"),
     },
     {
+        path: "/account-center/password",
+        name: "ChangePasswordPage",
+        component: () => import("../views/ChangePasswordPage.vue"),
+    },
+    {
         path: "/error/:statusCode",
         name: "Error",
         component: () => import("../views/Error.vue"),

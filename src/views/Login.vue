@@ -4,8 +4,8 @@
     <AccountForm
       :fields="fields"
       :formData="formData"
-      :endPoint="endPoint"
-      :pageType="pageType"
+      :pageName="pageName"
+      :buttonName="pageName"
       :alertMessage="alertMessage"
       @input="formData[$event.inputName] = $event.value"
       @clickSubmitButton="login"
@@ -52,8 +52,7 @@ export default defineComponent({
         email: "",
         password: "",
       } as any,
-      endPoint: "http://127.0.0.1:8000/api/login" as string,
-      pageType: "Login" as string,
+      pageName: "Login" as string,
       alertMessage: "",
       parentPageList: [
         {
@@ -75,11 +74,9 @@ export default defineComponent({
   },
   methods: {
     async login(): Promise<any> {
-      let requestBody = new URLSearchParams();
-      for (let each in this.formData) {
-        requestBody.append(each, this.formData[each]);
-      }
-      await store.dispatch("checkLoginStatus", requestBody);
+      let rqBody = new URLSearchParams();
+      for (let each in this.formData) rqBody.append(each, this.formData[each]);
+      await store.dispatch("checkLoginStatus", rqBody);
       let loginStatus = store.state.loginStatus;
       if (store.state.isLoggedIn) window.location.replace("/");
       else if (loginStatus === "user not found") {

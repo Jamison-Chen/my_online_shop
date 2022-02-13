@@ -10,9 +10,37 @@ import { defineComponent } from "vue";
 import Header from "@/components/Header.vue";
 import ButtonToTop from "@/components/ButtonToTop.vue";
 import Footer from "@/components/Footer.vue";
+import store from "./store";
 
 export default defineComponent({
+  store: store,
   components: { Header, Footer, ButtonToTop },
+  methods: {
+    async jumpToLoginPageIfNeeded(): Promise<void> {
+      await Promise.all([
+        store.dispatch("checkLoginStatus"),
+        store.dispatch("getCartItemList"),
+        store.dispatch("getFavoriteList"),
+      ]);
+      if (
+        this.$route.path === "/account-center" ||
+        this.$route.path === "/account-center/edit" ||
+        this.$route.path === "/account-center/password" ||
+        this.$route.path === "/favorites" ||
+        this.$route.path === "/cart" ||
+        this.$route.path === "/checkout"
+      ) {
+        if (!store.state.isLoggedIn) this.$router.replace("/login");
+      }
+    },
+  },
+  async created() {
+    this.jumpToLoginPageIfNeeded();
+  },
+  async beforeRouteUpdate(to, from) {
+    // react to route changes
+    this.jumpToLoginPageIfNeeded();
+  },
 });
 </script>
 

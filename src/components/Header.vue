@@ -3,7 +3,11 @@
     <a id="logo" href="/">Hello World</a>
     <SearchBar :iconSize="iconSize" />
     <div id="side-button-bar">
-      <a href="/favorites" class="side-button" data-title="Favorites">
+      <a
+        :href="isLoggedIn ? '/favorites' : '/login'"
+        class="side-button"
+        data-title="Favorites"
+      >
         <IconBase :sideLength="iconSize"><IconHeart /></IconBase>
       </a>
       <div
@@ -86,11 +90,6 @@ export default defineComponent({
         store.dispatch("getCartItemList");
       }
     },
-  },
-  created() {
-    store.dispatch("checkLoginStatus");
-    store.dispatch("getCartItemList");
-    store.dispatch("getFavoriteList");
   },
 });
 </script>

@@ -29,17 +29,17 @@
     </div>
     <input
       type="button"
-      :value="pageType"
+      :value="buttonName"
       @click="$emit('clickSubmitButton')"
     />
-    <div class="reminder" v-if="pageType === 'Login'">
+    <div class="reminder" v-if="pageName === 'Login'">
       Doesn't have an account? Please
-      <a href="../register">Sign up</a>
+      <a href="/register">Sign up</a>
       here.
     </div>
-    <div class="reminder" v-else>
+    <div class="reminder" v-else-if="pageName === 'Register'">
       Already have an account? Please
-      <a href="../login">Sign in</a>
+      <a href="/login">Sign in</a>
       here.
     </div>
   </div>
@@ -59,12 +59,12 @@ export default defineComponent({
       type: Object as any,
       required: true,
     },
-    endPoint: {
+    pageName: {
       type: String,
       required: true,
     },
-    pageType: {
-      type: String as PropType<"Login" | "Register">,
+    buttonName: {
+      type: String,
       required: true,
     },
     alertMessage: {

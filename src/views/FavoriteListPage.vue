@@ -25,17 +25,12 @@ export default defineComponent({
       return store.state.favoriteList;
     },
   },
-  methods: {},
   async created() {
-    await store.dispatch("checkLoginStatus");
     if (store.state.isLoggedIn) store.dispatch("getFavoriteList");
-    else this.$router.push("/login");
   },
   async beforeRouteUpdate(to, from) {
     // react to route changes
-    await store.dispatch("checkLoginStatus");
     if (store.state.isLoggedIn) store.dispatch("getFavoriteList");
-    else this.$router.push("/login");
   },
 });
 </script>

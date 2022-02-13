@@ -209,7 +209,7 @@ import { defineComponent } from "vue";
 import CurrentPathBar from "@/components/CurrentPathBar.vue";
 import FormInput from "@/components/FormInput.vue";
 import MessageBox from "@/components/MessageBox.vue";
-import { PageInfo, UserInfo } from "@/myInterface";
+import { PageInfo, UserInfo, ReceiverInfo } from "@/myInterface";
 import store from "@/store";
 
 export default defineComponent({
@@ -222,7 +222,7 @@ export default defineComponent({
         { name: "Home", path: "/" },
         { name: "Cart", path: "/cart" },
       ] as PageInfo[],
-      receiverInfo: {} as UserInfo,
+      receiverInfo: {} as ReceiverInfo,
       paymentMethod: "" as string,
       address: "" as string,
       pickupStoreInfo: { address: "" } as any,
@@ -262,7 +262,10 @@ export default defineComponent({
       }
     },
     syncInfo(): void {
-      this.receiverInfo = { ...this.userInfo };
+      this.receiverInfo = {
+        name: this.userInfo.name,
+        phone_number: this.userInfo.phone_number,
+      };
     },
     setStoreInfo(address: string): void {
       this.pickupStoreInfo.address = address;
