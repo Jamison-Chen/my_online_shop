@@ -67,17 +67,11 @@ export default defineComponent({
       formInputDisplayType: "table" as string,
     };
   },
-  computed: {
-    localFormData(): any {
-      return this.formData;
-    },
-  },
   methods: {
-    updateValue(payload: { inputName: string; newVal: string }): void {
-      this.formData[payload.inputName] = payload.newVal;
+    updateValue(payload: { inputName: string; value: string }): void {
       this.$emit("input", {
         inputName: payload.inputName,
-        value: this.localFormData[payload.inputName],
+        value: payload.value,
       });
     },
   },

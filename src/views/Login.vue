@@ -7,7 +7,7 @@
       :pageName="pageName"
       :buttonName="pageName"
       :alertMessage="alertMessage"
-      @input="updateInputValue"
+      @input="updateValue"
       @clickSubmitButton="login"
     />
   </div>
@@ -73,7 +73,7 @@ export default defineComponent({
     },
   },
   methods: {
-    updateInputValue(event: any): void {
+    updateValue(event: { inputName: string; value: string }): void {
       this.formData[event.inputName] = event.value;
     },
     async login(): Promise<any> {

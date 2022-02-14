@@ -4,7 +4,12 @@
     <h1>Hi, {{ userName }}</h1>
     <a href="/account-center/edit">Edit Profile</a>
     <a href="/account-center/password">Change Password</a>
-    <input id="logout-button" type="button" value="Log Out" @click="logout" />
+    <input
+      id="logout-button"
+      type="button"
+      value="Log Out"
+      @click.once="logout"
+    />
     <router-view />
   </div>
 </template>

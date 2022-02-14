@@ -7,7 +7,7 @@
       :pageName="pageName"
       :buttonName="pageName"
       :alertMessage="alertMessage"
-      @input="formData[$event.inputName] = $event.value"
+      @input="updateValue"
       @clickSubmitButton="register"
     />
   </div>
@@ -48,7 +48,7 @@ export default defineComponent({
           disabled: false,
         },
         {
-          inputName: "phone-number",
+          inputName: "phone_number",
           nameDisplayed: "Phone #",
           type: "tel",
           required: false,
@@ -58,7 +58,7 @@ export default defineComponent({
           disabled: false,
         },
         {
-          inputName: "date-of-birth",
+          inputName: "date_of_birth",
           nameDisplayed: "Date Of Birth",
           type: "date",
           required: false,
@@ -78,7 +78,7 @@ export default defineComponent({
           disabled: false,
         },
         {
-          inputName: "password-check",
+          inputName: "password_check",
           nameDisplayed: "Password Check",
           type: "password",
           required: true,
@@ -91,9 +91,10 @@ export default defineComponent({
       formData: {
         name: "",
         email: "",
-        "phone-number": "",
+        phone_number: "",
+        date_of_birth: "",
         password: "",
-        "password-check": "",
+        password_check: "",
       } as any,
       pageName: "Register",
       alertMessage: "",
@@ -117,10 +118,15 @@ export default defineComponent({
     },
   },
   methods: {
+    updateValue(event: { inputName: string; value: string }): void {
+      this.formData[event.inputName] = event.value;
+    },
     async register(): Promise<any> {
       let requestBody = new URLSearchParams();
       for (let each in this.formData) {
-        requestBody.append(each, this.formData[each]);
+        if (this.formData[each] !== "") {
+          requestBody.append(each, this.formData[each]);
+        }
       }
       // The fetch approach
       this.response = await fetch("http://127.0.0.1:8000/api/register", {
@@ -155,7 +161,7 @@ export default defineComponent({
             .forEach((e) => (e.shouldAlert = true));
         } else if (this.response.status === "check your password") {
           this.fieldsSettings
-            .filter((e) => e.inputName === "password-check")
+            .filter((e) => e.inputName === "password_check")
             .forEach((e) => (e.shouldAlert = true));
         }
       }

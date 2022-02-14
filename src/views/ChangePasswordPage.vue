@@ -44,7 +44,7 @@ export default defineComponent({
       ] as PageInfo[],
       fieldsSettings: [
         {
-          inputName: "current-password",
+          inputName: "current_password",
           nameDisplayed: "Current Password",
           type: "password",
           required: true,
@@ -54,7 +54,7 @@ export default defineComponent({
           disabled: false,
         },
         {
-          inputName: "new-password",
+          inputName: "new_password",
           nameDisplayed: "New Password",
           type: "password",
           required: true,
@@ -64,7 +64,7 @@ export default defineComponent({
           disabled: false,
         },
         {
-          inputName: "new-password-check",
+          inputName: "new_password_check",
           nameDisplayed: "Password Check",
           type: "password",
           required: true,
@@ -75,9 +75,9 @@ export default defineComponent({
         },
       ] as UserInfoInputSetting[],
       formData: {
-        "current-password": "",
-        "new-password": "",
-        "new-password-check": "",
+        current_password: "",
+        new_password: "",
+        new_password_check: "",
       } as any,
       pageName: "Change Password" as string,
       alertMessage: "",
@@ -119,17 +119,17 @@ export default defineComponent({
       } else {
         this.alertMessage = status;
         if (status === "wrong password") {
-          this.formData["current-password"] = "";
+          this.formData.current_password = "";
           this.fieldsSettings
-            .filter((e) => e.inputName === "current-password")
+            .filter((e) => e.inputName === "current_password")
             .forEach((e) => (e.shouldAlert = true));
         } else if (status === "password too simple") {
           this.fieldsSettings
-            .filter((e) => e.inputName === "new-password")
+            .filter((e) => e.inputName === "new_password")
             .forEach((e) => (e.shouldAlert = true));
         } else if (status === "check your password") {
           this.fieldsSettings
-            .filter((e) => e.inputName === "new-password-check")
+            .filter((e) => e.inputName === "new_password_check")
             .forEach((e) => (e.shouldAlert = true));
         }
       }

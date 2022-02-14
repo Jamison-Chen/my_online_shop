@@ -57,6 +57,6 @@ export interface UserInfo {
     email: string;
     phone_number: string;
     gender: string;
-    date_of_birth: Date;
+    date_of_birth: string;
     account_type: string;
 }

@@ -16,30 +16,36 @@ export default defineComponent({
   store: store,
   components: { Header, Footer, ButtonToTop },
   methods: {
-    async jumpToLoginPageIfNeeded(): Promise<void> {
+    async redirectIfNeeded(): Promise<void> {
       await Promise.all([
         store.dispatch("checkLoginStatus"),
         store.dispatch("getCartItemList"),
         store.dispatch("getFavoriteList"),
       ]);
       if (
-        this.$route.path === "/account-center" ||
-        this.$route.path === "/account-center/edit" ||
-        this.$route.path === "/account-center/password" ||
-        this.$route.path === "/favorites" ||
-        this.$route.path === "/cart" ||
-        this.$route.path === "/checkout"
+        (this.$route.path === "/account-center" ||
+          this.$route.path === "/account-center/edit" ||
+          this.$route.path === "/account-center/password" ||
+          this.$route.path === "/favorites" ||
+          this.$route.path === "/cart" ||
+          this.$route.path === "/checkout") &&
+        !store.state.isLoggedIn
       ) {
-        if (!store.state.isLoggedIn) this.$router.replace("/login");
+        this.$router.replace("/login");
+      } else if (
+        (this.$route.path === "/login" || this.$route.path === "/register") &&
+        store.state.isLoggedIn
+      ) {
+        this.$router.replace("/account-center");
       }
     },
   },
   async created() {
-    this.jumpToLoginPageIfNeeded();
+    this.redirectIfNeeded();
   },
   async beforeRouteUpdate(to, from) {
     // react to route changes
-    this.jumpToLoginPageIfNeeded();
+    this.redirectIfNeeded();
   },
 });
 </script>

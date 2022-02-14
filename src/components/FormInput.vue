@@ -28,18 +28,16 @@ export default defineComponent({
       type: Object as PropType<UserInfoInputSetting>,
       required: true,
     },
-    initialValue: {},
+    initialValue: {
+      type: String,
+      required: true,
+    },
     displayType: {
       type: String as PropType<"inline-block" | "table">,
       required: true,
     },
   },
   emits: ["input"],
-  data() {
-    return {
-      localValue: undefined as any,
-    };
-  },
   computed: {
     inputSize(): number {
       if (this.$route.path === "/checkout") {
@@ -52,8 +50,10 @@ export default defineComponent({
   },
   methods: {
     updateValue(event: Event, inputName: string): void {
-      this.localValue = (event.currentTarget as HTMLInputElement).value;
-      this.$emit("input", { inputName: inputName, newVal: this.localValue });
+      this.$emit("input", {
+        inputName: inputName,
+        value: (event.currentTarget as HTMLInputElement).value,
+      });
     },
   },
 });

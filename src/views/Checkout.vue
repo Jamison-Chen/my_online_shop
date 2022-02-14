@@ -7,7 +7,7 @@
         <div class="form-input-section">
           <FormInput
             :setting="{
-              inputName: 'name-of-orderer',
+              inputName: 'name_of_orderer',
               nameDisplayed: 'Name',
               type: 'text',
               required: false,
@@ -21,7 +21,7 @@
           />
           <FormInput
             :setting="{
-              inputName: 'phone-number-of-orderer',
+              inputName: 'phone_number_of_orderer',
               nameDisplayed: 'Phone #',
               type: 'tel',
               required: false,
@@ -35,7 +35,7 @@
           />
           <FormInput
             :setting="{
-              inputName: 'email-of-order',
+              inputName: 'email_of_order',
               nameDisplayed: 'Email',
               type: 'email',
               required: false,
@@ -59,7 +59,7 @@
         <div class="form-input-section">
           <FormInput
             :setting="{
-              inputName: 'name-of-receiver',
+              inputName: 'name_of_receiver',
               nameDisplayed: 'Name',
               type: 'text',
               required: true,
@@ -70,11 +70,11 @@
             }"
             :initialValue="receiverInfo.name"
             :displayType="formInputDisplayType"
-            @input="receiverInfo.name = $event.newVal"
+            @input="receiverInfo.name = $event.value"
           />
           <FormInput
             :setting="{
-              inputName: 'phone-number-of-receiver',
+              inputName: 'phone_number_of_receiver',
               nameDisplayed: 'Phone #',
               type: 'tel',
               required: true,
@@ -85,7 +85,7 @@
             }"
             :initialValue="receiverInfo.phone_number"
             :displayType="formInputDisplayType"
-            @input="receiverInfo.phone_number = $event.newVal"
+            @input="receiverInfo.phone_number = $event.value"
           />
         </div>
       </div>
@@ -119,14 +119,14 @@
             }"
             :initialValue="address"
             :displayType="formInputDisplayType"
-            @input="address = $event.newVal"
+            @input="address = $event.value"
           />
           <div
             class="store-link-list"
             v-if="
               (paymentMethod === 'Cash On Delivery' ||
                 paymentMethod === 'In-store Pickup') &&
-              this.pickupStoreInfo.address === ''
+              pickupStoreInfo.address === ''
             "
           >
             <a href="#" class="store-link" @click="setStoreInfo('7-11')"
@@ -147,7 +147,7 @@
           >
             <FormInput
               :setting="{
-                inputName: 'store-to-pickup',
+                inputName: 'store_to_pickup',
                 nameDisplayed: 'Store to pickup',
                 type: 'text',
                 required: false,
@@ -229,7 +229,10 @@ export default defineComponent({
         { name: "Home", path: "/" },
         { name: "Cart", path: "/cart" },
       ] as PageInfo[],
-      receiverInfo: {} as ReceiverInfo,
+      receiverInfo: {
+        name: "",
+        phone_number: "",
+      } as ReceiverInfo,
       paymentMethod: "" as string,
       address: "" as string,
       pickupStoreInfo: { address: "" } as any,

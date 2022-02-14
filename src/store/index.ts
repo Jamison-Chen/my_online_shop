@@ -9,7 +9,14 @@ export default createStore({
             | "passed"
             | "wrong password"
             | "user not found",
-        userInfo: {} as UserInfo,
+        userInfo: {
+            name: "",
+            email: "",
+            phone_number: "",
+            gender: "",
+            date_of_birth: "",
+            account_type: "",
+        } as UserInfo,
         favoriteList: [] as ProductInfo[],
         cartItemList: [] as CartItemInfo[],
         cartTotalCosts: NaN as number,
@@ -22,6 +29,11 @@ export default createStore({
             state.isLoggedIn = response["status"] === "passed" ? true : false;
             state.loginStatus = response["status"];
             state.userInfo = response["data"];
+            for (let each in state.userInfo) {
+                if ((state.userInfo as any)[each] === null) {
+                    (state.userInfo as any)[each] = "";
+                }
+            }
         },
         login(state): void {
             state.isLoggedIn = true;
