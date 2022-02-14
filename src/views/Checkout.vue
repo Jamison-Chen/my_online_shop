@@ -17,6 +17,7 @@
               disabled: true,
             }"
             :initialValue="userInfo.name"
+            :displayType="formInputDisplayType"
           />
           <FormInput
             :setting="{
@@ -30,6 +31,7 @@
               disabled: true,
             }"
             :initialValue="userInfo.phone_number"
+            :displayType="formInputDisplayType"
           />
           <FormInput
             :setting="{
@@ -43,6 +45,7 @@
               disabled: true,
             }"
             :initialValue="userInfo.email"
+            :displayType="formInputDisplayType"
           />
         </div>
       </div>
@@ -66,7 +69,8 @@
               disabled: false,
             }"
             :initialValue="receiverInfo.name"
-            @input="receiverInfo.name = $event"
+            :displayType="formInputDisplayType"
+            @input="receiverInfo.name = $event.newVal"
           />
           <FormInput
             :setting="{
@@ -80,7 +84,8 @@
               disabled: false,
             }"
             :initialValue="receiverInfo.phone_number"
-            @input="receiverInfo.phone_number = $event"
+            :displayType="formInputDisplayType"
+            @input="receiverInfo.phone_number = $event.newVal"
           />
         </div>
       </div>
@@ -113,7 +118,8 @@
               disabled: false,
             }"
             :initialValue="address"
-            @input="address = $event"
+            :displayType="formInputDisplayType"
+            @input="address = $event.newVal"
           />
           <div
             class="store-link-list"
@@ -151,6 +157,7 @@
                 disabled: true,
               }"
               :initialValue="pickupStoreInfo.address"
+              :displayType="formInputDisplayType"
             />
             <span
               class="re-choose-store-button"
@@ -228,6 +235,7 @@ export default defineComponent({
       pickupStoreInfo: { address: "" } as any,
       shouldShowMessageBox: false as boolean,
       statusResponded: "" as string,
+      formInputDisplayType: "inline-block",
     };
   },
   computed: {

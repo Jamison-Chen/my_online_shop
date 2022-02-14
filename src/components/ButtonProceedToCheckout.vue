@@ -1,5 +1,5 @@
 <template>
-  <button id="proceed-to-checkout-button" @click="proceed">
+  <button id="proceed-to-checkout-button" @click.once="proceed">
     <IconBase><IconCheck /></IconBase>
     <span class="checkout-caption"><slot /></span>
   </button>

@@ -2,7 +2,7 @@
   <div class="register-page">
     <CurrentPathBar :parentPageList="fullPathList" />
     <AccountForm
-      :fields="fields"
+      :fieldsSettings="fieldsSettings"
       :formData="formData"
       :pageName="pageName"
       :buttonName="pageName"
@@ -15,10 +15,10 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import store from "@/store";
 import CurrentPathBar from "@/components/CurrentPathBar.vue";
 import AccountForm from "@/components/AccountsForm.vue";
 import { UserInfoInputSetting, PageInfo } from "@/myInterface";
+import store from "@/store";
 
 export default defineComponent({
   name: "Register",
@@ -26,7 +26,7 @@ export default defineComponent({
   components: { AccountForm, CurrentPathBar },
   data() {
     return {
-      fields: [
+      fieldsSettings: [
         {
           inputName: "name",
           nameDisplayed: "Your Name",
@@ -135,23 +135,26 @@ export default defineComponent({
       } else {
         this.alertMessage = this.response.status;
         if (this.response.status === "info not sufficient") {
+          this.fieldsSettings
+            .filter((e) => this.formData[e.inputName] === "")
+            .forEach((e) => (e.shouldAlert = true));
         } else if (
           this.response.status === "name too long" ||
           this.response.status === "name too short"
         ) {
-          this.fields
+          this.fieldsSettings
             .filter((e) => e.inputName === "name")
             .forEach((e) => (e.shouldAlert = true));
         } else if (this.response.status === "duplicated email") {
-          this.fields
+          this.fieldsSettings
             .filter((e) => e.inputName === "email")
             .forEach((e) => (e.shouldAlert = true));
         } else if (this.response.status === "password too simple") {
-          this.fields
+          this.fieldsSettings
             .filter((e) => e.inputName === "password")
             .forEach((e) => (e.shouldAlert = true));
         } else if (this.response.status === "check your password") {
-          this.fields
+          this.fieldsSettings
             .filter((e) => e.inputName === "password-check")
             .forEach((e) => (e.shouldAlert = true));
         }

@@ -2,13 +2,13 @@
   <div id="change-password-page">
     <CurrentPathBar :parentPageList="fullPathList" />
     <AccountForm
-      :fields="fields"
+      :fieldsSettings="fieldsSettings"
       :formData="formData"
       :pageName="pageName"
       buttonName="Confirm"
       :alertMessage="alertMessage"
       @input="formData[$event.inputName] = $event.value"
-      @clickSubmitButton.once="submit"
+      @clickSubmitButton="submit"
     />
   </div>
   <MessageBox
@@ -42,7 +42,7 @@ export default defineComponent({
           path: "/account-center",
         },
       ] as PageInfo[],
-      fields: [
+      fieldsSettings: [
         {
           inputName: "current-password",
           nameDisplayed: "Current Password",
@@ -120,15 +120,15 @@ export default defineComponent({
         this.alertMessage = status;
         if (status === "wrong password") {
           this.formData["current-password"] = "";
-          this.fields
+          this.fieldsSettings
             .filter((e) => e.inputName === "current-password")
             .forEach((e) => (e.shouldAlert = true));
         } else if (status === "password too simple") {
-          this.fields
+          this.fieldsSettings
             .filter((e) => e.inputName === "new-password")
             .forEach((e) => (e.shouldAlert = true));
         } else if (status === "check your password") {
-          this.fields
+          this.fieldsSettings
             .filter((e) => e.inputName === "new-password-check")
             .forEach((e) => (e.shouldAlert = true));
         }

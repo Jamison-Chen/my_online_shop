@@ -2,12 +2,12 @@
   <div class="login-page">
     <CurrentPathBar :parentPageList="fullPathList" />
     <AccountForm
-      :fields="fields"
+      :fieldsSettings="fieldsSettings"
       :formData="formData"
       :pageName="pageName"
       :buttonName="pageName"
       :alertMessage="alertMessage"
-      @input="formData[$event.inputName] = $event.value"
+      @input="updateInputValue"
       @clickSubmitButton="login"
     />
   </div>
@@ -26,7 +26,7 @@ export default defineComponent({
   components: { AccountForm, CurrentPathBar },
   data() {
     return {
-      fields: [
+      fieldsSettings: [
         {
           inputName: "email",
           nameDisplayed: "Email",
@@ -73,6 +73,9 @@ export default defineComponent({
     },
   },
   methods: {
+    updateInputValue(event: any): void {
+      this.formData[event.inputName] = event.value;
+    },
     async login(): Promise<any> {
       let rqBody = new URLSearchParams();
       for (let each in this.formData) rqBody.append(each, this.formData[each]);
@@ -82,17 +85,17 @@ export default defineComponent({
       else if (loginStatus === "user not found") {
         this.alertMessage = store.state.loginStatus;
         this.formData.email = "";
-        this.fields
+        this.fieldsSettings
           .filter((e) => e.inputName === "email")
           .forEach((e) => (e.shouldAlert = true));
         this.formData.password = "";
-        this.fields
+        this.fieldsSettings
           .filter((e) => e.inputName === "password")
           .forEach((e) => (e.shouldAlert = true));
       } else if (loginStatus === "wrong password") {
         this.alertMessage = store.state.loginStatus;
         this.formData.password = "";
-        this.fields
+        this.fieldsSettings
           .filter((e) => e.inputName === "password")
           .forEach((e) => (e.shouldAlert = true));
       }

@@ -1,6 +1,6 @@
 <template>
-  <label :for="setting.inputName">
-    {{ setting.nameDisplayed }}
+  <label :for="setting.inputName" :class="[displayType]">
+    <span>{{ setting.nameDisplayed }}</span>
     <span class="required-mark">{{ setting.required ? "*" : "" }}</span>
     <input
       :type="setting.type"
@@ -10,10 +10,11 @@
       :placeholder="setting.placeholder"
       :class="{ 'should-alert': setting.shouldAlert }"
       :disabled="setting.disabled"
-      @input="updateValue"
+      @input="(e) => updateValue(e, setting.inputName)"
       :value="initialValue"
       :size="inputSize"
     />
+    <span class="alter-mark"></span>
   </label>
 </template>
 
@@ -28,6 +29,10 @@ export default defineComponent({
       required: true,
     },
     initialValue: {},
+    displayType: {
+      type: String as PropType<"inline-block" | "table">,
+      required: true,
+    },
   },
   emits: ["input"],
   data() {
@@ -37,16 +42,18 @@ export default defineComponent({
   },
   computed: {
     inputSize(): number {
-      if (this.setting.inputName === "address") return 55;
-      else if (this.setting.type === "tel") return 15;
-      else if (this.setting.type === "email") return 30;
-      else return 20;
+      if (this.$route.path === "/checkout") {
+        if (this.setting.inputName === "address") return 55;
+        else if (this.setting.type === "tel") return 15;
+        else if (this.setting.type === "email") return 30;
+      }
+      return 20;
     },
   },
   methods: {
-    updateValue(event: Event): void {
+    updateValue(event: Event, inputName: string): void {
       this.localValue = (event.currentTarget as HTMLInputElement).value;
-      this.$emit("input", this.localValue);
+      this.$emit("input", { inputName: inputName, newVal: this.localValue });
     },
   },
 });
@@ -54,8 +61,19 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 label {
-  display: inline-block;
-  max-width: 100%;
+  &.inline-block {
+    display: inline-block;
+    max-width: 100%;
+  }
+  &.table {
+    display: table-row;
+    width: 100%;
+  }
+  &.table > span {
+    display: table-cell;
+    text-align: start;
+    vertical-align: middle;
+  }
   .required-mark {
     color: $lightRed;
   }
@@ -66,13 +84,30 @@ label {
     line-height: 1.4rem;
     font-family: inherit;
     letter-spacing: 1px;
-    max-width: 100%;
     &::placeholder {
       color: $noisyWhite;
     }
     &:disabled {
       color: $gray;
     }
+    & + .alter-mark::after {
+      content: "✖";
+      color: transparent;
+    }
+    &.should-alert {
+      &:invalid {
+        outline-color: $lightRed;
+        & + .alter-mark::after {
+          color: $lightRed;
+        }
+      }
+    }
+  }
+  &.inline-block > input {
+    max-width: 100%;
+  }
+  &.table > input {
+    display: table-cell;
   }
 }
 </style>

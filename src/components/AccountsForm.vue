@@ -2,27 +2,14 @@
   <div id="user-form">
     <div class="brand-icon"></div>
     <div class="input-table">
-      <div class="input-row" v-for="each in fields" :key="each.inputName">
-        <label :for="each.inputName">{{ each.nameDisplayed }}</label>
-        <span class="required-mark">{{ each.required ? "*" : "" }}</span>
-        <input
-          :type="each.type"
-          :name="each.inputName"
-          :required="each.required"
-          :pattern="each.pattern"
-          :placeholder="each.placeholder"
-          :class="{ 'should-alert': each.shouldAlert }"
-          :disabled="each.disabled"
-          @input="
-            $emit('input', {
-              inputName: each.inputName,
-              value: localFormData[each.inputName],
-            })
-          "
-          v-model="formData[each.inputName]"
-        />
-        <span class="alter-mark"></span>
-      </div>
+      <FormInput
+        v-for="eachSetting in fieldsSettings"
+        :key="eachSetting.inputName"
+        :setting="eachSetting"
+        :initialValue="formData[eachSetting.inputName]"
+        :displayType="formInputDisplayType"
+        @input="updateValue($event)"
+      />
     </div>
     <div class="alert-message" v-show="alertMessage !== ''">
       {{ alertMessage }}
@@ -47,11 +34,12 @@
 
 <script lang="ts">
 import { defineComponent, PropType } from "vue";
+import FormInput from "./FormInput.vue";
 import { UserInfoInputSetting } from "@/myInterface";
 
 export default defineComponent({
   props: {
-    fields: {
+    fieldsSettings: {
       type: Array as PropType<UserInfoInputSetting[]>,
       required: true,
     },
@@ -72,10 +60,25 @@ export default defineComponent({
       required: true,
     },
   },
+  components: { FormInput },
   emits: ["input", "clickSubmitButton"],
+  data() {
+    return {
+      formInputDisplayType: "table" as string,
+    };
+  },
   computed: {
     localFormData(): any {
       return this.formData;
+    },
+  },
+  methods: {
+    updateValue(payload: { inputName: string; newVal: string }): void {
+      this.formData[payload.inputName] = payload.newVal;
+      this.$emit("input", {
+        inputName: payload.inputName,
+        value: this.localFormData[payload.inputName],
+      });
     },
   },
 });
@@ -91,43 +94,6 @@ export default defineComponent({
   & > .input-table {
     display: table;
     width: 100%;
-    & > .input-row {
-      width: 100%;
-      display: table-row;
-      label,
-      span {
-        display: table-cell;
-        text-align: start;
-        vertical-align: middle;
-      }
-      .required-mark {
-        color: $lightRed;
-      }
-      & > input {
-        display: table-cell;
-        border: none;
-        border-bottom: 1px solid $lightGray;
-        margin: 10px;
-        line-height: 1.4rem;
-        font-family: inherit;
-        letter-spacing: 1px;
-        &::placeholder {
-          color: $noisyWhite;
-        }
-        & + span.alter-mark::after {
-          content: "✖";
-          color: transparent;
-        }
-        &.should-alert {
-          &:invalid {
-            outline-color: $lightRed;
-            & + span.alter-mark::after {
-              color: $lightRed;
-            }
-          }
-        }
-      }
-    }
   }
   & > .alert-message {
     margin: 10px 0;
