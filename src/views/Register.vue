@@ -98,7 +98,6 @@ export default defineComponent({
       } as any,
       pageName: "Register",
       alertMessage: "",
-      response: {} as any,
       parentPageList: [
         {
           name: "Home",
@@ -129,37 +128,38 @@ export default defineComponent({
         }
       }
       // The fetch approach
-      this.response = await fetch("http://127.0.0.1:8000/api/register", {
+      let response: any = {};
+      response = await fetch("http://127.0.0.1:8000/api/register", {
         method: "post",
         body: requestBody,
         credentials: "include", // to accept the "set-cookie" header of the response
       }).then((resp) => resp.json());
 
-      if (this.response.status === "passed") {
+      if (response.status === "passed") {
         store.commit("login");
         window.location.replace("/");
       } else {
-        this.alertMessage = this.response.status;
-        if (this.response.status === "info not sufficient") {
+        this.alertMessage = response.status;
+        if (response.status === "info not sufficient") {
           this.fieldsSettings
             .filter((e) => this.formData[e.inputName] === "")
             .forEach((e) => (e.shouldAlert = true));
         } else if (
-          this.response.status === "name too long" ||
-          this.response.status === "name too short"
+          response.status === "name too long" ||
+          response.status === "name too short"
         ) {
           this.fieldsSettings
             .filter((e) => e.inputName === "name")
             .forEach((e) => (e.shouldAlert = true));
-        } else if (this.response.status === "duplicated email") {
+        } else if (response.status === "duplicated email") {
           this.fieldsSettings
             .filter((e) => e.inputName === "email")
             .forEach((e) => (e.shouldAlert = true));
-        } else if (this.response.status === "password too simple") {
+        } else if (response.status === "password too simple") {
           this.fieldsSettings
             .filter((e) => e.inputName === "password")
             .forEach((e) => (e.shouldAlert = true));
-        } else if (this.response.status === "check your password") {
+        } else if (response.status === "check your password") {
           this.fieldsSettings
             .filter((e) => e.inputName === "password_check")
             .forEach((e) => (e.shouldAlert = true));
