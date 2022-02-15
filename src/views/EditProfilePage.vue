@@ -1,20 +1,50 @@
 <template>
   <div id="edit-profile-page">
     <CurrentPathBar :parentPageList="fullPathList" />
-    <div class="input-table">
-      <FormInput
-        v-for="eachSetting in fieldsSettings"
-        :key="eachSetting.inputName"
-        :setting="eachSetting"
-        :initialValue="originalFormData[eachSetting.inputName]"
-        displayType="table"
-        @input="updateValue($event)"
-      />
+    <div class="main">
+      <div class="text-input-table">
+        <FormInput
+          v-for="eachSetting in textInputSettings"
+          :key="eachSetting.inputName"
+          :setting="eachSetting"
+          :initialValue="originalFormData[eachSetting.inputName]"
+          displayType="table"
+          @input="updateValue($event)"
+        />
+      </div>
+      <div id="gender-input-row">
+        <span>Gender</span>
+        <label for="gender" v-for="each in genderOptios" :key="each">
+          <input
+            type="radio"
+            name="gender"
+            :value="each"
+            :checked="each === originalFormData.gender"
+            v-model="updatedFormData.gender"
+          />
+          {{ each }}
+        </label>
+      </div>
+      <div class="alert-message" v-show="alertMessage !== ''">
+        {{ alertMessage }}
+      </div>
+      <div class="button-section">
+        <input
+          type="button"
+          value="Save"
+          @click="save"
+          id="save-button"
+          class="button"
+        />
+        <input
+          type="button"
+          value="Discard"
+          @click="discard"
+          id="discard-button"
+          class="button"
+        />
+      </div>
     </div>
-    <div class="alert-message" v-show="alertMessage !== ''">
-      {{ alertMessage }}
-    </div>
-    <input type="button" value="Save" @click="save" class="save-button" />
   </div>
 </template>
 
@@ -41,12 +71,12 @@ export default defineComponent({
           path: "/account-center",
         },
       ] as PageInfo[],
-      fieldsSettings: [
+      textInputSettings: [
         {
           inputName: "name",
           nameDisplayed: "Your Name",
           type: "text",
-          required: false,
+          required: true,
           pattern: ".{2,32}",
           placeholder: " ",
           shouldAlert: false,
@@ -56,7 +86,7 @@ export default defineComponent({
           inputName: "email",
           nameDisplayed: "Email",
           type: "email",
-          required: false,
+          required: true,
           pattern: "[A-Za-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$",
           placeholder: " ",
           shouldAlert: false,
@@ -83,6 +113,7 @@ export default defineComponent({
           disabled: false,
         },
       ] as UserInfoInputSetting[],
+      genderOptios: ["Male", "Female", "Others"],
       updatedFormData: {
         name: "",
         email: "",
@@ -118,16 +149,68 @@ export default defineComponent({
     updateValue(event: { inputName: string; value: string }): void {
       this.updatedFormData[event.inputName] = event.value;
     },
-    save(): void {},
+    async save(): Promise<void> {
+      let requestBody = new URLSearchParams();
+      for (let each in this.updatedFormData) {
+        if (this.updatedFormData[each] !== "") {
+          requestBody.append(each, this.updatedFormData[each]);
+        }
+      }
+      let status = (
+        (await fetch("http://127.0.0.1:8000/api/edit-profile", {
+          method: "post",
+          body: requestBody,
+          credentials: "include",
+        }).then((resp) => resp.json())) as any
+      ).status;
+      if (status === "succeeded") this.$router.replace("/account-center");
+      else {
+        this.alertMessage = status;
+        if (status === "info not sufficient") {
+          this.textInputSettings
+            .filter((e) => this.updatedFormData[e.inputName] === "")
+            .forEach((e) => (e.shouldAlert = true));
+        } else if (status === "name too long" || status === "name too short") {
+          this.textInputSettings
+            .filter((e) => e.inputName === "name")
+            .forEach((e) => (e.shouldAlert = true));
+        } else if (status === "duplicated email") {
+          this.textInputSettings
+            .filter((e) => e.inputName === "email")
+            .forEach((e) => (e.shouldAlert = true));
+        }
+      }
+    },
+    discard(): void {
+      this.$router.replace("/account-center");
+    },
   },
 });
 </script>
 
 <style lang="scss" scoped>
-.input-table {
-  display: table;
+.main {
   width: 320px;
   margin: 0 auto;
+  .text-input-table {
+    display: table;
+    width: 100%;
+  }
+  #gender-input-row {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    margin: 10px 0;
+    span {
+      margin-right: 50px;
+    }
+    label {
+      display: inline-block;
+      margin-right: 5px;
+      line-height: 1.4rem;
+    }
+  }
 }
 .alert-message {
   margin: 10px 0;
@@ -138,20 +221,30 @@ export default defineComponent({
   border: 2px solid #dd002277;
   background-color: #dd002222;
 }
-.save-button {
+.button {
   margin: 10px 0 20px 0;
   font-family: inherit;
-  font-size: 1.2rem;
-  background-color: $black;
   border: none;
-  color: $white;
   padding: 4px 12px 8px 12px;
-  border-radius: 2px;
   cursor: pointer;
-  transition-duration: 500ms;
-  &:hover {
-    background-color: $white;
-    color: $black;
+  &#discard-button {
+    background-color: transparent;
+    color: $lightBlue;
+    font-size: 0.9rem;
+    &:hover {
+      color: $blue;
+    }
+  }
+  &#save-button {
+    font-size: 1.2rem;
+    background-color: $black;
+    color: $white;
+    border-radius: 2px;
+    transition-duration: 500ms;
+    &:hover {
+      background-color: $white;
+      color: $black;
+    }
   }
 }
 </style>

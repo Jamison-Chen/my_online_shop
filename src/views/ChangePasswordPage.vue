@@ -11,11 +11,6 @@
       @clickSubmitButton="submit"
     />
   </div>
-  <MessageBox
-    :isActive="shouldShowMessageBox"
-    :message="successMsg"
-    type="success"
-  />
 </template>
 
 <script lang="ts">
@@ -23,13 +18,12 @@ import { defineComponent } from "vue";
 import store from "@/store";
 import CurrentPathBar from "@/components/CurrentPathBar.vue";
 import AccountForm from "@/components/AccountsForm.vue";
-import MessageBox from "@/components/MessageBox.vue";
 import { PageInfo, UserInfoInputSetting } from "@/myInterface";
 
 export default defineComponent({
   name: "ChangePasswordPage",
   store: store,
-  components: { CurrentPathBar, AccountForm, MessageBox },
+  components: { CurrentPathBar, AccountForm },
   data() {
     return {
       parentPageList: [
@@ -81,8 +75,6 @@ export default defineComponent({
       } as any,
       pageName: "Change Password" as string,
       alertMessage: "",
-      shouldShowMessageBox: false as boolean,
-      successMsg: "" as string,
     };
   },
   computed: {
@@ -106,17 +98,8 @@ export default defineComponent({
           credentials: "include",
         }).then((resp) => resp.json())) as any
       )["status"];
-      if (status === "succeeded") {
-        this.alertMessage = "";
-        setTimeout(() => {
-          this.successMsg = "Password Updated!";
-          this.shouldShowMessageBox = true;
-          setTimeout(() => {
-            this.shouldShowMessageBox = false;
-            this.$router.replace("/account-center");
-          }, 1500);
-        }, 100);
-      } else {
+      if (status === "succeeded") this.$router.replace("/account-center");
+      else {
         this.alertMessage = status;
         if (status === "wrong password") {
           this.formData.current_password = "";

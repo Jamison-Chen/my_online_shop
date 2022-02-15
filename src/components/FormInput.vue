@@ -11,6 +11,7 @@
       :class="{ 'should-alert': setting.shouldAlert }"
       :disabled="setting.disabled"
       @input="(e) => updateValue(e, setting.inputName)"
+      @change="(e) => updateValue(e, setting.inputName)"
       :value="initialValue"
       :size="inputSize"
     />
