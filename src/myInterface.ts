@@ -60,3 +60,25 @@ export interface UserInfo {
     date_of_birth: string;
     account_type: string;
 }
+
+export interface OrderInfo {
+    id: string;
+    name_of_picker: string;
+    phone_number_of_picker: string;
+    payment_method: string;
+    address: string;
+    final_cost: number;
+    ordered_date: string;
+    paid_date: string | null;
+    shipped_date: string;
+    arrived_date: string;
+    picked_up_date: string;
+    items: OrderItemInfo[];
+}
+
+export interface OrderItemInfo {
+    product_name: string;
+    product_specification: string;
+    quantity: number;
+    subtotal_costs: number;
+}

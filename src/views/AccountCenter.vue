@@ -4,6 +4,7 @@
     <h1>Hi, {{ userName }}</h1>
     <a href="/account-center/edit">Edit Profile</a>
     <a href="/account-center/password">Change Password</a>
+    <a href="/track-order">Track My Order</a>
     <input
       id="logout-button"
       type="button"

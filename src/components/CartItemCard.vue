@@ -1,6 +1,6 @@
 <template>
   <div class="cart-item-card">
-    <IconBase class="trash-can-button" @click="deleteCartItem"
+    <IconBase class="delete-button" @click="deleteCartItem"
       ><IconTrashCan
     /></IconBase>
     <a class="picture-container" :href="`/product/${cartItemInfo.product_id}`">
@@ -65,7 +65,7 @@ export default defineComponent({
   border-bottom: 1px solid $almostWhite;
   box-sizing: border-box;
   min-height: 160px;
-  .trash-can-button {
+  .delete-button {
     position: absolute;
     top: 0;
     right: 0;
