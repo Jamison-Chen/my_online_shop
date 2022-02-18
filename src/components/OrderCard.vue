@@ -7,7 +7,45 @@
         ><IconUpArrow
       /></IconBase>
     </div>
-    <div class="body" :class="{ fold: isFold }">{{ orderInfo }}</div>
+    <div class="body" :class="{ fold: isFold }">
+      <div class="row">
+        <span class="subtitle">Recipient:</span>{{ orderInfo.name_of_picker }}
+      </div>
+      <div class="row">
+        <span class="subtitle">Contact Number:</span>
+        {{ orderInfo.phone_number_of_picker }}
+      </div>
+      <div class="row">
+        <span class="subtitle">Payment Method:</span>
+        {{ orderInfo.payment_method }}
+      </div>
+      <div class="row">
+        <span class="subtitle">Address:</span>
+        {{ orderInfo.address }}
+      </div>
+      <table class="row">
+        <thead>
+          <tr>
+            <th>Product Name</th>
+            <th>Product Specification</th>
+            <th>Quantity</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="eachItem in orderInfo.items" :key="eachItem">
+            <td>{{ eachItem.product_name }}</td>
+            <td>{{ eachItem.product_specification }}</td>
+            <td>{{ eachItem.quantity }}</td>
+            <td>${{ eachItem.subtotal_costs }}</td>
+          </tr>
+          <tr class="total-row">
+            <td colspan="3" class="total-title">Total + Freight - Coupon</td>
+            <td>${{ orderInfo.final_cost }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
@@ -106,15 +144,49 @@ export default defineComponent({
   }
   & > .body {
     box-sizing: border-box;
-    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     overflow: hidden;
     height: fit-content;
-    min-height: 100px;
+    min-height: 200px;
+    letter-spacing: 1px;
     transition-duration: 300ms;
     &.fold {
       height: 0px;
       min-height: 0px;
-      padding: 0;
+    }
+    & > .row {
+      margin: 10px;
+      &.total {
+        align-self: flex-end;
+      }
+      & > .subtitle {
+        font-size: 0.85rem;
+        color: $gray;
+        margin-right: 5px;
+      }
+    }
+    table {
+      width: 100%;
+      thead > tr {
+        border-bottom: 1px solid $gray;
+        th {
+          color: $gray;
+          font-weight: normal;
+        }
+      }
+      tbody > tr {
+        &.total-row {
+          line-height: 2rem;
+          .total-title {
+            text-align: end;
+            color: $lightGray;
+            font-weight: bold;
+          }
+        }
+        // text-align: end;
+      }
     }
   }
 }
