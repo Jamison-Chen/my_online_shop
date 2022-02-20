@@ -17,8 +17,19 @@
         Your account hasn't been verified yet. Please check your email inbox, or
         click the button below to get another verification email.
       </div>
-      <div class="send-mail-button" @click="requestSendVerificationEmail">
-        send me another verification email
+      <div class="email-not-verified-message">
+        Click
+        <span class="inline-button" @click="shouldShowSendEmailSection = false">
+          here</span
+        >
+        to login again if you just verified.
+      </div>
+      <div class="email-not-verified-message">
+        Click
+        <span class="inline-button" @click="requestSendVerificationEmail">
+          here</span
+        >
+        to get another verification email.
       </div>
     </div>
   </div>
@@ -98,6 +109,7 @@ export default defineComponent({
       if (store.state.isLoggedIn) window.location.replace("/");
       else {
         this.messageType = "warning";
+        this.messageShowed = "";
         if (loginStatus === "user not found") {
           this.messageShowed = store.state.loginStatus;
           this.formData.email = "";
@@ -121,20 +133,30 @@ export default defineComponent({
     },
     async requestSendVerificationEmail(): Promise<void> {
       // TODOS: send request to send another verification email
-      //
-      this.shouldShowSendEmailSection = false;
-      this.formData = {
-        email: "",
-        password: "",
-      };
-      this.messageShowed =
-        "We've just send you an email to verify this account. Please check your email inbox, and then go back to log in.";
-      this.messageType = "success";
+      let rqBody = new URLSearchParams();
+      for (let each in this.formData) rqBody.append(each, this.formData[each]);
+      let response = await fetch(
+        "http://127.0.0.1:8000/api/resend-verification-email",
+        {
+          method: "post",
+          body: rqBody,
+          credentials: "include",
+        }
+      ).then((resp) => resp.json());
+      if (response.status === "succeeded") {
+        this.shouldShowSendEmailSection = false;
+        this.formData = {
+          email: "",
+          password: "",
+        };
+        this.messageShowed = response.message;
+        this.messageType = "success";
+      }
     },
     applyStepInMessageIfNeeded(): void {
       if (Object.keys(this.$route.params).includes("messageShowed")) {
-        this.messageShowed = this.$route.params.messageShowed as string;
         this.messageType = "success";
+        this.messageShowed = this.$route.params.messageShowed as string;
       }
     },
   },
@@ -150,14 +172,15 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .email-not-verified-message {
-  max-width: 300px;
+  max-width: 400px;
   text-align: justify;
   margin: 30px auto;
   text-justify: inter-ideograph;
   font-size: 1.1rem;
   line-height: 1.8rem;
+  letter-spacing: 1px;
 }
-.send-mail-button {
+.inline-button {
   color: $lightBlue;
   text-decoration: underline;
   cursor: pointer;

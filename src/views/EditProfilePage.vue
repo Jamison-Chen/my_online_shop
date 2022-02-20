@@ -156,30 +156,38 @@ export default defineComponent({
           requestBody.append(each, this.updatedFormData[each]);
         }
       }
-      let status = (
-        (await fetch("http://127.0.0.1:8000/api/edit-profile", {
-          method: "post",
-          body: requestBody,
-          credentials: "include",
-        }).then((resp) => resp.json())) as any
-      ).status;
-      if (status === "succeeded") this.$router.replace("/account-center");
+      let response = await fetch("http://127.0.0.1:8000/api/edit-profile", {
+        method: "post",
+        body: requestBody,
+        credentials: "include",
+      }).then((resp) => resp.json());
+      if (response.status === "succeeded")
+        this.$router.replace("/account-center");
       else {
-        this.messageShowed = status;
-        if (status === "info not sufficient") {
+        this.messageShowed = response.status;
+        if (response.status === "info not sufficient") {
           this.textInputSettings
             .filter((e) => this.updatedFormData[e.inputName] === "")
             .forEach((e) => (e.shouldAlert = true));
-        } else if (status === "name too long" || status === "name too short") {
+        } else if (
+          response.status === "name too long" ||
+          response.status === "name too short"
+        ) {
           this.textInputSettings
             .filter((e) => e.inputName === "name")
             .forEach((e) => (e.shouldAlert = true));
-        } else if (status === "duplicate email") {
+        } else if (response.status === "duplicate email") {
           this.textInputSettings
             .filter((e) => e.inputName === "email")
             .forEach((e) => (e.shouldAlert = true));
-        } else if (status === "email not verified") {
-          // this.shouldShowSendEmailSection = true;
+        } else if (response.status === "email not verified") {
+          store.dispatch("logout");
+          this.$router.replace({
+            name: "Login",
+            params: {
+              messageShowed: response.message,
+            },
+          });
         }
       }
     },

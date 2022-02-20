@@ -135,13 +135,11 @@ export default defineComponent({
         body: requestBody,
         credentials: "include", // to accept the "set-cookie" header of the response
       }).then((resp) => resp.json());
-
       if (response.status === "passed") {
         this.$router.replace({
           name: "Login",
           params: {
-            messageShowed:
-              "We've just send you an email to verify this account. Please check your email inbox, and then go back to log in.",
+            messageShowed: response.message,
           },
         });
       } else {
