@@ -71,7 +71,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import("../views/TrackOrderPage.vue"),
     },
     {
-        path: "/error/:statusCode",
+        path: "/error",
         name: "Error",
         component: () => import("../views/Error.vue"),
     },

@@ -6,7 +6,8 @@
       :formData="formData"
       :pageName="pageName"
       :buttonName="pageName"
-      :alertMessage="alertMessage"
+      :messageShowed="messageShowed"
+      messageType="warning"
       @input="updateValue"
       @clickSubmitButton="register"
     />
@@ -97,7 +98,7 @@ export default defineComponent({
         password_check: "",
       } as any,
       pageName: "Register",
-      alertMessage: "",
+      messageShowed: "",
       parentPageList: [
         {
           name: "Home",
@@ -136,10 +137,15 @@ export default defineComponent({
       }).then((resp) => resp.json());
 
       if (response.status === "passed") {
-        store.commit("login");
-        window.location.replace("/");
+        this.$router.replace({
+          name: "Login",
+          params: {
+            messageShowed:
+              "We've just send you an email to verify this account. Please check your email inbox, and then go back to log in.",
+          },
+        });
       } else {
-        this.alertMessage = response.status;
+        this.messageShowed = response.status;
         if (response.status === "info not sufficient") {
           this.fieldsSettings
             .filter((e) => this.formData[e.inputName] === "")
@@ -151,7 +157,7 @@ export default defineComponent({
           this.fieldsSettings
             .filter((e) => e.inputName === "name")
             .forEach((e) => (e.shouldAlert = true));
-        } else if (response.status === "duplicated email") {
+        } else if (response.status === "duplicate email") {
           this.fieldsSettings
             .filter((e) => e.inputName === "email")
             .forEach((e) => (e.shouldAlert = true));

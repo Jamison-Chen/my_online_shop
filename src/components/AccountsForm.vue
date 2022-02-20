@@ -1,5 +1,5 @@
 <template>
-  <div id="user-form">
+  <div id="account-form">
     <div class="brand-icon"></div>
     <div class="input-table">
       <FormInput
@@ -11,8 +11,12 @@
         @input="updateValue($event)"
       />
     </div>
-    <div class="alert-message" v-show="alertMessage !== ''">
-      {{ alertMessage }}
+    <div
+      class="message-showed"
+      :class="[messageType]"
+      v-show="messageShowed !== ''"
+    >
+      {{ messageShowed }}
     </div>
     <input
       type="button"
@@ -20,7 +24,7 @@
       @click="$emit('clickSubmitButton')"
     />
     <div class="reminder" v-if="pageName === 'Login'">
-      Doesn't have an account? Please
+      Do not have an account? Please
       <a href="/register">Sign up</a>
       here.
     </div>
@@ -55,8 +59,12 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    alertMessage: {
+    messageShowed: {
       type: String,
+      required: true,
+    },
+    messageType: {
+      type: String as PropType<"success" | "warning">,
       required: true,
     },
   },
@@ -79,7 +87,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-#user-form {
+#account-form {
   width: 320px;
   margin: auto;
   padding: 30px 20px;
@@ -89,14 +97,21 @@ export default defineComponent({
     display: table;
     width: 100%;
   }
-  & > .alert-message {
+  & > .message-showed {
     margin: 10px 0;
     padding: 5px;
     border-radius: 5px;
-    color: $lightRed;
     font-size: 0.8rem;
-    border: 2px solid #dd002277;
-    background-color: #dd002222;
+    &.warning {
+      color: $lightRed;
+      border: 2px solid #dd002277;
+      background-color: #dd002222;
+    }
+    &.success {
+      color: $green;
+      border: 2px solid #00dd2277;
+      background-color: #00dd2222;
+    }
   }
   & > input {
     margin: 10px 0 20px 0;
@@ -105,10 +120,10 @@ export default defineComponent({
     background-color: $black;
     border: none;
     color: $white;
-    padding: 4px 12px 8px 12px;
+    padding: 4px 16px 8px 16px;
     border-radius: 2px;
     cursor: pointer;
-    transition-duration: 500ms;
+    transition-duration: 300ms;
     &:hover {
       background-color: $white;
       color: $black;

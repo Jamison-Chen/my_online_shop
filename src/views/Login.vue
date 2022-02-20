@@ -2,14 +2,25 @@
   <div class="login-page">
     <CurrentPathBar :parentPageList="fullPathList" />
     <AccountForm
+      v-if="!shouldShowSendEmailSection"
       :fieldsSettings="fieldsSettings"
       :formData="formData"
       :pageName="pageName"
       :buttonName="pageName"
-      :alertMessage="alertMessage"
+      :messageShowed="messageShowed"
+      :messageType="messageType"
       @input="updateValue"
       @clickSubmitButton="login"
     />
+    <div v-else>
+      <div class="email-not-verified-message">
+        Your account hasn't been verified yet. Please check your email inbox, or
+        click the button below to get another verification email.
+      </div>
+      <div class="send-mail-button" @click="requestSendVerificationEmail">
+        send me another verification email
+      </div>
+    </div>
   </div>
 </template>
 
@@ -53,13 +64,15 @@ export default defineComponent({
         password: "",
       } as any,
       pageName: "Login" as string,
-      alertMessage: "",
+      messageShowed: "" as string,
+      messageType: "warning" as "warning" | "success",
       parentPageList: [
         {
           name: "Home",
           path: "/",
         },
       ] as PageInfo[],
+      shouldShowSendEmailSection: false as boolean,
     };
   },
   computed: {
@@ -80,29 +93,76 @@ export default defineComponent({
       let rqBody = new URLSearchParams();
       for (let each in this.formData) rqBody.append(each, this.formData[each]);
       await store.dispatch("checkLoginStatus", rqBody);
+
       let loginStatus = store.state.loginStatus;
       if (store.state.isLoggedIn) window.location.replace("/");
-      else if (loginStatus === "user not found") {
-        this.alertMessage = store.state.loginStatus;
-        this.formData.email = "";
-        this.fieldsSettings
-          .filter((e) => e.inputName === "email")
-          .forEach((e) => (e.shouldAlert = true));
-        this.formData.password = "";
-        this.fieldsSettings
-          .filter((e) => e.inputName === "password")
-          .forEach((e) => (e.shouldAlert = true));
-      } else if (loginStatus === "wrong password") {
-        this.alertMessage = store.state.loginStatus;
-        this.formData.password = "";
-        this.fieldsSettings
-          .filter((e) => e.inputName === "password")
-          .forEach((e) => (e.shouldAlert = true));
+      else {
+        this.messageType = "warning";
+        if (loginStatus === "user not found") {
+          this.messageShowed = store.state.loginStatus;
+          this.formData.email = "";
+          this.fieldsSettings
+            .filter((e) => e.inputName === "email")
+            .forEach((e) => (e.shouldAlert = true));
+          this.formData.password = "";
+          this.fieldsSettings
+            .filter((e) => e.inputName === "password")
+            .forEach((e) => (e.shouldAlert = true));
+        } else if (loginStatus === "wrong password") {
+          this.messageShowed = store.state.loginStatus;
+          this.formData.password = "";
+          this.fieldsSettings
+            .filter((e) => e.inputName === "password")
+            .forEach((e) => (e.shouldAlert = true));
+        } else if (loginStatus === "email not verified") {
+          this.shouldShowSendEmailSection = true;
+        }
       }
     },
+    async requestSendVerificationEmail(): Promise<void> {
+      // TODOS: send request to send another verification email
+      //
+      this.shouldShowSendEmailSection = false;
+      this.formData = {
+        email: "",
+        password: "",
+      };
+      this.messageShowed =
+        "We've just send you an email to verify this account. Please check your email inbox, and then go back to log in.";
+      this.messageType = "success";
+    },
+    applyStepInMessageIfNeeded(): void {
+      if (Object.keys(this.$route.params).includes("messageShowed")) {
+        this.messageShowed = this.$route.params.messageShowed as string;
+        this.messageType = "success";
+      }
+    },
+  },
+  created() {
+    this.applyStepInMessageIfNeeded();
+  },
+  beforeRouteUpdate(to, from) {
+    // react to route changes
+    this.applyStepInMessageIfNeeded();
   },
 });
 </script>
 
 <style lang="scss" scoped>
+.email-not-verified-message {
+  max-width: 300px;
+  text-align: justify;
+  margin: 30px auto;
+  text-justify: inter-ideograph;
+  font-size: 1.1rem;
+  line-height: 1.8rem;
+}
+.send-mail-button {
+  color: $lightBlue;
+  text-decoration: underline;
+  cursor: pointer;
+  :hover {
+    color: $blue;
+  }
+}
 </style>

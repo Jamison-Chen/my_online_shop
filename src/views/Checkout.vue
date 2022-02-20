@@ -269,7 +269,10 @@ export default defineComponent({
         credentials: "include",
       }).then((resp) => resp.status);
       if (statusCode === 404 || statusCode === 500) {
-        this.$router.push(`/error/${statusCode}`);
+        this.$router.push({
+          name: "Error",
+          params: { statusCode: statusCode },
+        });
       }
     },
     syncInfo(): void {
@@ -310,7 +313,10 @@ export default defineComponent({
         credentials: "include",
       }).then((resp) => resp);
       if (response.status === 404 || response.status === 500) {
-        this.$router.push(`/error/${response.status}`);
+        this.$router.push({
+          name: "Error",
+          params: { statusCode: response.status },
+        });
       } else {
         let status = ((await response.json()) as any)["status"];
         if (status === "succeeded") window.location.replace("/thank-you");

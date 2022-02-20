@@ -32,7 +32,10 @@ export default defineComponent({
           }
         ).then((resp) => resp.status);
         if (statusCode === 404 || statusCode === 500) {
-          this.$router.push(`/error/${statusCode}`);
+          this.$router.push({
+            name: "Error",
+            params: { statusCode: statusCode },
+          });
         } else window.location.assign("/checkout");
       }
     },

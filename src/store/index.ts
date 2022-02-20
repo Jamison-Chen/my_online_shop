@@ -8,7 +8,8 @@ export default createStore({
             | "loggedout"
             | "passed"
             | "wrong password"
-            | "user not found",
+            | "user not found"
+            | "email not verified",
         userInfo: {
             name: "",
             email: "",

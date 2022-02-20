@@ -25,8 +25,8 @@
           {{ each }}
         </label>
       </div>
-      <div class="alert-message" v-show="alertMessage !== ''">
-        {{ alertMessage }}
+      <div class="alert-message" v-show="messageShowed !== ''">
+        {{ messageShowed }}
       </div>
       <div class="button-section">
         <input
@@ -122,7 +122,7 @@ export default defineComponent({
         date_of_birth: "",
       } as any,
       pageName: "EditProfilePage",
-      alertMessage: "",
+      messageShowed: "",
     };
   },
   computed: {
@@ -165,7 +165,7 @@ export default defineComponent({
       ).status;
       if (status === "succeeded") this.$router.replace("/account-center");
       else {
-        this.alertMessage = status;
+        this.messageShowed = status;
         if (status === "info not sufficient") {
           this.textInputSettings
             .filter((e) => this.updatedFormData[e.inputName] === "")
@@ -174,10 +174,12 @@ export default defineComponent({
           this.textInputSettings
             .filter((e) => e.inputName === "name")
             .forEach((e) => (e.shouldAlert = true));
-        } else if (status === "duplicated email") {
+        } else if (status === "duplicate email") {
           this.textInputSettings
             .filter((e) => e.inputName === "email")
             .forEach((e) => (e.shouldAlert = true));
+        } else if (status === "email not verified") {
+          // this.shouldShowSendEmailSection = true;
         }
       }
     },

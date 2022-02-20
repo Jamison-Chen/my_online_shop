@@ -6,7 +6,8 @@
       :formData="formData"
       :pageName="pageName"
       buttonName="Confirm"
-      :alertMessage="alertMessage"
+      :messageShowed="messageShowed"
+      messageType="warning"
       @input="formData[$event.inputName] = $event.value"
       @clickSubmitButton="submit"
     />
@@ -74,7 +75,7 @@ export default defineComponent({
         new_password_check: "",
       } as any,
       pageName: "Change Password" as string,
-      alertMessage: "",
+      messageShowed: "",
     };
   },
   computed: {
@@ -100,7 +101,7 @@ export default defineComponent({
       )["status"];
       if (status === "succeeded") this.$router.replace("/account-center");
       else {
-        this.alertMessage = status;
+        this.messageShowed = status;
         if (status === "wrong password") {
           this.formData.current_password = "";
           this.fieldsSettings
