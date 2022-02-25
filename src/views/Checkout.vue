@@ -225,9 +225,11 @@ export default defineComponent({
   components: { CurrentPathBar, FormInput, MessageBox },
   data() {
     return {
+      publicPath:
+        process.env.NODE_ENV === "production" ? "/my_online_shop/" : "/",
       parentPageList: [
-        { name: "Home", path: "/" },
-        { name: "Cart", path: "/cart" },
+        { name: "Home", path: "" },
+        { name: "Cart", path: "cart" },
       ] as PageInfo[],
       receiverInfo: {
         name: "",
@@ -319,7 +321,8 @@ export default defineComponent({
         });
       } else {
         let status = ((await response.json()) as any)["status"];
-        if (status === "succeeded") window.location.replace("/thank-you");
+        if (status === "succeeded")
+          window.location.replace(`${this.publicPath}thank-you`);
         else {
           setTimeout(() => {
             this.statusResponded = status;

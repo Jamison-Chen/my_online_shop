@@ -3,7 +3,10 @@
     <IconBase class="delete-button" @click="deleteCartItem"
       ><IconTrashCan
     /></IconBase>
-    <a class="picture-container" :href="`/product/${cartItemInfo.product_id}`">
+    <a
+      class="picture-container"
+      :href="`${publicPath}product/${cartItemInfo.product_id}`"
+    >
       <img
         class="fake-img"
         style="width: 100%; height: 100%; background-color: #ccc"
@@ -12,7 +15,7 @@
     <div class="item-info-section">
       <a
         class="product-name item-info"
-        :href="`/product/${cartItemInfo.product_id}`"
+        :href="`${publicPath}product/${cartItemInfo.product_id}`"
         >{{ cartItemInfo.product_name }}</a
       >
       <div class="specification item-info">{{ productSpec }}</div>
@@ -35,6 +38,12 @@ export default defineComponent({
       type: Object as PropType<CartItemInfo>,
       required: true,
     },
+  },
+  data() {
+    return {
+      publicPath:
+        process.env.NODE_ENV === "production" ? "/my_online_shop/" : "/",
+    };
   },
   components: { IconBase, IconTrashCan },
   computed: {

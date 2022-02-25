@@ -30,14 +30,24 @@ export default defineComponent({
   components: { PictureCarousel, PageBlock, CategoryInfoCard },
   data() {
     return {
+      publicPath:
+        process.env.NODE_ENV === "production" ? "/my_online_shop/" : "/",
       carouselContents: [
         {
           image: "#fff4f4",
-          href: "/search-result?query=top,seller,this,month",
+          href: `${this.publicPath}search-result?query=top,seller,this,month`,
           title: "Top Seller This Month",
         },
-        { image: "#f4fff4", href: "/product/24", title: "Ad2" },
-        { image: "#f4f4ff", href: "/product/32", title: "Ad3" },
+        {
+          image: "#f4fff4",
+          href: `${this.publicPath}product/24`,
+          title: "Ad2",
+        },
+        {
+          image: "#f4f4ff",
+          href: `${this.publicPath}product/32`,
+          title: "Ad3",
+        },
       ] as CarouselContentInfo[],
       categories: [] as CategoryInfo[],
     };

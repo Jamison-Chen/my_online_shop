@@ -41,7 +41,7 @@ export default defineComponent({
   emits: ["input"],
   computed: {
     inputSize(): number {
-      if (this.$route.path === "/checkout") {
+      if (this.$route.path.indexOf("/checkout") !== -1) {
         if (this.setting.inputName === "address") return 55;
         else if (this.setting.type === "tel") return 15;
         else if (this.setting.type === "email") return 30;

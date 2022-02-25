@@ -61,14 +61,16 @@ export default defineComponent({
   components: { CurrentPathBar, FormInput },
   data() {
     return {
+      publicPath:
+        process.env.NODE_ENV === "production" ? "/my_online_shop/" : "/",
       parentPageList: [
         {
           name: "Home",
-          path: "/",
+          path: "",
         },
         {
           name: "Account Center",
-          path: "/account-center",
+          path: "account-center",
         },
       ] as PageInfo[],
       textInputSettings: [
@@ -162,7 +164,7 @@ export default defineComponent({
         credentials: "include",
       }).then((resp) => resp.json());
       if (response.status === "succeeded") {
-        window.location.replace("/account-center");
+        window.location.replace(`${this.publicPath}account-center`);
       } else {
         this.messageShowed = response.status;
         if (response.status === "info not sufficient") {

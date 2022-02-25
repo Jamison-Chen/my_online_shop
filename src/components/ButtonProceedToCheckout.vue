@@ -17,6 +17,12 @@ export default defineComponent({
     IconBase,
     IconCheck,
   },
+  data() {
+    return {
+      publicPath:
+        process.env.NODE_ENV === "production" ? "/my_online_shop/" : "/",
+    };
+  },
   computed: {
     buttonLink(): string {
       return "/checkout";
@@ -24,8 +30,9 @@ export default defineComponent({
   },
   methods: {
     async proceed(): Promise<void> {
-      if (this.$route.path !== "/cart") window.location.assign("/cart");
-      else {
+      if (this.$route.path.indexOf("/cart") === -1) {
+        window.location.assign(`${this.publicPath}cart`);
+      } else {
         let statusCode = await fetch(
           `${store.state.backendApiUrl}/cart/proceed_to_checkout`,
           {
@@ -38,7 +45,7 @@ export default defineComponent({
             name: "Error",
             params: { statusCode: statusCode },
           });
-        } else window.location.assign("/checkout");
+        } else window.location.assign(`${this.publicPath}checkout`);
       }
     },
   },

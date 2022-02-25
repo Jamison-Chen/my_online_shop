@@ -48,6 +48,8 @@ export default defineComponent({
   components: { AccountForm, CurrentPathBar },
   data() {
     return {
+      publicPath:
+        process.env.NODE_ENV === "production" ? "/my_online_shop/" : "/",
       fieldsSettings: [
         {
           inputName: "email",
@@ -80,7 +82,7 @@ export default defineComponent({
       parentPageList: [
         {
           name: "Home",
-          path: "/",
+          path: "",
         },
       ] as PageInfo[],
       shouldShowSendEmailSection: false as boolean,
@@ -106,7 +108,7 @@ export default defineComponent({
       await store.dispatch("checkLoginStatus", rqBody);
 
       let loginStatus = store.state.loginStatus;
-      if (store.state.isLoggedIn) window.location.replace("/");
+      if (store.state.isLoggedIn) window.location.replace(this.publicPath);
       else {
         this.messageType = "warning";
         this.messageShowed = "";

@@ -2,9 +2,9 @@
   <div id="account-center-page">
     <CurrentPathBar :parentPageList="fullPathList" />
     <h1>Hi, {{ userName }}</h1>
-    <a href="/account-center/edit">Edit Profile</a>
-    <a href="/account-center/password">Change Password</a>
-    <a href="/track-order">Track My Order</a>
+    <a :href="`${publicPath}account-center/edit`">Edit Profile</a>
+    <a :href="`${publicPath}account-center/password`">Change Password</a>
+    <a :href="`${publicPath}track-order`">Track My Order</a>
     <input
       id="logout-button"
       type="button"
@@ -26,10 +26,12 @@ export default defineComponent({
   components: { CurrentPathBar },
   data() {
     return {
+      publicPath:
+        process.env.NODE_ENV === "production" ? "/my_online_shop/" : "/",
       parentPageList: [
         {
           name: "Home",
-          path: "/",
+          path: "",
         },
       ] as PageInfo[],
     };
@@ -50,7 +52,7 @@ export default defineComponent({
   methods: {
     async logout(): Promise<void> {
       await store.dispatch("logout");
-      window.location.replace("/");
+      window.location.replace(this.publicPath);
     },
   },
 });

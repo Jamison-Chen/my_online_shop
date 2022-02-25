@@ -15,7 +15,7 @@ export default defineComponent({
   data() {
     return {
       status: "waiting" as "waiting" | "success" | "failed",
-      parentPageList: [{ name: "Home", path: "/" }] as PageInfo[],
+      parentPageList: [{ name: "Home", path: "" }] as PageInfo[],
       products: [] as ProductInfo[],
     };
   },

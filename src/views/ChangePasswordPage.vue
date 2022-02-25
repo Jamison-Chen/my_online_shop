@@ -30,11 +30,11 @@ export default defineComponent({
       parentPageList: [
         {
           name: "Home",
-          path: "/",
+          path: "",
         },
         {
           name: "Account Center",
-          path: "/account-center",
+          path: "account-center",
         },
       ] as PageInfo[],
       fieldsSettings: [

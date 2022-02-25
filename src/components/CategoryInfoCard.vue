@@ -1,5 +1,5 @@
 <template>
-  <a class="category-info-card" :href="`/${categoryInfo.name}`">
+  <a class="category-info-card" :href="`${publicPath}${categoryInfo.name}`">
     <div class="category-cover-picture">
       <div
         class="fake-picture"
@@ -28,6 +28,12 @@ export default defineComponent({
       type: Object as PropType<CategoryInfo>,
       required: true,
     },
+  },
+  data() {
+    return {
+      publicPath:
+        process.env.NODE_ENV === "production" ? "/my_online_shop/" : "/",
+    };
   },
   methods: {},
 });

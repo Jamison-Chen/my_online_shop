@@ -70,7 +70,7 @@ export default defineComponent({
       parentPageList: [
         {
           name: "Home",
-          path: "/",
+          path: "",
         },
       ] as PageInfo[],
     };

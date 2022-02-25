@@ -14,7 +14,7 @@ export default defineComponent({
   components: { ProductListPage },
   data() {
     return {
-      parentPageList: [{ name: "Home", path: "/" }] as PageInfo[],
+      parentPageList: [{ name: "Home", path: "" }] as PageInfo[],
     };
   },
   computed: {

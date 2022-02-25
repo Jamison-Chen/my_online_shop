@@ -1,7 +1,7 @@
 <template>
   <div id="current-path-bar">
     <div class="part-of-path" v-for="each in parentPageList" :key="each.name">
-      <a class="path-name" :href="each.path">{{ each.name }}</a>
+      <a class="path-name" :href="publicPath + each.path">{{ each.name }}</a>
       <span
         class="slash"
         v-if="each.name !== parentPageList[parentPageList.length - 1].name"
@@ -22,6 +22,12 @@ export default defineComponent({
       type: Array as PropType<PageInfo[]>,
       required: true,
     },
+  },
+  data() {
+    return {
+      publicPath:
+        process.env.NODE_ENV === "production" ? "/my_online_shop/" : "/",
+    };
   },
 });
 </script>

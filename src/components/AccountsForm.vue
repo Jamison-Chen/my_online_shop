@@ -25,12 +25,12 @@
     />
     <div class="reminder" v-if="pageName === 'Login'">
       Do not have an account? Please
-      <a href="/register">Sign up</a>
+      <a :href="`${publicPath}register`">Sign up</a>
       here.
     </div>
     <div class="reminder" v-else-if="pageName === 'Register'">
       Already have an account? Please
-      <a href="/login">Sign in</a>
+      <a :href="`${publicPath}login`">Sign in</a>
       here.
     </div>
   </div>
@@ -72,6 +72,8 @@ export default defineComponent({
   emits: ["input", "clickSubmitButton"],
   data() {
     return {
+      publicPath:
+        process.env.NODE_ENV === "production" ? "/my_online_shop/" : "/",
       formInputDisplayType: "table" as string,
     };
   },

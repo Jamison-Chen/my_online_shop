@@ -1,6 +1,6 @@
 <template>
   <div class="product-info-card">
-    <a class="picture-section" :href="`/product/${productInfo.id}`">
+    <a class="picture-section" :href="`${publicPath}product/${productInfo.id}`">
       <div
         class="fake-picture"
         style="background-color: #ccc; height: 512px; width: 100%"
@@ -8,7 +8,7 @@
     </a>
     <div class="non-picture-section">
       <div class="category-tag">{{ productInfo.category.toUpperCase() }}</div>
-      <a class="name-tag" :href="`/product/${productInfo.id}`">
+      <a class="name-tag" :href="`${publicPath}product/${productInfo.id}`">
         {{ productInfo.name }}
       </a>
       <div class="price-tag">${{ productInfo.unit_price }}</div>
@@ -34,6 +34,12 @@ export default defineComponent({
       type: Object as PropType<ProductInfo>,
       required: true,
     },
+  },
+  data() {
+    return {
+      publicPath:
+        process.env.NODE_ENV === "production" ? "/my_online_shop/" : "/",
+    };
   },
 });
 </script>

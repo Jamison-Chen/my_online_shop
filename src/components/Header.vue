@@ -1,10 +1,10 @@
 <template>
   <div id="header" :class="{ 'at-homepage': isHomepage }">
-    <a id="logo" href="/">Hello World</a>
+    <a id="logo" :href="publicPath">Hello World</a>
     <SearchBar :iconSize="iconSize" />
     <div id="side-button-bar">
       <a
-        :href="isLoggedIn ? '/favorites' : '/login'"
+        :href="`${publicPath}${isLoggedIn ? 'favorites' : 'login'}`"
         class="side-button"
         data-title="Favorites"
       >
@@ -20,7 +20,7 @@
         <IconBase :sideLength="iconSize"><IconCart /></IconBase>
       </div>
       <a
-        :href="isLoggedIn ? '/account-center' : '/login'"
+        :href="`${publicPath}${isLoggedIn ? 'account-center' : 'login'}`"
         class="side-button"
         data-title="Account"
       >
@@ -56,13 +56,17 @@ export default defineComponent({
   },
   data() {
     return {
+      publicPath:
+        process.env.NODE_ENV === "production"
+          ? "/my_online_shop/"
+          : ("/" as string),
       iconSize: 22 as number,
       isCartPreviewSectionActive: false as boolean,
     };
   },
   computed: {
     isHomepage(): boolean {
-      return this.$route.path === "/";
+      return this.$route.path === this.publicPath;
     },
     isLoggedIn(): boolean {
       return store.state.isLoggedIn;
@@ -73,18 +77,18 @@ export default defineComponent({
     shouldShowItemCount(): boolean {
       return (
         Boolean(store.state.cartItemCount) &&
-        this.$route.path !== "/cart" &&
-        this.$route.path !== "/checkout"
+        this.$route.path.indexOf("/cart") === -1 &&
+        this.$route.path.indexOf("/checkout") === -1
       );
     },
   },
   methods: {
     toggleCartAndFetchCartData(): void {
       if (
-        this.$route.path !== "/cart" &&
-        this.$route.path !== "/checkout" &&
-        this.$route.path !== "/login" &&
-        this.$route.path !== "/register"
+        this.$route.path.indexOf("/cart") === -1 &&
+        this.$route.path.indexOf("/checkout") === -1 &&
+        this.$route.path.indexOf("/login") === -1 &&
+        this.$route.path.indexOf("/register") === -1
       ) {
         this.isCartPreviewSectionActive = true;
         store.dispatch("getCartItemList");

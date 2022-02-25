@@ -1,8 +1,8 @@
 <template>
   <div id="thank-you-page">
     <h1 class="page-title">Thank You for Shopping!</h1>
-    <a href="/" class="back-to-home-button">Back to Homepage</a>
-    <a href="/track-order" class="order-status-tracking-button">
+    <a :href="publicPath" class="back-to-home-button">Back to Homepage</a>
+    <a :href="`${publicPath}track-order`" class="order-status-tracking-button">
       Track My Order
     </a>
   </div>
@@ -13,6 +13,12 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "ThankYouPage",
+  data() {
+    return {
+      publicPath:
+        process.env.NODE_ENV === "production" ? "/my_online_shop/" : "/",
+    };
+  },
   created() {},
   beforeRouteUpdate(to, from) {},
 });

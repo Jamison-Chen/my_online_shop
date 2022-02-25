@@ -83,7 +83,8 @@ const routes: Array<RouteRecordRaw> = [
 ];
 
 const router = createRouter({
-    history: createWebHistory(),
+    // "/my_online_shop/" for github page base url
+    history: createWebHistory("/my_online_shop/"),
     routes,
 });
 
