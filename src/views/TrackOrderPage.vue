@@ -49,7 +49,7 @@ export default defineComponent({
     fetchData(): Promise<any> {
       let rqBody = new URLSearchParams();
       rqBody.append("operation", "read");
-      return fetch("http://127.0.0.1:8000/api/order", {
+      return fetch(`${store.state.backendApiUrl}/order`, {
         method: "post",
         body: rqBody,
         credentials: "include",

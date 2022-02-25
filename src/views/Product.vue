@@ -48,9 +48,11 @@ import CurrentPathBar from "@/components/CurrentPathBar.vue";
 import ProductNonPictureSection from "@/components/ProductNonPictureSection.vue";
 import PageBlock from "@/components/PageBlock.vue";
 import { ProductInfo, PageInfo } from "@/myInterface";
+import store from "@/store";
 
 export default defineComponent({
   name: "Product",
+  store: store,
   components: { CurrentPathBar, ProductNonPictureSection, PageBlock },
   data() {
     return {
@@ -93,7 +95,7 @@ export default defineComponent({
   methods: {
     fetchData(productId: any): Promise<any> {
       this.status = "waiting";
-      let endPoint = `http://127.0.0.1:8000/api/product/${productId}`;
+      let endPoint = `${store.state.backendApiUrl}/product/${productId}`;
       return fetch(endPoint, { method: "get", credentials: "include" })
         .then((res) => {
           this.status = "success";

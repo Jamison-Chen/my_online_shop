@@ -6,9 +6,11 @@
 import { defineComponent } from "vue";
 import ProductListPage from "@/components/ProductListPage.vue";
 import { ProductInfo, PageInfo } from "@/myInterface";
+import store from "@/store";
 
 export default defineComponent({
   name: "SearchResult",
+  store: store,
   components: { ProductListPage },
   data() {
     return {
@@ -25,7 +27,7 @@ export default defineComponent({
   methods: {
     search(): Promise<any> {
       this.status = "waiting";
-      let endPoint = `http://127.0.0.1:8000/api/search?query=${this.$route.query.query}`;
+      let endPoint = `${store.state.backendApiUrl}/search?query=${this.$route.query.query}`;
       return fetch(endPoint, { method: "get", credentials: "include" })
         .then((res) => {
           this.status = "success";

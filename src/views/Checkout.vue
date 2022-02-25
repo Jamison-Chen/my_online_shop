@@ -264,7 +264,7 @@ export default defineComponent({
   },
   methods: {
     async checkCanCheckout(): Promise<void> {
-      let statusCode = await fetch("http://127.0.0.1:8000/api/order", {
+      let statusCode = await fetch(`${store.state.backendApiUrl}/order`, {
         method: "get",
         credentials: "include",
       }).then((resp) => resp.status);
@@ -307,7 +307,7 @@ export default defineComponent({
           ? this.address
           : this.pickupStoreInfo.address;
       if (addr) requestBody.append("address", addr);
-      let response = await fetch("http://127.0.0.1:8000/api/order", {
+      let response = await fetch(`${store.state.backendApiUrl}/order`, {
         method: "post",
         body: requestBody,
         credentials: "include",

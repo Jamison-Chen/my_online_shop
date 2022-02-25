@@ -136,7 +136,7 @@ export default defineComponent({
       let rqBody = new URLSearchParams();
       for (let each in this.formData) rqBody.append(each, this.formData[each]);
       let response = await fetch(
-        "http://127.0.0.1:8000/api/resend-verification-email",
+        `${store.state.backendApiUrl}/resend-verification-email`,
         {
           method: "post",
           body: rqBody,

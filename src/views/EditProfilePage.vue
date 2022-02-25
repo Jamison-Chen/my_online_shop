@@ -156,14 +156,14 @@ export default defineComponent({
           requestBody.append(each, this.updatedFormData[each]);
         }
       }
-      let response = await fetch("http://127.0.0.1:8000/api/edit-profile", {
+      let response = await fetch(`${store.state.backendApiUrl}/edit-profile`, {
         method: "post",
         body: requestBody,
         credentials: "include",
       }).then((resp) => resp.json());
-      if (response.status === "succeeded")
-        this.$router.replace("/account-center");
-      else {
+      if (response.status === "succeeded") {
+        window.location.replace("/account-center");
+      } else {
         this.messageShowed = response.status;
         if (response.status === "info not sufficient") {
           this.textInputSettings

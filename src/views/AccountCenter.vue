@@ -11,7 +11,6 @@
       value="Log Out"
       @click.once="logout"
     />
-    <router-view />
   </div>
 </template>
 

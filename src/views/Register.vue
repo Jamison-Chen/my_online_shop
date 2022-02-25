@@ -130,7 +130,7 @@ export default defineComponent({
       }
       // The fetch approach
       let response: any = {};
-      response = await fetch("http://127.0.0.1:8000/api/register", {
+      response = await fetch(`${store.state.backendApiUrl}/register`, {
         method: "post",
         body: requestBody,
         credentials: "include", // to accept the "set-cookie" header of the response

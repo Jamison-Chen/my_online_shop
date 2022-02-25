@@ -6,9 +6,11 @@
 import { defineComponent } from "vue";
 import ProductListPage from "@/components/ProductListPage.vue";
 import { ProductInfo, PageInfo } from "@/myInterface";
+import store from "@/store";
 
 export default defineComponent({
   name: "Categorized",
+  store: store,
   components: { ProductListPage },
   data() {
     return {
@@ -26,7 +28,7 @@ export default defineComponent({
   },
   methods: {
     fetchData(category: string): Promise<any> {
-      let endPoint = `http://127.0.0.1:8000/api/product/all?category=${category}`;
+      let endPoint = `${store.state.backendApiUrl}/product/all?category=${category}`;
       return fetch(endPoint, { method: "get", credentials: "include" }).then(
         (res) => res.json()
       );

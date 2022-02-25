@@ -6,11 +6,13 @@
 </template>
 
 <script lang="ts">
+import store from "@/store";
 import { defineComponent } from "vue";
 import IconBase from "./IconBase.vue";
 import IconCheck from "./icons/IconCheck.vue";
 
 export default defineComponent({
+  store: store,
   components: {
     IconBase,
     IconCheck,
@@ -25,7 +27,7 @@ export default defineComponent({
       if (this.$route.path !== "/cart") window.location.assign("/cart");
       else {
         let statusCode = await fetch(
-          "http://127.0.0.1:8000/api/cart/proceed_to_checkout",
+          `${store.state.backendApiUrl}/cart/proceed_to_checkout`,
           {
             method: "get",
             credentials: "include",

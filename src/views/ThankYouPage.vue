@@ -2,9 +2,9 @@
   <div id="thank-you-page">
     <h1 class="page-title">Thank You for Shopping!</h1>
     <a href="/" class="back-to-home-button">Back to Homepage</a>
-    <a href="/account-center" class="order-status-tracking-button"
-      >Track My Order</a
-    >
+    <a href="/track-order" class="order-status-tracking-button">
+      Track My Order
+    </a>
   </div>
 </template>
 

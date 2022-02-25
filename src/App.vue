@@ -23,17 +23,16 @@ export default defineComponent({
         store.dispatch("getFavoriteList"),
       ]);
       if (
-        (this.$route.path === "/account-center" ||
-          this.$route.path === "/account-center/edit" ||
-          this.$route.path === "/account-center/password" ||
-          this.$route.path === "/favorites" ||
-          this.$route.path === "/cart" ||
-          this.$route.path === "/checkout") &&
+        (this.$route.path.indexOf("/account-center") !== -1 ||
+          this.$route.path.indexOf("/favorites") !== -1 ||
+          this.$route.path.indexOf("/cart") !== -1 ||
+          this.$route.path.indexOf("/checkout") !== -1) &&
         !store.state.isLoggedIn
       ) {
         this.$router.replace("/login");
       } else if (
-        (this.$route.path === "/login" || this.$route.path === "/register") &&
+        (this.$route.path.indexOf("/login") !== -1 ||
+          this.$route.path.indexOf("/register") !== -1) &&
         store.state.isLoggedIn
       ) {
         this.$router.replace("/account-center");

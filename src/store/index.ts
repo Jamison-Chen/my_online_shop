@@ -3,6 +3,8 @@ import { ProductInfo, CartItemInfo, UserInfo } from "@/myInterface";
 
 export default createStore({
     state: {
+        backendApiUrl: "https://online-shop-prototype.herokuapp.com/api",
+        // "http://127.0.0.1:8000/api",
         isLoggedIn: false as boolean,
         loginStatus: "loggedout" as
             | "loggedout"
@@ -100,7 +102,7 @@ export default createStore({
             //   .then((resp) => resp);
 
             // The fetch approach
-            let resp = await fetch("http://127.0.0.1:8000/api/login", {
+            let resp = await fetch(`${state.backendApiUrl}/login`, {
                 method: "post",
                 body: requestBody,
                 credentials: "include",
@@ -109,17 +111,17 @@ export default createStore({
             }).then((res) => res.json());
             commit("checkLoginStatus", resp);
         },
-        async logout({ commit }): Promise<void> {
-            let resp = await fetch("http://127.0.0.1:8000/api/logout", {
+        async logout({ dispatch, commit, state }): Promise<void> {
+            let resp = await fetch(`${state.backendApiUrl}/logout`, {
                 method: "post",
                 credentials: "include",
             }).then((res) => res.json());
             if (resp["status"] === "succeeded") commit("logout");
         },
-        async getFavoriteList({ commit }): Promise<void> {
+        async getFavoriteList({ dispatch, commit, state }): Promise<void> {
             let requestBody = new URLSearchParams();
             requestBody.append("operation", "read");
-            let resp = await fetch("http://127.0.0.1:8000/api/favorites", {
+            let resp = await fetch(`${state.backendApiUrl}/favorites`, {
                 method: "post",
                 body: requestBody,
                 credentials: "include",
@@ -127,7 +129,7 @@ export default createStore({
             commit("getFavoriteList", resp);
         },
         async updateFavoriteList(
-            { commit },
+            { dispatch, commit, state },
             payload: {
                 productInfo: ProductInfo;
                 operation: "create" | "delete";
@@ -143,7 +145,7 @@ export default createStore({
             requestBody.append("operation", payload.operation);
             requestBody.append("product", payload.productInfo.id);
             let resp = (
-                (await fetch("http://127.0.0.1:8000/api/favorites", {
+                (await fetch(`${state.backendApiUrl}/favorites`, {
                     method: "post",
                     body: requestBody,
                     credentials: "include",
@@ -159,10 +161,10 @@ export default createStore({
                 );
             }
         },
-        async getCartItemList({ commit }): Promise<void> {
+        async getCartItemList({ dispatch, commit, state }): Promise<void> {
             let requestBody = new URLSearchParams();
             requestBody.append("operation", "read");
-            let resp = await fetch("http://127.0.0.1:8000/api/cart/", {
+            let resp = await fetch(`${state.backendApiUrl}/cart/`, {
                 method: "post",
                 body: requestBody,
                 credentials: "include",
@@ -170,14 +172,14 @@ export default createStore({
             commit("getCartItemList", resp);
         },
         async addToCart(
-            { commit },
+            { dispatch, commit, state },
             payload: { selectedInventoryId: string; quantity: number }
         ): Promise<void> {
             let requestBody = new URLSearchParams();
             requestBody.append("operation", "create");
             requestBody.append("inventory_id", payload.selectedInventoryId);
             requestBody.append("quantity", payload.quantity.toString());
-            let resp = await fetch("http://127.0.0.1:8000/api/cart/", {
+            let resp = await fetch(`${state.backendApiUrl}/cart/`, {
                 method: "post",
                 body: requestBody,
                 credentials: "include",
@@ -185,13 +187,13 @@ export default createStore({
             commit("addToCart", resp);
         },
         async deleteFromCart(
-            { commit },
+            { dispatch, commit, state },
             cartItemInfo: CartItemInfo
         ): Promise<void> {
             let requestBody = new URLSearchParams();
             requestBody.append("operation", "delete");
             requestBody.append("cart_item_id", cartItemInfo.cart_item_id);
-            let resp = await fetch("http://127.0.0.1:8000/api/cart/", {
+            let resp = await fetch(`${state.backendApiUrl}/cart/`, {
                 method: "post",
                 body: requestBody,
                 credentials: "include",

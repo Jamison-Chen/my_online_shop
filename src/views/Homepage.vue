@@ -44,7 +44,7 @@ export default defineComponent({
   },
   methods: {
     fetchData(): Promise<any> {
-      let endPoint = `http://127.0.0.1:8000/api/category/all`;
+      let endPoint = `${store.state.backendApiUrl}/category/all`;
       return fetch(endPoint, { method: "get", credentials: "include" }).then(
         (res) => res.json()
       );

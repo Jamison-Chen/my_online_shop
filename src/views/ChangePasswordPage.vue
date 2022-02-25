@@ -93,7 +93,7 @@ export default defineComponent({
       let rqBody = new URLSearchParams();
       for (let each in this.formData) rqBody.append(each, this.formData[each]);
       let status = (
-        (await fetch("http://127.0.0.1:8000/api/change-password", {
+        (await fetch(`${store.state.backendApiUrl}/change-password`, {
           method: "post",
           body: rqBody,
           credentials: "include",
