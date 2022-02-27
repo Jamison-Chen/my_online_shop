@@ -64,7 +64,7 @@ export default defineComponent({
   },
   computed: {
     isHomepage(): boolean {
-      return this.$route.path === this.publicPath;
+      return this.$route.path === "/";
     },
     isLoggedIn(): boolean {
       return store.state.isLoggedIn;
