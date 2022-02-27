@@ -57,9 +57,7 @@ export default defineComponent({
   data() {
     return {
       publicPath:
-        process.env.NODE_ENV === "production"
-          ? "/my_online_shop/"
-          : ("/" as string),
+        process.env.NODE_ENV === "production" ? "/my_online_shop/" : "/",
       iconSize: 22 as number,
       isCartPreviewSectionActive: false as boolean,
     };
