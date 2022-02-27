@@ -1,4 +1,12 @@
+#!/usr/bin/env sh
+
 npm run build
+
+cd dist
+
+cp index.html 404.html
+
+cd ..
 
 git add dist -f
 
