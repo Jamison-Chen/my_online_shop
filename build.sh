@@ -13,3 +13,6 @@ git add dist -f
 git commit -m "add dist"
 
 git subtree push --prefix dist origin gh-pages
+
+# For pulling:
+# git subtree pull --prefix dist origin gh-pages
