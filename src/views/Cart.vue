@@ -63,8 +63,18 @@ export default defineComponent({
       return `$${store.state.cartTotalCosts + store.state.freight}`;
     },
   },
-  created() {
-    store.dispatch("getCartItemList");
+  async created() {
+    await store.dispatch("getCartItemList");
+    if (store.state.cartItemCount === 0) {
+      this.$router.back();
+    }
+  },
+  async beforeRouteUpdate(to, from) {
+    // react to route changes
+    await store.dispatch("getCartItemList");
+    if (store.state.cartItemCount === 0) {
+      this.$router.back();
+    }
   },
 });
 </script>

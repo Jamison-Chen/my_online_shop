@@ -31,7 +31,9 @@ export default defineComponent({
   methods: {
     async proceed(): Promise<void> {
       if (this.$route.path.indexOf("/cart") === -1) {
-        window.location.assign(`${this.publicPath}cart`);
+        if (store.state.cartItemCount !== 0) {
+          window.location.assign(`${this.publicPath}cart`);
+        }
       } else {
         let statusCode = await fetch(
           `${store.state.backendApiUrl}/cart/proceed_to_checkout`,
