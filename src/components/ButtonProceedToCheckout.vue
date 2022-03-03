@@ -30,24 +30,24 @@ export default defineComponent({
   },
   methods: {
     async proceed(): Promise<void> {
-      if (this.$route.path.indexOf("/cart") === -1) {
-        if (store.state.cartItemCount !== 0) {
+      if (store.state.cartItemCount !== 0) {
+        if (this.$route.path.indexOf("/cart") === -1) {
           window.location.assign(`${this.publicPath}cart`);
+        } else {
+          let statusCode = await fetch(
+            `${store.state.backendApiUrl}/cart/proceed_to_checkout`,
+            {
+              method: "get",
+              credentials: "include",
+            }
+          ).then((resp) => resp.status);
+          if (statusCode === 404 || statusCode === 500) {
+            this.$router.push({
+              name: "Error",
+              params: { statusCode: statusCode },
+            });
+          } else window.location.assign(`${this.publicPath}checkout`);
         }
-      } else {
-        let statusCode = await fetch(
-          `${store.state.backendApiUrl}/cart/proceed_to_checkout`,
-          {
-            method: "get",
-            credentials: "include",
-          }
-        ).then((resp) => resp.status);
-        if (statusCode === 404 || statusCode === 500) {
-          this.$router.push({
-            name: "Error",
-            params: { statusCode: statusCode },
-          });
-        } else window.location.assign(`${this.publicPath}checkout`);
       }
     },
   },

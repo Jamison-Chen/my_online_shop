@@ -65,16 +65,12 @@ export default defineComponent({
   },
   async created() {
     await store.dispatch("getCartItemList");
-    if (store.state.cartItemCount === 0) {
-      this.$router.back();
-    }
+    if (store.state.cartItemCount === 0) this.$router.back();
   },
   async beforeRouteUpdate(to, from) {
     // react to route changes
     await store.dispatch("getCartItemList");
-    if (store.state.cartItemCount === 0) {
-      this.$router.back();
-    }
+    if (store.state.cartItemCount === 0) this.$router.back();
   },
 });
 </script>
