@@ -4,8 +4,9 @@ import { ProductInfo, CartItemInfo, UserInfo } from "@/myInterface";
 export default createStore({
     state: {
         backendApiUrl:
-            // "https://online-shop-prototype.herokuapp.com/api",
-            "http://127.0.0.1:8000/api",
+            process.env.NODE_ENV === "production"
+                ? "https://online-shop-prototype.herokuapp.com/api"
+                : "http://127.0.0.1:8000/api",
         isLoggedIn: false as boolean,
         loginStatus: "loggedout" as
             | "loggedout"
