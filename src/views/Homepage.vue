@@ -1,7 +1,7 @@
 <template>
   <div id="homepage">
     <!-- <img alt="Vue logo" src="../assets/logo.png" /> -->
-    <PictureCarousel :pictureInfoList="carouselContents" />
+    <PictureCarousel :pictureInfoList="updatedCarouselContents" />
     <PageBlock :blockTitle="'All Catrgories'">
       <div id="category-list">
         <CategoryInfoCard
@@ -35,22 +35,30 @@ export default defineComponent({
       carouselContents: [
         {
           image: "#fff4f4",
-          href: `${this.publicPath}search-result?query=top,seller,this,month`,
+          href: "search-result?query=top,seller,this,month",
           title: "Top Seller This Month",
         },
         {
           image: "#f4fff4",
-          href: `${this.publicPath}product/24`,
+          href: "product/24",
           title: "Ad2",
         },
         {
           image: "#f4f4ff",
-          href: `${this.publicPath}product/32`,
+          href: "product/32",
           title: "Ad3",
         },
       ] as CarouselContentInfo[],
       categories: [] as CategoryInfo[],
     };
+  },
+  computed: {
+    updatedCarouselContents(): CarouselContentInfo[] {
+      return this.carouselContents.map((each) => {
+        each.href = this.publicPath + each.href;
+        return each;
+      });
+    },
   },
   methods: {
     fetchData(): Promise<any> {
