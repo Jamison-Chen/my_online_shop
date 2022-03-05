@@ -1,7 +1,7 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "5f75e0850c7a38bd51d7",
-    "url": "/my_online_shop/css/app.1399de22.css"
+    "revision": "b71993061298dc729fe7",
+    "url": "/my_online_shop/css/app.a0deb571.css"
   },
   {
     "revision": "6a7b22e08452a4f6ff74",
@@ -48,12 +48,12 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/my_online_shop/css/chunk-b0be8f6a.15f7ca55.css"
   },
   {
-    "revision": "774a98573085538915ca50e1839d3e16",
+    "revision": "7ea91cab83efbbc70ef1cb6dc1fcd717",
     "url": "/my_online_shop/index.html"
   },
   {
-    "revision": "5f75e0850c7a38bd51d7",
-    "url": "/my_online_shop/js/app.60f581f8.js"
+    "revision": "b71993061298dc729fe7",
+    "url": "/my_online_shop/js/app.9a8f4e67.js"
   },
   {
     "revision": "6a7b22e08452a4f6ff74",
@@ -116,8 +116,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/my_online_shop/js/chunk-b0be8f6a.b1132060.js"
   },
   {
-    "revision": "4743ccbd6f507d35a754",
-    "url": "/my_online_shop/js/chunk-vendors.dae80dcb.js"
+    "revision": "43d97b014bb8350b37ea",
+    "url": "/my_online_shop/js/chunk-vendors.b3770414.js"
   },
   {
     "revision": "925e541063bdd89c40a4a2b3f611450a",
