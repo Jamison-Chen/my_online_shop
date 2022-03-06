@@ -81,13 +81,13 @@ export default defineComponent({
         .concat([
           {
             name: this.productInfo.category,
-            path: `/${this.productInfo.category}`,
+            path: `${this.productInfo.category}`,
           },
         ])
         .concat([
           {
             name: this.productInfo.name,
-            path: "#",
+            path: "./#",
           },
         ]);
     },

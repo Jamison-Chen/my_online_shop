@@ -1,7 +1,7 @@
 <template>
   <div id="current-path-bar">
     <div class="part-of-path" v-for="each in parentPageList" :key="each.name">
-      <a class="path-name" :href="publicPath + each.path">{{ each.name }}</a>
+      <a class="path-name" :href="getCorrectPath(each.path)">{{ each.name }}</a>
       <span
         class="slash"
         v-if="each.name !== parentPageList[parentPageList.length - 1].name"
@@ -28,6 +28,18 @@ export default defineComponent({
       publicPath:
         process.env.NODE_ENV === "production" ? "/my_online_shop/" : "/",
     };
+  },
+  methods: {
+    getCorrectPath(originalPath: string): string {
+      if (originalPath.indexOf("./") !== -1) {
+        let currentPath = window.location.pathname;
+        if (currentPath[currentPath.length - 1] !== "/") {
+          return `${currentPath}/${originalPath}`;
+        }
+        return originalPath;
+      }
+      return `${this.publicPath}${originalPath}`;
+    },
   },
 });
 </script>

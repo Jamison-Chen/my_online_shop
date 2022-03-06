@@ -44,7 +44,7 @@ export default defineComponent({
       return this.parentPageList.concat([
         {
           name: "Account Center",
-          path: "#",
+          path: "./#",
         },
       ]);
     },

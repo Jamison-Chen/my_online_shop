@@ -48,7 +48,7 @@ export default defineComponent({
   },
   computed: {
     fullPathList(): PageInfo[] {
-      return this.parentPageList.concat([{ name: "Cart", path: "#" }]);
+      return this.parentPageList.concat([{ name: "Cart", path: "./#" }]);
     },
     cartItems(): CartItemInfo[] {
       return store.state.cartItemList;

@@ -132,7 +132,7 @@ export default defineComponent({
       return this.parentPageList.concat([
         {
           name: "Edit",
-          path: "#",
+          path: "./#",
         },
       ]);
     },

@@ -3,7 +3,7 @@
     <a
       v-for="(each, idx) in pictureInfoList"
       :key="idx"
-      :href="each.href"
+      :href="`${publicPath}${each.href}`"
       class="carousel-picture"
       :class="{ active: activePictureIdx === idx }"
     >
@@ -38,6 +38,8 @@ export default defineComponent({
   },
   data() {
     return {
+      publicPath:
+        process.env.NODE_ENV === "production" ? "/my_online_shop/" : "/",
       activePictureIdx: 0 as number,
       carousel: setInterval(this.autoChangePicture, 6180),
     };

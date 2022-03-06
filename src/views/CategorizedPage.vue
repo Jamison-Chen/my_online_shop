@@ -22,7 +22,7 @@ export default defineComponent({
   computed: {
     fullPathList(): PageInfo[] {
       return this.parentPageList.concat([
-        { name: this.categoryName, path: "#" },
+        { name: this.categoryName, path: "./#" },
       ]);
     },
   },

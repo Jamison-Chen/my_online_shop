@@ -112,7 +112,7 @@ export default defineComponent({
       return this.parentPageList.concat([
         {
           name: "Register",
-          path: "#",
+          path: "./#",
         },
       ]);
     },

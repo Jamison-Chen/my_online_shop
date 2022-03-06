@@ -245,7 +245,7 @@ export default defineComponent({
   },
   computed: {
     fullPathList(): PageInfo[] {
-      return this.parentPageList.concat([{ name: "Checkout", path: "#" }]);
+      return this.parentPageList.concat([{ name: "Checkout", path: "./#" }]);
     },
     userInfo(): UserInfo {
       return store.state.userInfo;

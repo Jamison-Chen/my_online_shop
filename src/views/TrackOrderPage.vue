@@ -40,7 +40,7 @@ export default defineComponent({
       return this.parentPageList.concat([
         {
           name: "My Order",
-          path: "#",
+          path: "./#",
         },
       ]);
     },

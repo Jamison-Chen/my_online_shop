@@ -83,7 +83,7 @@ export default defineComponent({
       return this.parentPageList.concat([
         {
           name: "Password",
-          path: "#",
+          path: "./#",
         },
       ]);
     },
