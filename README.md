@@ -14,18 +14,36 @@
 
 <h1 align="center">My Online Shop</h1>
 
+The My Online Shop Project is the prototype of an e-commerce website,
+this website is currently implemented with the following key functions:
+
+* Account
+  * User Registration
+  * Email Verification
+  * User Login / Logout
+  * User Info Editing and Password Changing
+* Product
+  * Favorites
+  * Cart
+  * Single-Layer Product Classification
+  * Product Specification Selection
+* Checkout & Order
+  * The overall workflow **BEFORE** selecting pick-up location
+  * Order Tracking
+
 The My Online Shop project is divided into two parts, frontend and backend respectively,
 and this repository is the frontend. To see the backend repository, please visit
 [this page](https://github.com/Jamison-Chen/my_online_shop_backend).
 
-We will guide you to install the frontend of the My Online Shop project through
-this document.
+In this document, we will guide you through the process of installing the frontend
+of the My Online Shop project.
 
 If you want to directly jump to some specific part of this document,
 here we provide you the contents overview with link:
 
 * [Installation](#title-installation)
 * [Making Contribution](#title-making-contribution)
+* [Development Roadmap](#title-development-roadmap)
 
 If you want to see the demo of the whole project, please visit [here](https://jamison-chen.github.io/my_online_shop/).
 
@@ -160,3 +178,20 @@ or
 #### Customize configuration
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+<h2 id="title-development-roadmap">Development Roadmap</h2>
+
+The list below shows what we are going to implement in the next release:
+
+* Account
+  * Need a mail agent for the online version to achieve the email verification.
+  * Maybe use Session instead of Cookie to keep the user’s login status.
+* Product
+  * Multi-Layer Product Classification
+  * Provide more sections such as “Popular This Week”, “New Arrival”, etc.
+  * The product searching algorithms
+* Checkout & Order
+  * Provide coupons and let customers apply them before checking out.
+  * Provide a map to select stores when customers choose to pick up their
+  products in-store.
+  * The workflow of payment
