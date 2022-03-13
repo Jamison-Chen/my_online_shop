@@ -38,8 +38,7 @@ export default defineComponent({
   },
   data() {
     return {
-      publicPath:
-        process.env.NODE_ENV === "production" ? "/my_online_shop/" : "/",
+      publicPath: process.env.BASE_URL,
       activePictureIdx: 0 as number,
       carousel: setInterval(this.autoChangePicture, 6180),
     };

@@ -61,8 +61,7 @@ export default defineComponent({
   components: { CurrentPathBar, FormInput },
   data() {
     return {
-      publicPath:
-        process.env.NODE_ENV === "production" ? "/my_online_shop/" : "/",
+      publicPath: process.env.BASE_URL,
       parentPageList: [
         {
           name: "Home",

@@ -72,8 +72,7 @@ export default defineComponent({
   emits: ["input", "clickSubmitButton"],
   data() {
     return {
-      publicPath:
-        process.env.NODE_ENV === "production" ? "/my_online_shop/" : "/",
+      publicPath: process.env.BASE_URL,
       formInputDisplayType: "table" as string,
     };
   },

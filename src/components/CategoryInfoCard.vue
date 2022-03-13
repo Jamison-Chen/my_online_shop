@@ -31,8 +31,7 @@ export default defineComponent({
   },
   data() {
     return {
-      publicPath:
-        process.env.NODE_ENV === "production" ? "/my_online_shop/" : "/",
+      publicPath: process.env.BASE_URL,
     };
   },
   methods: {},
