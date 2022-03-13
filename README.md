@@ -35,6 +35,8 @@ The My Online Shop project is divided into two parts, frontend and backend respe
 and this repository is the frontend. To see the backend repository, please visit
 [this page](https://github.com/Jamison-Chen/my_online_shop_backend).
 
+## Contents
+
 In this document, we will guide you through the process of installing the frontend
 of the My Online Shop project.
 
@@ -42,7 +44,7 @@ If you want to directly jump to some specific part of this document,
 here we provide you the contents overview with link:
 
 * [Installation](#title-installation)
-* [Making Contribution](#title-making-contribution)
+* [Making Contributions](#title-making-contribution)
 * [Development Roadmap](#title-development-roadmap)
 
 If you want to see the demo of the whole project, please visit [here](https://jamison-chen.github.io/my_online_shop/).
@@ -78,7 +80,9 @@ as the demo.
     npm install
     ```
 
-<h2 id="title-making-contribution">Making Contribution</h2>
+<font size="1">*[Back to contents](#contents)*</font>
+
+<h2 id="title-making-contribution">Making Contributions</h2>
 
 Before diving into development, you must follow and complete the installation
 process above.
@@ -179,9 +183,11 @@ or
 
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
+<font size="1">*[Back to contents](#contents)*</font>
+
 <h2 id="title-development-roadmap">Development Roadmap</h2>
 
-The list below shows what we are going to implement in the next release:
+The list below shows featruea that we are going to implement in the future releases:
 
 * Account
   * Need a mail agent for the online version to achieve the email verification.
