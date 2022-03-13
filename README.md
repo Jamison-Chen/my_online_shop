@@ -44,6 +44,7 @@ If you want to directly jump to some specific part of this document,
 here we provide you the contents overview with link:
 
 * [Installation](#title-installation)
+* [Start to Develop](#title-start-to-develop)
 * [Making Contributions](#title-making-contribution)
 * [Development Roadmap](#title-development-roadmap)
 
@@ -82,7 +83,7 @@ as the demo.
 
 <font size="1">*[Back to contents](#contents)*</font>
 
-<h2 id="title-making-contribution">Making Contributions</h2>
+<h2 id="title-start-to-develop">Start to Develop</h2>
 
 Before diving into development, you must follow and complete the installation
 process above.
@@ -110,6 +111,10 @@ yarn test:unit
 ```bash
 yarn test:e2e
 ```
+
+<font size="1">*[Back to contents](#contents)*</font>
+
+<h2 id="title-making-contribution">Making Contributions</h2>
 
 #### Compile and minify for production
 
